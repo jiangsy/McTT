@@ -428,6 +428,7 @@ Proof with mautosolve.
       intros.
       assert (in_rel c' c) by eauto.
       assert (in_rel c c) by (etransitivity; eassumption).
+      destruct_all.
       destruct_rel_mod_eval.
       functional_eval_rewrite_clear.
       econstructor; eauto.

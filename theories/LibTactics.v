@@ -9,6 +9,16 @@ Create HintDb mctt discriminated.
 #[export]
 Typeclasses Transparent arrows.
 
+(** Destruct existential quantification but keeps the name *)
+Ltac deex_once :=
+  match goal with
+    | [ H: exists (name:_), _ |- _ ] =>
+      let name' := fresh name in
+      destruct H as [name' H]
+    end.
+
+Ltac deex := repeat deex_once.
+
 (** *** Generalization of Variables *)
 
 Tactic Notation "gen" ident(x) := generalize dependent x.
@@ -63,7 +73,7 @@ Tactic Notation "on_all_hyp_rev:" tactic4(tac) :=
 
 Ltac destruct_logic :=
   destruct_one_pair
-  || destruct_one_ex
+  || deex_once
   || match goal with
     | [ H : ?X \/ ?Y |- _ ] => destruct H
     | [ ev : { _ } + { _ } |- _ ] => destruct ev

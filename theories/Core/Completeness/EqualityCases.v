@@ -6,6 +6,7 @@ From Mctt.Core.Completeness Require Import ContextCases LogicalRelation Substitu
 From Mctt.Core.Semantic Require Import Realizability.
 Import Domain_Notations.
 
+
 Lemma rel_exp_eq_cong : forall {Γ i A A' M1 M1' M2 M2'},
     {{ Γ ⊨ A ≈ A' : Type@i }} ->
     {{ Γ ⊨ M1 ≈ M1' : A }} ->
@@ -18,13 +19,13 @@ Proof.
   invert_rel_exp HM2.
   eexists_rel_exp_of_typ.
   intros.
+  destruct_rel_by_assumption env_relΓ H2. 
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
   invert_rel_typ_body.
   unfold per_univ in *.
-  destruct_conjs.
-  handle_per_univ_elem_irrel.
+  deex. handle_per_univ_elem_irrel.
   econstructor; mauto 3.
   eexists.
   per_univ_elem_econstructor; mauto 3; try solve_refl.
