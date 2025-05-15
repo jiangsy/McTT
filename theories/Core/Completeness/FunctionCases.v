@@ -229,13 +229,12 @@ Proof with intuition.
   intros.
   assert (equiv_p'_p' : env_relΓ ρ' ρ') by (etransitivity; [symmetry |]; eassumption).
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
-  rename x2 into in_rel.
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
   handle_per_univ_elem_irrel.
-  assert (in_rel m1 m2) by (etransitivity; [| symmetry]; eassumption).
-  assert (in_rel m1 m'2) by intuition.
-  (on_all_hyp: destruct_rel_by_assumption in_rel).
+  assert (in_rel0 m1 m2) by (etransitivity; [| symmetry]; eassumption).
+  assert (in_rel0 m1 m'2) by intuition.
+  (on_all_hyp: destruct_rel_by_assumption in_rel0).
   handle_per_univ_elem_irrel.
   eexists.
   split; econstructor; mauto...
@@ -259,7 +258,6 @@ Proof with mautosolve.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   (on_all_hyp: destruct_rel_by_assumption env_relΔ).
-  rename x0 into in_rel.
   destruct_by_head rel_typ.
   handle_per_univ_elem_irrel.
   destruct_by_head rel_exp.
@@ -307,7 +305,6 @@ Proof with mautosolve.
   eexists_rel_exp_of_pi.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
-  rename x into in_rel.
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
   do 2 eexists.
