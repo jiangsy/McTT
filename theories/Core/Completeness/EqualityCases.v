@@ -129,6 +129,7 @@ Qed.
 #[export]
 Hint Resolve rel_exp_refl_sub : mctt.
 
+
 Lemma rel_exp_eqrec_sub : forall {Γ σ Δ i A M1 M2 j B BR N},
     {{ Γ ⊨s σ : Δ }} ->
     {{ Δ ⊨ A : Type@i }} ->
@@ -185,11 +186,14 @@ Proof.
   invert_rel_exp HN.
   eexists_rel_exp.
   intros.
-  (* (on_all_hyp: destruct_rel_by_assumption env_relΓ). *)
-  (* (on_all_hyp: destruct_rel_by_assumption env_relΔ). *)
-  (* destruct_by_head rel_typ. *)
-  (* destruct_by_head rel_exp. *)
-  (* invert_rel_typ_body. *)
+  (on_all_hyp: destruct_rel_by_assumption env_relΓ).
+  (on_all_hyp: destruct_rel_by_assumption env_relΔ).
+  destruct_by_head rel_typ.
+  destruct_by_head rel_exp.
+  invert_rel_typ_body.
+  eexists; split.
+  - admit.
+  -
   (* assert {{ Dom ρ1 ↦ m1 ≈ ρ0 ↦ m0 ∈ env_relΔA }} by (unfold env_relΔA; mauto 3). *)
   (* (on_all_hyp: destruct_rel_by_assumption env_relΔA). *)
   (* simplify_evals. *)
@@ -208,6 +212,7 @@ Proof.
 (** We need some insane number of steps here.
     It might be better to do some optimization first. *)
 Admitted.
+
 #[export]
 Hint Resolve rel_exp_eqrec_sub : mctt.
 
@@ -225,7 +230,25 @@ Lemma rel_exp_eqrec_cong : forall {Γ i A A' M1 M1' M2 M2' j B B' BR BR' N N'},
          ≈ eqrec N' as Eq A' M1' M2' return B' | refl -> BR' end
         : B[Id,,M1,,M2,,N] }}.
 Proof.
+  intros * [env_relΓ]%rel_exp_of_typ_inversion1 
+    HM1 HM2 HAA' HM1M1' HM2M2' []%rel_exp_of_typ_inversion1 [env_relΓA] HNN'.
+  pose env_relΓA.
+  destruct_conjs.
+  invert_per_ctx_envs.
+  invert_rel_exp HNN'.
+  handle_per_ctx_env_irrel.
+  eexists_rel_exp.
+  intros.
+  (on_all_hyp: destruct_rel_by_assumption env_relΓ).
+  destruct_by_head rel_typ.
+  destruct_by_head rel_exp.
+  invert_rel_typ_body.
+  unfold per_univ in *.
+  destruct_conjs.
+  handle_per_univ_elem_irrel.
+  destruct_by_head per_eq.
 Admitted.
+
 #[export]
 Hint Resolve rel_exp_eqrec_cong : mctt.
 
