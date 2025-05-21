@@ -129,7 +129,6 @@ Qed.
 #[export]
 Hint Resolve rel_exp_refl_sub : mctt.
 
-
 Lemma rel_exp_eqrec_sub : forall {Γ σ Δ i A M1 M2 j B BR N},
     {{ Γ ⊨s σ : Δ }} ->
     {{ Δ ⊨ A : Type@i }} ->
@@ -188,27 +187,38 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   (on_all_hyp: destruct_rel_by_assumption env_relΔ).
+  invert_rel_exp HBR.
+  invert_rel_exp HB.
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
   invert_rel_typ_body.
-  eexists; split.
-  - admit.
-  -
-  (* assert {{ Dom ρ1 ↦ m1 ≈ ρ0 ↦ m0 ∈ env_relΔA }} by (unfold env_relΔA; mauto 3). *)
-  (* (on_all_hyp: destruct_rel_by_assumption env_relΔA). *)
-  (* simplify_evals. *)
-  (* handle_per_univ_elem_irrel. *)
-  (* assert {{ Dom ρ1 ↦ m1 ↦ m2 ≈ ρ0 ↦ m0 ↦ m3 ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition). *)
-  (* (on_all_hyp: destruct_rel_by_assumption env_relΔAA). *)
-  (* simplify_evals. *)
-  (* match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H). *)
-  (* handle_per_univ_elem_irrel. *)
-  (* assert {{ Dom ρ1 ↦ m1 ↦ m2 ↦ m4 ≈ ρ0 ↦ m0 ↦ m3 ↦ m'2 ∈ env_relΔAAEq }} as HrelΔAAEq by (apply_relation_equivalence; unshelve eexists; intuition). *)
-  (* apply_relation_equivalence. *)
-  (* (on_all_hyp: fun H => directed destruct (H _ _ HrelΔAAEq) as []). *)
-  (* destruct_conjs. *)
-  (* match_by_head per_eq ltac:(fun H => destruct H). *)
-
+  assert {{ Dom ρ1 ↦ m1 ≈ ρ0 ↦ m0 ∈ env_relΔA }} by (unfold env_relΔA; mauto 3).
+  (on_all_hyp: destruct_rel_by_assumption env_relΔA).
+  simplify_evals.
+  handle_per_univ_elem_irrel.
+  assert {{ Dom ρ1 ↦ m1 ↦ m2 ≈ ρ0 ↦ m0 ↦ m3 ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
+  (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
+  simplify_evals.
+  match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+  handle_per_univ_elem_irrel.
+  assert {{ Dom ρ1 ↦ m1 ↦ m2 ↦ m4 ≈ ρ0 ↦ m0 ↦ m3 ↦ m'1 ∈ env_relΔAAEq }} as HrelΔAAEq by (apply_relation_equivalence; unshelve eexists; intuition).
+  apply_relation_equivalence.
+  (on_all_hyp: fun H => destruct (H _ _ HrelΔAAEq) as []).
+  destruct_conjs.
+  match_by_head per_eq ltac:(fun H => destruct H).
+  destruct_by_head rel_typ.
+  destruct_by_head rel_exp.
+  rename ρ1 into ρσ.
+  rename ρ0 into ρ'σ.
+  simplify_evals.
+  - eexists; split. 2: {
+      (* is this two assertions true? *)
+      assert ({{ ⟦ BR ⟧ ρσ ↦ n ↘ m7 }}) by admit.
+      assert ({{ ⟦ BR ⟧ ρ'σ ↦ n' ↘ m'0 }}) by admit.
+      econstructor; simpl; mauto.
+      econstructor; mauto.
+    }
+    admit.
 (** We need some insane number of steps here.
     It might be better to do some optimization first. *)
 Admitted.
@@ -230,11 +240,13 @@ Lemma rel_exp_eqrec_cong : forall {Γ i A A' M1 M1' M2 M2' j B B' BR BR' N N'},
          ≈ eqrec N' as Eq A' M1' M2' return B' | refl -> BR' end
         : B[Id,,M1,,M2,,N] }}.
 Proof.
-  intros * [env_relΓ]%rel_exp_of_typ_inversion1 
-    HM1 HM2 HAA' HM1M1' HM2M2' []%rel_exp_of_typ_inversion1 [env_relΓA] HNN'.
-  pose env_relΓA.
+  intros * [env_relΓ]%rel_exp_of_typ_inversion1
+    HM1 HM2 HAA' HM1M1' HM2M2' HBB' HBRBR' HNN'.
+  (* a similar rel_exp_of_sub_id_zero_inversion to HBR? *)
   destruct_conjs.
-  invert_per_ctx_envs.
+  invert_rel_exp_of_typ HAA'.
+  invert_rel_exp HM1.
+  invert_rel_exp HM2.
   invert_rel_exp HNN'.
   handle_per_ctx_env_irrel.
   eexists_rel_exp.
@@ -244,9 +256,23 @@ Proof.
   destruct_by_head rel_exp.
   invert_rel_typ_body.
   unfold per_univ in *.
-  destruct_conjs.
-  handle_per_univ_elem_irrel.
+  deex.
   destruct_by_head per_eq.
+  match_by_head per_eq ltac:(fun H => destruct H).
+  handle_per_univ_elem_irrel.
+  (* shall we encapsulate the case analysis as eval_natrec_rel, since no induction is 
+    needed here? *)
+  - eexists; split. 2: {
+    econstructor; mauto 3.
+    econstructor; mauto.
+    econstructor; mauto. admit.
+    admit. }
+    admit.
+  - eexists; split. 2: {
+    econstructor. econstructor. 5:eapply eval_eqrec_neut; mauto 3.
+    all : mauto 3.
+    handle_per_univ_elem_irrel. all : admit. }
+    admit.
 Admitted.
 
 #[export]
@@ -261,6 +287,26 @@ Lemma rel_exp_eqrec_beta : forall {Γ i A M j B BR},
          ≈ BR[Id,,M]
         : B[Id,,M,,M,,refl A M] }}.
 Proof.
+  intros * [env_relΓ]%rel_exp_of_typ_inversion1 
+    HM HB HBR.
+  destruct_conjs.
+  invert_rel_exp HM.
+  (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relA]; shelve_unifiable; [eassumption |]).
+  pose (env_relΓA := cons_per_ctx_env env_relΓ elem_relA).
+  assert {{ EF Γ, A ≈ Γ, A ∈ per_ctx_env ↘ env_relΓA }} by 
+    (econstructor; mauto 3; try reflexivity; typeclasses eauto).
+  invert_rel_exp HBR.
+  invert_per_ctx_envs.
+  handle_per_ctx_env_irrel.
+  rename x into env_relΓ.
+  
+
+  eexists_rel_exp.
+  intros.
+  (on_all_hyp: destruct_rel_by_assumption env_relΓ).
+  destruct_by_head rel_typ.
+  destruct_by_head rel_exp.
+  simplify_evals.
 Admitted.
 #[export]
 Hint Resolve rel_exp_eqrec_beta : mctt.
