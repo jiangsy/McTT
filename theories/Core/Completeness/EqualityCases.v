@@ -164,6 +164,55 @@ Proof.
   mauto 4.
 Qed.
 
+Lemma rel_exp_eqrec_per_ctx_env_gen : forall {Γ i A},
+    {{ Γ ⊨ A : Type@i }} ->
+    exists env_relΓ, (
+      {{ EF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} /\ 
+        exists elem_relA, (
+          (forall (ρ ρ' : env) (equiv_ρ_ρ' : env_relΓ ρ ρ'), rel_typ i A ρ A ρ' (elem_relA ρ ρ' equiv_ρ_ρ')) /\
+            {{EF Γ, A ≈ Γ, A ∈ per_ctx_env ↘ cons_per_ctx_env env_relΓ elem_relA}} /\
+              exists elem_relAwk, (
+                forall (ρ ρ' : env) (equiv_ρ_ρ' : (cons_per_ctx_env env_relΓ elem_relA) ρ ρ'), rel_typ i {{{ A[Wk] }}} ρ {{{ A[Wk] }}} ρ' (elem_relAwk ρ ρ' equiv_ρ_ρ')
+              )
+        )
+    ).
+Proof.
+  intros * HA.
+  apply rel_exp_eqrec_wf_Awk in HA as HA'.
+  apply rel_exp_eqrec_wf_EqAwkwk in HA as HEq.
+  invert_rel_exp_of_typ HA. destruct_conjs.
+  (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relA]; shelve_unifiable; [eassumption |]).
+  eexists; split; mauto.
+  eexists; split; mauto.
+  split.
+  econstructor; mauto 3; try reflexivity; typeclasses eauto.
+  invert_rel_exp_of_typ HA'. destruct_conjs.
+  (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relA']; shelve_unifiable; [eassumption |]).
+  assert (x0 <~> cons_per_ctx_env x elem_relA) by admit.
+  (* setoid_rewrite H3 in elem_relA'.
+  exists elem_relA'. intros.
+  invert_per_ctx_envs. 
+  handle_per_ctx_env_irrel.
+  destruct_by_head cons_per_ctx_env.
+  (on_all_hyp: destruct_rel_by_assumption x).
+  apply_relation_equivalence.
+  assert (tail_rel d{{{ ρ ↯ }}} d{{{ ρ' ↯ }}}). {
+    setoid_rewrite <- H3. auto.
+  }
+  (on_all_hyp: destruct_rel_by_assumption tail_rel).
+  handle_per_ctx_env_irrel. mauto.
+  handle_per_univ_elem_irrel.
+  econstructor; mauto. mauto. exact H5.
+  eapply mk_cons_per_ctx_env with (equiv_ρ_drop_ρ'_drop:=equiv_ρ_drop_ρ'_drop). 
+  setoid_rewrite <- H8.
+  apply_relation_equivalence.
+  mauto. handle_per_ctx_env_irrel. mauto. eapply H2. simpl in *.
+ mauto. eapply H2. *)
+  (* exists (cons_per_ctx_env x elem_relA). 
+  intros.
+  handle_per_ctx_env_irrel. eapply H2. Unshelve. mauto 3. *)
+Admitted.
+
 Lemma rel_exp_eqrec_sub : forall {Γ σ Δ i A M1 M2 j B BR N},
     {{ Γ ⊨s σ : Δ }} ->
     {{ Δ ⊨ A : Type@i }} ->
@@ -205,6 +254,7 @@ Proof.
   destruct_by_head rel_exp.
   invert_rel_typ_body.
   match_by_head per_eq ltac:(fun H => destruct H).
+  (* we may want to encapsulte the handling of the following two cases into a lemma *)
   -  
     rename ρ1 into ρσ.
     rename ρ0 into ρ'σ.
@@ -234,7 +284,8 @@ Proof.
     }
     simpl in *.
     admit.
-  - admit.
+  - eexists; split.
+    + admit.
 Admitted.
 
 #[export]
