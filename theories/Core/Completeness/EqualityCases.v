@@ -262,14 +262,13 @@ Proof.
     (on_all_hyp: destruct_rel_by_assumption env_relΔA).
     simplify_evals.
     handle_per_univ_elem_irrel.
-    assert {{ Dom ρσ ↦ n ↦ n ≈ ρ'σ ↦ n' ↦ n' ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
     assert {{ Dom ρσ ↦ m1 ↦ m2 ≈ ρ'σ ↦ m1' ↦ m2' ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
     (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
     simplify_evals.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     handle_per_univ_elem_irrel.
-    (* assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρ'σ ↦ n' ↦ n' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq by (unshelve eexists; simpl; intuition). *)
-    assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ refl n ≈ ρ'σ ↦ m1' ↦ m2' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq' by admit.
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ refl n ≈ ρ'σ ↦ m1' ↦ m2' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq by (unshelve eexists; simpl; intuition; eauto).
+    assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρσ ↦ m1 ↦ m2 ↦ refl n ∈ env_relΔAAEq }} as HrelΔAAEq' by admit.
     apply_relation_equivalence.
     (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
     destruct_conjs.
@@ -277,23 +276,19 @@ Proof.
     destruct_by_head rel_exp.
     handle_per_univ_elem_irrel.
     simplify_evals.
-    rename m10 into br.
-    rename m'0 into br'.
+    simpl in *.
+    rename m'0 into br.
+    rename m' into br'.
     handle_per_ctx_env_irrel.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     handle_per_univ_elem_irrel.
     deex. eexists; split. 
-    + eapply mk_rel_mod_eval with (a:=m11) (a':=m').
+    handle_per_univ_elem_irrel.
+    + eapply mk_rel_mod_eval with (a:=br) (a':=br').
+      do 2 (econstructor; mauto).
+      do 2 (econstructor; mauto). mauto.
+    + econstructor; mauto.
       econstructor; mauto.
-      econstructor; mauto.
-      econstructor; mauto.
-      econstructor; mauto.
-      mauto.
-    + econstructor. mauto.
-      econstructor; mauto.
-      simpl in *.
-      assert (per_univ_elem j R' m6 m8) by admit.
-      handle_per_univ_elem_irrel. mauto.
   - admit.
 Admitted.
 
