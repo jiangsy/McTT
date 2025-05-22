@@ -130,8 +130,8 @@ Qed.
 Hint Resolve rel_exp_refl_sub : mctt.
 
 Lemma rel_exp_eqrec_wf_Awk : forall {Γ i A},
-  {{ Γ ⊨ A : Type@i }} ->
-  {{ Γ, A ⊨ A[Wk] : Type@i }}.
+    {{ Γ ⊨ A : Type@i }} ->
+    {{ Γ, A ⊨ A[Wk] : Type@i }}.
 Proof.
   intros * [env_relΓ]%rel_exp_of_typ_inversion1. destruct_conjs.
   assert {{ ⊨ Γ, A }} by mauto.
@@ -141,8 +141,8 @@ Proof.
 Qed.
 
 Lemma rel_exp_eqrec_wf_EqAwkwk : forall {Γ i A},
-  {{ Γ ⊨ A : Type@i }} ->
-  {{ Γ, A, A[Wk] ⊨ Eq A[Wk∘Wk] #1 #0 : Type@i }}.
+    {{ Γ ⊨ A : Type@i }} ->
+    {{ Γ, A, A[Wk] ⊨ Eq A[Wk∘Wk] #1 #0 : Type@i }}.
 Proof.
   intros * HA.
   apply rel_exp_eqrec_wf_Awk in HA as HA'.
@@ -217,7 +217,7 @@ Proof.
     simplify_evals.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     handle_per_univ_elem_irrel.
-    assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρ'σ ↦ n' ↦ n' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq by admit.
+    assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρ'σ ↦ n' ↦ n' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq by (unshelve eexists; simpl; intuition).
     apply_relation_equivalence.
     (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
     destruct_conjs.
@@ -301,7 +301,8 @@ Lemma rel_exp_eqrec_beta : forall {Γ i A M j B BR},
          ≈ BR[Id,,M]
         : B[Id,,M,,M,,refl A M] }}.
 Proof.
-  intros * HA HM HB HBR.
+  (* Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B : Type@j is not necessary *)
+  intros * HA HM _ HBR.
   apply rel_exp_eqrec_wf_Awk in HA as HA'.
   apply rel_exp_eqrec_wf_EqAwkwk in HA as HEq.
   invert_rel_exp_of_typ HA.
@@ -319,7 +320,6 @@ Proof.
   (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relEq]; shelve_unifiable; [eassumption |]).
   pose (env_relΓAAEq := cons_per_ctx_env env_relΓAA elem_relEq).
   assert {{ EF Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ≈ Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ∈ per_ctx_env ↘ env_relΓAAEq }} by (econstructor; mauto 3; try reflexivity; typeclasses eauto).
-  invert_rel_exp HB.
   invert_rel_exp HBR.
   eexists_rel_exp.
   intros.
@@ -343,14 +343,11 @@ Proof.
   destruct_by_head rel_exp.
   simplify_evals.
   handle_per_univ_elem_irrel.
-  eexists; split. 2: {
-    econstructor; mauto.
-  }
-  simpl in *; econstructor; mauto 3.
-  assert ({{ ⟦ B[Id,,M,,M,,refl A M] ⟧ ρ ↘ m0 }}) by (econstructor; mauto).
-  mauto.
-  assert ({{ ⟦ B[Id,,M,,M,,refl A M] ⟧ ρ' ↘ m2 }}) by (econstructor; mauto).
-  mauto. 
+  assert ({{ ⟦ B[Id,,M,,M,,refl A M] ⟧ ρ ↘ m0 }}) by (econstructor; mauto 5).
+  assert ({{ ⟦ B[Id,,M,,M,,refl A M] ⟧ ρ' ↘ m2 }}) by (econstructor; mauto 5).
+  eexists; split; mauto 3. econstructor; mauto 3. 
+  econstructor; mauto 3.
 Qed.
+
 #[export]
 Hint Resolve rel_exp_eqrec_beta : mctt.
