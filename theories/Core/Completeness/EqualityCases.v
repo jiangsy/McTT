@@ -211,7 +211,7 @@ Proof.
   (* exists (cons_per_ctx_env x elem_relA). 
   intros.
   handle_per_ctx_env_irrel. eapply H2. Unshelve. mauto 3. *)
-Admitted.
+Abort.
 
 Lemma rel_exp_eqrec_sub : forall {Γ σ Δ i A M1 M2 j B BR N},
     {{ Γ ⊨s σ : Δ }} ->
@@ -245,6 +245,7 @@ Proof.
   pose (env_relΔAAEq := cons_per_ctx_env env_relΔAA elem_relEq).
   assert {{ EF Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ≈ Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ∈ per_ctx_env ↘ env_relΔAAEq }} by (econstructor; mauto 3; try reflexivity; typeclasses eauto).
   invert_rel_exp HN.
+  invert_rel_exp HB.
   invert_rel_exp HBR.
   eexists_rel_exp.
   intros.
@@ -254,38 +255,46 @@ Proof.
   destruct_by_head rel_exp.
   invert_rel_typ_body.
   match_by_head per_eq ltac:(fun H => destruct H).
-  (* we may want to encapsulte the handling of the following two cases into a lemma *)
-  -  
-    rename ρ1 into ρσ.
-    rename ρ0 into ρ'σ.
+  - rename ρ1 into ρσ. rename ρ0 into ρ'σ.
+    rename m0 into m1'. rename m3 into m2'.
     assert {{ Dom ρσ ↦ n ≈ ρ'σ ↦ n' ∈ env_relΔA }} by (unfold env_relΔA; mauto 3).
+    assert {{ Dom ρσ ↦ m1 ≈ ρ'σ ↦ m1' ∈ env_relΔA }} by (unfold env_relΔA; mauto 3).
     (on_all_hyp: destruct_rel_by_assumption env_relΔA).
     simplify_evals.
     handle_per_univ_elem_irrel.
     assert {{ Dom ρσ ↦ n ↦ n ≈ ρ'σ ↦ n' ↦ n' ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ≈ ρ'σ ↦ m1' ↦ m2' ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
     (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
     simplify_evals.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     handle_per_univ_elem_irrel.
-    assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρ'σ ↦ n' ↦ n' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq by (unshelve eexists; simpl; intuition).
+    (* assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρ'σ ↦ n' ↦ n' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq by (unshelve eexists; simpl; intuition). *)
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ refl n ≈ ρ'σ ↦ m1' ↦ m2' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq' by admit.
     apply_relation_equivalence.
     (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
     destruct_conjs.
     destruct_by_head rel_typ.
     destruct_by_head rel_exp.
+    handle_per_univ_elem_irrel.
     simplify_evals.
-    rename m7 into br.
-    rename m' into br'.
-    eexists; split. 2: {
-      simpl in *.
-      (* is this two assertions true? *)
-      econstructor; simpl; mauto.
+    rename m10 into br.
+    rename m'0 into br'.
+    handle_per_ctx_env_irrel.
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    handle_per_univ_elem_irrel.
+    deex. eexists; split. 
+    + eapply mk_rel_mod_eval with (a:=m11) (a':=m').
       econstructor; mauto.
-    }
-    simpl in *.
-    admit.
-  - eexists; split.
-    + admit.
+      econstructor; mauto.
+      econstructor; mauto.
+      econstructor; mauto.
+      mauto.
+    + econstructor. mauto.
+      econstructor; mauto.
+      simpl in *.
+      assert (per_univ_elem j R' m6 m8) by admit.
+      handle_per_univ_elem_irrel. mauto.
+  - admit.
 Admitted.
 
 #[export]
