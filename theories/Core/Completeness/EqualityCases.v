@@ -259,16 +259,44 @@ Proof.
     rename m0 into m1'. rename m3 into m2'.
     assert {{ Dom ρσ ↦ n ≈ ρ'σ ↦ n' ∈ env_relΔA }} by (unfold env_relΔA; mauto 3).
     assert {{ Dom ρσ ↦ m1 ≈ ρ'σ ↦ m1' ∈ env_relΔA }} by (unfold env_relΔA; mauto 3).
+    handle_per_ctx_env_irrel.
+    (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relAx]; shelve_unifiable; [eassumption |]).
+    assert {{ Dom ρσ ↦ n ≈ ρσ ↦ m1 ∈ env_relΔA }}. { 
+      assert {{ Dom ρσ ≈ ρσ ∈ env_relΔ }} by (etransitivity; [|symmetry]; eassumption).
+      gen H15.
+      (on_all_hyp: destruct_rel_by_assumption env_relΔ). intros.
+      destruct_by_head rel_typ.
+      destruct_by_head rel_exp.
+      invert_rel_typ_body. 
+      unfold env_relΔA.
+      simplify_evals.
+      rewrite_relation_equivalence_right.
+      inversion H51. subst.
+      symmetry in H18. mauto.
+    }
     (on_all_hyp: destruct_rel_by_assumption env_relΔA).
     simplify_evals.
     handle_per_univ_elem_irrel.
     assert {{ Dom ρσ ↦ m1 ↦ m2 ≈ ρ'σ ↦ m1' ↦ m2' ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
+    assert {{ Dom ρσ ↦ n ↦ n ≈ ρσ ↦ m1 ↦ m2 ∈ env_relΔAA }}. {
+      unfold env_relΔAA; unshelve eexists; intuition.
+      simpl. 
+      apply H43. 
+      assert (PER (elem_relA ρσ ρ'σ H15 )) by admit.
+      etransitivity; eauto. etransitivity; eauto. symmetry; auto.
+    }
     (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
     simplify_evals.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     handle_per_univ_elem_irrel.
-    assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ refl n ≈ ρ'σ ↦ m1' ↦ m2' ↦ refl n' ∈ env_relΔAAEq }} as HrelΔAAEq by (unshelve eexists; simpl; intuition; eauto).
-    assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρσ ↦ m1 ↦ m2 ↦ refl n ∈ env_relΔAAEq }} as HrelΔAAEq' by admit.
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ refl n ≈ ρ'σ ↦ m1' ↦ m2' ↦ refl n' ∈ env_relΔAAEq }} by (unshelve eexists; simpl; intuition; eauto).
+    assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρσ ↦ m1 ↦ m2 ↦ refl n ∈ env_relΔAAEq }}. {
+      unfold env_relΔAA; unshelve eexists; intuition.
+      assert (PER (elem_relA' d{{{ ρσ ↦ n }}} d{{{ ρσ ↦ m1 }}} H25)) by admit.
+      simpl. apply H46. econstructor; mauto; apply H42; auto.
+      etransitivity; symmetry; eauto. symmetry; auto.
+      etransitivity; symmetry; eauto. symmetry; auto.
+    }
     apply_relation_equivalence.
     (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
     destruct_conjs.
@@ -289,7 +317,12 @@ Proof.
       do 2 (econstructor; mauto). mauto.
     + econstructor; mauto.
       econstructor; mauto.
-  - admit.
+  - eexists; split.
+    + econstructor; mauto.  
+    econstructor; mauto.   
+    econstructor; mauto.   
+    econstructor; mauto.    
+
 Admitted.
 
 #[export]
