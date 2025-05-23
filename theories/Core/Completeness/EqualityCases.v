@@ -297,7 +297,6 @@ Proof.
       etransitivity; symmetry; eauto. symmetry; auto.
       etransitivity; symmetry; eauto. symmetry; auto.
     }
-    apply_relation_equivalence.
     (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
     destruct_conjs.
     destruct_by_head rel_typ.
@@ -317,12 +316,52 @@ Proof.
       do 2 (econstructor; mauto). mauto.
     + econstructor; mauto.
       econstructor; mauto.
-  - eexists; split.
+  - rename ρ1 into ρσ. rename ρ0 into ρ'σ.
+    rename m0 into m1'. rename m3 into m2'.
+    assert {{ Dom ρσ ↦ m1 ≈ ρ'σ ↦ m1' ∈ env_relΔA }} by (unfold env_relΔA; mauto 3).
+    handle_per_ctx_env_irrel.
+    (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relAx]; shelve_unifiable; [eassumption |]).
+    (on_all_hyp: destruct_rel_by_assumption env_relΔA).
+    simplify_evals.
+    handle_per_univ_elem_irrel.
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ≈ ρ'σ ↦ m1' ↦ m2' ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
+    (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
+    simplify_evals.
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    handle_per_univ_elem_irrel.
+    (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ ⇑ a1 n ≈ ρ'σ ↦ m1' ↦ m2' ↦ ⇑ a' n' ∈ env_relΔAAEq }} by 
+      (unshelve eexists; simpl; intuition; eauto).
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ (⇑ (Eq a m1 m2) n) ≈ ρ'σ ↦ m1' ↦ m2' ↦ (⇑ (Eq a0 m1' m2') n') ∈ env_relΔAAEq }} by admit.
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ (⇑ a1 n) ≈ ρσ ↦ m1 ↦ m2 ↦ (⇑ (Eq a m1 m2) n) ∈ env_relΔAAEq }} by admit.
+    (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
+    destruct_conjs.
+    destruct_by_head rel_typ.
+    destruct_by_head rel_exp.
+    handle_per_univ_elem_irrel.
+    simplify_evals.
+    simpl in *.
+    rename m5 into br.
+    rename m'0 into br'.
+    handle_per_ctx_env_irrel.
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    handle_per_univ_elem_irrel.
+    simplify_evals.
+    deex. eexists; split. 
+    handle_per_univ_elem_irrel.
     + econstructor; mauto.  
-    econstructor; mauto.   
-    econstructor; mauto.   
-    econstructor; mauto.    
-
+      econstructor; mauto.
+      econstructor; mauto. 
+      econstructor; mauto.  
+      econstructor; mauto.
+    + econstructor; mauto.  
+      econstructor; mauto.
+      eapply eval_eqrec_neut with (b:=br').
+      econstructor; mauto.
+      econstructor; mauto.
+      econstructor; mauto.  
+      econstructor; mauto.
+      eapply per_bot_then_per_elem; mauto.
 Admitted.
 
 #[export]
