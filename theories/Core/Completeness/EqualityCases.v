@@ -213,19 +213,61 @@ Proof.
   handle_per_ctx_env_irrel. eapply H2. Unshelve. mauto 3. *)
 Abort.
 
-Lemma eval_eqrec_sub_neut : forall {Γ env_relΓ σ Δ env_relΔ A A' B B' BR BR'  i m m' a a' m1 m1' m2 m2'},
+Lemma eval_eqrec_sub_neut : forall {Γ env_relΓ σ Δ env_relΔ i j A M1 M2 B B' BR BR' m m'},
     {{ DF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} ->
     {{ DF Δ ≈ Δ ∈ per_ctx_env ↘ env_relΔ }} ->
-    {{ Δ, ℕ ⊨ A ≈ A' : Type@i }} ->
+    {{ Δ ⊨ A : Type@i }} ->
+    {{ Δ ⊨ M1 : A }} ->
+    {{ Δ ⊨ M2 : A }} ->
+    {{ Δ, A ⊨ BR : B[Id,,#0,,refl A[Wk] #0] }} ->
+    {{ Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B : Type@j }} ->
     {{ Dom m ≈ m' ∈ per_bot }} ->
-    (forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) ρσ ρ'σ',
+    (forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) ρσ ρ'σ' a a' m1 m1' m2 m2',
         {{ ⟦ σ ⟧s ρ ↘ ρσ }} ->
         {{ ⟦ σ ⟧s ρ' ↘ ρ'σ' }} ->
         {{ Dom ρσ ≈ ρ'σ' ∈ env_relΔ }} ->
+        {{ ⟦ A ⟧ ρσ ↘ a }} ->
+        {{ ⟦ A ⟧ ρ'σ' ↘ a' }} ->
+        {{ ⟦ M1 ⟧ ρσ ↘ m1 }} ->
+        {{ ⟦ M1 ⟧ ρ'σ' ↘ m1' }} ->
+        {{ ⟦ M2 ⟧ ρσ ↘ m2 }} ->
+        {{ ⟦ M2 ⟧ ρ'σ' ↘ m2' }} ->
         {{ Dom eqrec m under ρσ as Eq a m1 m2 return B | refl -> BR end ≈ 
-               eqrec m' under ρ'σ' as Eq a' m1' m2' return B'[q (q (q σ))] | refl -> BR'[q (q σ)] end ∈ per_bot }}).
+               eqrec m' under ρ' as Eq a' m1' m2' return B'[q (q (q σ))] | refl -> BR'[q σ] end ∈ per_bot }}).
 Proof.
 Admitted.
+
+(* eval_eqrec_neut has name clashes with the constructor name *)
+Corollary eval_eqrec_neut_same_ctx : forall {Γ env_relΓ i j A M1 M2 B B' BR BR' m m'},
+    {{ DF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} ->
+    {{ Γ ⊨ A : Type@i }} ->
+    {{ Γ ⊨ M1 : A }} ->
+    {{ Γ ⊨ M2 : A }} ->
+    {{ Γ, A ⊨ BR : B[Id,,#0,,refl A[Wk] #0] }} ->
+    {{ Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B : Type@j }} ->
+    {{ Dom m ≈ m' ∈ per_bot }} ->
+    (forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) a a' m1 m1' m2 m2',
+        {{ ⟦ A ⟧ ρ ↘ a }} ->
+        {{ ⟦ A ⟧ ρ' ↘ a' }} ->
+        {{ ⟦ M1 ⟧ ρ ↘ m1 }} ->
+        {{ ⟦ M1 ⟧ ρ' ↘ m1' }} ->
+        {{ ⟦ M2 ⟧ ρ ↘ m2 }} ->
+        {{ ⟦ M2 ⟧ ρ' ↘ m2' }} ->
+        {{ Dom eqrec m under ρ as Eq a m1 m2 return B | refl -> BR end ≈ 
+               eqrec m' under ρ' as Eq a' m1' m2' return B' | refl -> BR' end ∈ per_bot }}).
+Proof.
+  intros.
+  assert {{ Dom eqrec m under ρ as Eq a m1 m2 return B | refl -> BR end ≈ 
+                eqrec m' under ρ' as Eq a' m1' m2' return B'[q (q (q Id))] | refl -> BR'[q Id] end ∈ per_bot }}. 
+  { eapply eval_eqrec_sub_neut. 16: mauto. 17: mauto. all: mauto 3. }
+  etransitivity; [eassumption |].
+  intros s.
+  match_by_head per_bot ltac:(fun H => specialize (H s) as [? []]).
+  eexists; split; [eassumption |].
+  dir_inversion_by_head read_ne; subst.
+  simplify_evals.
+  mauto.
+Qed.
 
 Lemma rel_exp_eqrec_sub : forall {Γ σ Δ i A M1 M2 j B BR N},
     {{ Γ ⊨s σ : Δ }} ->
@@ -372,7 +414,8 @@ Proof.
       econstructor; mauto.  
       econstructor; mauto.
       eapply per_bot_then_per_elem; mauto.
-
+      eapply (@eval_eqrec_sub_neut Γ _ _ Δ); 
+        mauto; econstructor; split; mauto.
 Admitted.
 
 #[export]
