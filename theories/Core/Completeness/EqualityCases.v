@@ -213,6 +213,20 @@ Proof.
   handle_per_ctx_env_irrel. eapply H2. Unshelve. mauto 3. *)
 Abort.
 
+Lemma eval_eqrec_sub_neut : forall {Γ env_relΓ σ Δ env_relΔ A A' B B' BR BR'  i m m' a a' m1 m1' m2 m2'},
+    {{ DF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} ->
+    {{ DF Δ ≈ Δ ∈ per_ctx_env ↘ env_relΔ }} ->
+    {{ Δ, ℕ ⊨ A ≈ A' : Type@i }} ->
+    {{ Dom m ≈ m' ∈ per_bot }} ->
+    (forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) ρσ ρ'σ',
+        {{ ⟦ σ ⟧s ρ ↘ ρσ }} ->
+        {{ ⟦ σ ⟧s ρ' ↘ ρ'σ' }} ->
+        {{ Dom ρσ ≈ ρ'σ' ∈ env_relΔ }} ->
+        {{ Dom eqrec m under ρσ as Eq a m1 m2 return B | refl -> BR end ≈ 
+               eqrec m' under ρ'σ' as Eq a' m1' m2' return B'[q (q (q σ))] | refl -> BR'[q (q σ)] end ∈ per_bot }}).
+Proof.
+Admitted.
+
 Lemma rel_exp_eqrec_sub : forall {Γ σ Δ i A M1 M2 j B BR N},
     {{ Γ ⊨s σ : Δ }} ->
     {{ Δ ⊨ A : Type@i }} ->
@@ -342,26 +356,23 @@ Proof.
     simplify_evals.
     simpl in *.
     rename m5 into br.
-    rename m'0 into br'.
+    rename m'2 into br'.
     handle_per_ctx_env_irrel.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     handle_per_univ_elem_irrel.
     simplify_evals.
     deex. eexists; split. 
     handle_per_univ_elem_irrel.
+    + repeat (econstructor; mauto 3).
     + econstructor; mauto.  
       econstructor; mauto.
-      econstructor; mauto. 
-      econstructor; mauto.  
-      econstructor; mauto.
-    + econstructor; mauto.  
-      econstructor; mauto.
-      eapply eval_eqrec_neut with (b:=br').
+      eapply eval_eqrec_neut with (b:=m'0).
       econstructor; mauto.
       econstructor; mauto.
       econstructor; mauto.  
       econstructor; mauto.
       eapply per_bot_then_per_elem; mauto.
+
 Admitted.
 
 #[export]
@@ -381,39 +392,6 @@ Lemma rel_exp_eqrec_cong : forall {Γ i A A' M1 M1' M2 M2' j B B' BR BR' N N'},
          ≈ eqrec N' as Eq A' M1' M2' return B' | refl -> BR' end
         : B[Id,,M1,,M2,,N] }}.
 Proof.
-  intros * [env_relΓ]%rel_exp_of_typ_inversion1
-    HM1 HM2 HAA' HM1M1' HM2M2' HBB' HBRBR' HNN'.
-  (* a similar rel_exp_of_sub_id_zero_inversion to HBR? *)
-  destruct_conjs.
-  invert_rel_exp_of_typ HAA'.
-  invert_rel_exp HM1.
-  invert_rel_exp HM2.
-  invert_rel_exp HNN'.
-  handle_per_ctx_env_irrel.
-  eexists_rel_exp.
-  intros.
-  (on_all_hyp: destruct_rel_by_assumption env_relΓ).
-  destruct_by_head rel_typ.
-  destruct_by_head rel_exp.
-  invert_rel_typ_body.
-  unfold per_univ in *.
-  deex.
-  destruct_by_head per_eq.
-  match_by_head per_eq ltac:(fun H => destruct H).
-  handle_per_univ_elem_irrel.
-  (* shall we encapsulate the case analysis as eval_natrec_rel, since no induction is 
-    needed here? *)
-  - eexists; split. 2: {
-    econstructor; mauto 3.
-    econstructor; mauto.
-    econstructor; mauto. admit.
-    admit. }
-    admit.
-  - eexists; split. 2: {
-    econstructor. econstructor. 5:eapply eval_eqrec_neut; mauto 3.
-    all : mauto 3.
-    handle_per_univ_elem_irrel. all : admit. }
-    admit.
 Admitted.
 
 #[export]
@@ -451,11 +429,9 @@ Proof.
   eexists_rel_exp.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
-  (on_all_hyp: destruct_rel_by_assumption env_relΔ).
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
-  invert_rel_typ_body.
-  match_by_head per_eq ltac:(fun H => destruct H).
+  invert_rel_typ_body. 
   assert {{ Dom ρ ↦ m ≈ ρ' ↦ m' ∈ env_relΓA }} by (unfold env_relΓA; mauto 3).
   (on_all_hyp: destruct_rel_by_assumption env_relΓA).
   simplify_evals.
@@ -465,7 +441,6 @@ Proof.
   simplify_evals.
   match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
   handle_per_univ_elem_irrel.
-  destruct_conjs.
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
   simplify_evals.
