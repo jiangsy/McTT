@@ -309,6 +309,22 @@ Proof.
   mauto.
 Qed.
 
+Lemma equiv_rel_PER : forall {A R R'},
+    (@PER A) R ->
+    R' <~> R ->
+    PER R'.
+Proof.
+  intros. inversion H. 
+  unfold Symmetric in *. 
+  unfold Transitive in *. auto.
+  constructor.
+  - unfold Symmetric. intros. auto.
+    apply H0. apply PER_Symmetric. apply H0. auto.
+  - unfold Transitive. intros.
+    apply H0 in H1. apply H0 in H2.
+    apply H0. eauto.
+Qed.
+
 Lemma rel_exp_eqrec_sub : forall {Γ σ Δ i A M1 M2 j B BR N},
     {{ Γ ⊨s σ : Δ }} ->
     {{ Δ ⊨ A : Type@i }} ->
@@ -381,7 +397,7 @@ Proof.
       (* TODO *)
       apply H43. 
       (* TODO *)
-      assert (PER (elem_relA ρσ ρ'σ H15 )) by admit.
+      assert (PER (elem_relA ρσ ρ'σ H15 )) by (eapply equiv_rel_PER; eauto).
       etransitivity; eauto. etransitivity; eauto. symmetry; auto.
     }
     (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
@@ -392,7 +408,7 @@ Proof.
     assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρσ ↦ m1 ↦ m2 ↦ refl n ∈ env_relΔAAEq }}. {
       unfold env_relΔAA; unshelve eexists; intuition.
       (* TODO *)
-      assert (PER (elem_relA' d{{{ ρσ ↦ n }}} d{{{ ρσ ↦ m1 }}} H25)) by admit.
+      assert (PER (elem_relA' d{{{ ρσ ↦ n }}} d{{{ ρσ ↦ m1 }}} H25)) by (eapply equiv_rel_PER; eauto).
       simpl. 
       (* TODO *)
       apply H46. econstructor; mauto; apply H42; auto.
@@ -427,7 +443,7 @@ Proof.
     simplify_evals.
     handle_per_univ_elem_irrel.
     assert {{ Dom ρσ ↦ m1 ↦ m2 ≈ ρ'σ ↦ m1' ↦ m2' ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
-    assert {{ Dom ρσ ↦ m1 ↦ m2 ≈ ρσ ↦ m1 ↦ m2 ∈ env_relΔAA }} by admit.
+    assert {{ Dom ρσ ↦ m1 ↦ m2 ≈ ρσ ↦ m1 ↦ m2 ∈ env_relΔAA }} by (etransitivity; [|symmetry]; eassumption).
     (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
     simplify_evals.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
@@ -462,7 +478,7 @@ Proof.
       eapply (@eval_eqrec_sub_neut Γ _ _ Δ);
         unshelve mauto; eauto; 
         econstructor; eexists; eauto.
-Admitted.
+Qed.
 
 #[export]
 Hint Resolve rel_exp_eqrec_sub : mctt.
