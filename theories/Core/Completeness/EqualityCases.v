@@ -204,7 +204,7 @@ Lemma eval_eqrec_sub_neut : forall {Γ env_relΓ σ Δ env_relΔ i j A M1 M2 B B
     {{ Δ ⊨ M1 : A }} ->
     {{ Δ ⊨ M2 : A }} ->
     {{ Δ, A ⊨ BR : B[Id,,#0,,refl A[Wk] #0] }} ->
-    {{ Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B : Type@j }} ->
+    {{ Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B ≈ B' : Type@j }} ->
     {{ Dom m ≈ m' ∈ per_bot }} ->
     (forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) ρσ ρ'σ' a a' m1 m1' m2 m2',
         {{ ⟦ σ ⟧s ρ ↘ ρσ }} ->
@@ -288,8 +288,33 @@ Proof.
   destruct_by_head rel_exp.
   handle_per_univ_elem_irrel.
   simplify_evals. simpl in *.
+  (on_all_hyp: fun H => edestruct (per_univ_then_per_top_typ H s) as [? []]).
+  (on_all_hyp: fun H => edestruct (per_univ_then_per_top_typ H (S (S (S s)))) as [? []]).
+  functional_read_rewrite_clear.
+  setoid_rewrite <- H32 in H21.
+  eapply per_elem_then_per_top in H23 as Hrelm1; eauto.
+  eapply per_elem_then_per_top in H25 as Hrelm2; eauto.
+  apply per_univ_then_per_top_typ in H21.
+  (* (on_all_hyp: fun H => unshelve epose proof (per_elem_then_per_top H _ (S (S s))) as [? []]; shelve_unifiable; [eassumption |]). *)
+  destruct (Hrelm1 s). destruct_conjs.
+  destruct (Hrelm2 s). destruct_conjs.
+  functional_read_rewrite_clear.
+  (on_all_hyp: fun H => unshelve epose proof (per_elem_then_per_top H _ (S (S (S s)))) as [? []]; shelve_unifiable; [eassumption |]).
+  dependent destruction H71.
+  dependent destruction H72.
+  (* destruct (equiv_m_m' s) as [? []]. *)
+  (* pose proof (equiv_m_m' s). destruct_conjs. *)
+
+  (* pose proof (H21 s). destruct_conjs. *)
   eexists. split.
-  - admit.
+  - econstructor; mauto 3. eauto.
+    
+    admit. admit.
+  - econstructor; mauto 3.
+    + repeat econstructor; mauto 3. 
+    + admit.
+    + admit.
+    + admit.
 Admitted.
 
 (* eval_eqrec_neut has name clashes with the constructor name *)
@@ -299,7 +324,7 @@ Corollary eval_eqrec_neut_same_ctx : forall {Γ env_relΓ i j A M1 M2 B B' BR BR
     {{ Γ ⊨ M1 : A }} ->
     {{ Γ ⊨ M2 : A }} ->
     {{ Γ, A ⊨ BR : B[Id,,#0,,refl A[Wk] #0] }} ->
-    {{ Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B : Type@j }} ->
+    {{ Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B ≈ B' : Type@j }} ->
     {{ Dom m ≈ m' ∈ per_bot }} ->
     (forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) a a' m1 m1' m2 m2',
         {{ ⟦ A ⟧ ρ ↘ a }} ->
