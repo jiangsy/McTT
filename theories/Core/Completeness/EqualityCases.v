@@ -203,7 +203,7 @@ Lemma eval_eqrec_sub_neut : forall {Γ env_relΓ σ Δ env_relΔ i j A M1 M2 B B
     {{ Δ ⊨ A : Type@i }} ->
     {{ Δ ⊨ M1 : A }} ->
     {{ Δ ⊨ M2 : A }} ->
-    {{ Δ, A ⊨ BR : B[Id,,#0,,refl A[Wk] #0] }} ->
+    {{ Δ, A ⊨ BR ≈ BR' : B[Id,,#0,,refl A[Wk] #0] }} ->
     {{ Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B ≈ B' : Type@j }} ->
     {{ Dom m ≈ m' ∈ per_bot }} ->
     (forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) ρσ ρ'σ' a a' m1 m1' m2 m2',
@@ -280,7 +280,8 @@ Proof.
     eapply H35. econstructor. eapply var_per_bot.
   }
   assert {{ EF Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ≈ Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ∈ per_ctx_env ↘ env_relΔAAEq }} by (econstructor; mauto 3; try reflexivity; typeclasses eauto).
-  invert_rel_exp HB.
+  invert_rel_exp_of_typ HB.
+  (* invert_rel_exp HB. *)
   gen ρσ ρ'σ'. intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
   invert_rel_typ_body.
@@ -288,34 +289,33 @@ Proof.
   destruct_by_head rel_exp.
   handle_per_univ_elem_irrel.
   simplify_evals. simpl in *.
+  handle_per_univ_elem_irrel.
   (on_all_hyp: fun H => edestruct (per_univ_then_per_top_typ H s) as [? []]).
+  (on_all_hyp: fun H => edestruct (per_univ_then_per_top_typ H (S s)) as [? []]).
   (on_all_hyp: fun H => edestruct (per_univ_then_per_top_typ H (S (S (S s)))) as [? []]).
   functional_read_rewrite_clear.
   setoid_rewrite <- H32 in H21.
   eapply per_elem_then_per_top in H23 as Hrelm1; eauto.
   eapply per_elem_then_per_top in H25 as Hrelm2; eauto.
   apply per_univ_then_per_top_typ in H21.
-  (* (on_all_hyp: fun H => unshelve epose proof (per_elem_then_per_top H _ (S (S s))) as [? []]; shelve_unifiable; [eassumption |]). *)
   destruct (Hrelm1 s). destruct_conjs.
   destruct (Hrelm2 s). destruct_conjs.
+  handle_per_univ_elem_irrel.
+  eapply per_univ_then_per_top_typ in H58 as Hrelm3; eauto.
+  eapply per_univ_then_per_top_typ in H57 as Hrelm4; eauto.
+  destruct (Hrelm3 (S (S (S s)))). destruct_conjs.
+  destruct (Hrelm4 (S s)). destruct_conjs.
+  destruct (equiv_m_m' s). destruct_conjs. 
   functional_read_rewrite_clear.
+  (on_all_hyp: fun H => unshelve epose proof (per_elem_then_per_top H _ (S s)) as [? []]; shelve_unifiable; [eassumption |]).
   (on_all_hyp: fun H => unshelve epose proof (per_elem_then_per_top H _ (S (S (S s)))) as [? []]; shelve_unifiable; [eassumption |]).
-  dependent destruction H71.
-  dependent destruction H72.
-  (* destruct (equiv_m_m' s) as [? []]. *)
-  (* pose proof (equiv_m_m' s). destruct_conjs. *)
-
-  (* pose proof (H21 s). destruct_conjs. *)
+  functional_read_rewrite_clear.
   eexists. split.
-  - econstructor; mauto 3. eauto.
-    
-    admit. admit.
-  - econstructor; mauto 3.
-    + repeat econstructor; mauto 3. 
-    + admit.
-    + admit.
-    + admit.
-Admitted.
+  - eapply read_ne_eqrec; mauto.
+  - eapply read_ne_eqrec with (b:=m'1) (bbr:=m'2); mauto.
+    + repeat econstructor; mauto 3.
+    + repeat econstructor; mauto 3.
+Qed.
 
 (* eval_eqrec_neut has name clashes with the constructor name *)
 Corollary eval_eqrec_neut_same_ctx : forall {Γ env_relΓ i j A M1 M2 B B' BR BR' m m'},
@@ -323,7 +323,7 @@ Corollary eval_eqrec_neut_same_ctx : forall {Γ env_relΓ i j A M1 M2 B B' BR BR
     {{ Γ ⊨ A : Type@i }} ->
     {{ Γ ⊨ M1 : A }} ->
     {{ Γ ⊨ M2 : A }} ->
-    {{ Γ, A ⊨ BR : B[Id,,#0,,refl A[Wk] #0] }} ->
+    {{ Γ, A ⊨ BR ≈ BR' : B[Id,,#0,,refl A[Wk] #0] }} ->
     {{ Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B ≈ B' : Type@j }} ->
     {{ Dom m ≈ m' ∈ per_bot }} ->
     (forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) a a' m1 m1' m2 m2',
