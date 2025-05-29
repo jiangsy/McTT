@@ -402,8 +402,8 @@ Proof.
       unfold env_relΔAA; unshelve eexists; intuition. simpl. 
       saturate_PER.
       (* TODO *)
-      apply H43. 
-      etransitivity; eauto. etransitivity; eauto. symmetry; auto.
+      apply H43; eauto.
+      etransitivity; eauto. etransitivity; [|symmetry]; eauto.
     }
     (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
     simplify_evals.
@@ -416,8 +416,8 @@ Proof.
       (* TODO *)
       apply H46. econstructor; mauto; 
       apply H42; auto.
-      etransitivity; symmetry; eauto. symmetry; auto.
-      etransitivity; symmetry; eauto. symmetry; auto.
+      etransitivity; [|symmetry]; eauto.
+      etransitivity; [|symmetry]; eauto.
     }
     (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
     destruct_conjs.
@@ -600,8 +600,8 @@ Proof.
       (* TODO *)
       apply H57. econstructor; mauto;
       apply H59; auto.
-      etransitivity; symmetry; eauto. symmetry; auto.
-      etransitivity; symmetry; eauto. symmetry; auto.
+      etransitivity; [|symmetry]; eauto.
+      etransitivity; [|symmetry]; eauto.
     }
     (on_all_hyp: destruct_rel_by_assumption env_relΓAAEq).
     destruct_conjs.
