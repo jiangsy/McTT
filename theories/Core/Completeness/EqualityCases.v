@@ -546,13 +546,12 @@ Lemma rel_exp_eqrec_cong : forall {Γ i A A' M1 M1' M2 M2' j B B' BR BR' N N'},
 Proof.
   intros * HA _ _ [env_relΓ]%rel_exp_of_typ_inversion1 HM1M1' HM2M2' HBB' HBRBR' HNN'.
   assert (HB: {{ Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊨ B : Type@j }} ) by (eapply rel_exp_trans; [| eapply rel_exp_sym]; eassumption).
+  assert (HN: {{ Γ ⊨ N : Eq A M1 M2 }} ) by (eapply rel_exp_trans; [| eapply rel_exp_sym]; eassumption).
   destruct_conjs.
   apply rel_exp_eqrec_wf_Awk in HA as HA'.
   apply rel_exp_eqrec_wf_EqAwkwk in HA as HEq.
   invert_rel_exp_of_typ HA.
   (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relA]; shelve_unifiable; [eassumption |]).
-  invert_rel_exp HM1M1'.
-  invert_rel_exp HM2M2'.
   pose (env_relΓA := cons_per_ctx_env env_relΓ elem_relA).
   assert {{ EF Γ, A ≈ Γ, A ∈ per_ctx_env ↘ env_relΓA }} by (econstructor; mauto 3; try reflexivity; typeclasses eauto).
   invert_rel_exp_of_typ HA'.
@@ -563,6 +562,9 @@ Proof.
   (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relEq]; shelve_unifiable; [eassumption |]).
   pose (env_relΓAAEq := cons_per_ctx_env env_relΓAA elem_relEq).
   assert {{ EF Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ≈ Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ∈ per_ctx_env ↘ env_relΓAAEq }} by (econstructor; mauto 3; try reflexivity; typeclasses eauto).
+  invert_rel_exp HM1M1'.
+  invert_rel_exp HM2M2'.
+  invert_rel_exp HN.
   invert_rel_exp HNN'.
   invert_rel_exp HB.
   invert_rel_exp_of_typ HBB'.
@@ -573,7 +575,7 @@ Proof.
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
   invert_rel_typ_body.
-  match_by_head per_eq ltac:(fun H => destruct H).
+  match_by_head per_eq ltac:(fun H => dependent destruction H).
   - (* m1', m2', n' for M1, M2, N evaluated under ρ'*)
     (* m1'', m2'', n'' for M1', M2', N' evaluated under ρ'*)
     match goal with
@@ -583,14 +585,18 @@ Proof.
             _: {{ ⟦ M2 ⟧ ^?ρ0' ↘ ^?m20 }},
               _: {{ ⟦ M1' ⟧ ^?ρ0' ↘ ^?m10' }},
                 _: {{ ⟦ M2' ⟧ ^?ρ0' ↘ ^?m20' }},
-                  _: {{ ⟦ N' ⟧ ^?ρ0' ↘ refl ^?n0' }} |- _ =>
+                  _: {{ ⟦ N ⟧ ^?ρ0 ↘ refl ^?n10 }},
+                    _: {{ ⟦ N ⟧ ^?ρ0' ↘ refl ^?n10' }},
+                      _: {{ ⟦ N' ⟧ ^?ρ0' ↘ refl ^?n10'' }} |- _ =>
       rename ρ0' into ρ';
       rename a0' into a';
       rename m10 into m1';
       rename m20 into m2';
       rename m10' into m1'';
       rename m20' into m2'';
-      rename n0' into n''
+      rename n10'' into n'';
+      rename n10' into n';
+      rename n10 into n
     end.
     assert {{ Dom ρ ↦ n ≈ ρ' ↦ n'' ∈ env_relΓA }} by (unfold env_relΓA; mauto 3).
     assert {{ Dom ρ ↦ m1 ≈ ρ' ↦ m1'' ∈ env_relΓA }} by (unfold env_relΓA; mauto 3).
@@ -615,19 +621,19 @@ Proof.
     assert {{ Dom ρ ↦ n ↦ n ≈ ρ ↦ m1 ↦ m2 ∈ env_relΓAA }}. {
       unfold env_relΓAA; unshelve eexists; intuition. simpl. 
       (* TODO *)
-      apply H46. 
+      apply H51. 
       assert_PER. etransitivity; eauto. etransitivity; eauto. symmetry; auto.
     }
     (on_all_hyp: destruct_rel_by_assumption env_relΓAA).
     simplify_evals.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     handle_per_univ_elem_irrel.
-    assert {{ Dom ρ ↦ m1 ↦ m2 ↦ refl n ≈ ρ' ↦ m1' ↦ m2' ↦ refl n'' ∈ env_relΓAAEq }} by admit.
+    assert {{ Dom ρ ↦ m1 ↦ m2 ↦ refl n ≈ ρ' ↦ m1' ↦ m2' ↦ refl n' ∈ env_relΓAAEq }} by admit.
     assert {{ Dom ρ ↦ n ↦ n ↦ refl n ≈ ρ ↦ m1 ↦ m2 ↦ refl n ∈ env_relΓAAEq }}. {
       unfold env_relΓAA; unshelve eexists; intuition. simpl. 
       (* TODO *)
-      apply H49. econstructor; mauto;
-      apply H45; auto; assert_PER.
+      apply H54. econstructor; mauto;
+      apply H50; auto; assert_PER.
       etransitivity; symmetry; eauto. symmetry; auto.
       etransitivity; symmetry; eauto. symmetry; auto.
     }
@@ -645,15 +651,14 @@ Proof.
     handle_per_univ_elem_irrel.
     + match goal with
       | _: {{ ⟦ B ⟧ ρ ↦ m1 ↦ m2 ↦ refl n ↘ ^?b0 }},
-          _: {{ ⟦ B ⟧ ρ' ↦ m1' ↦ m2' ↦ refl n'' ↘ ^?b0'  }} |- _ =>
+          _: {{ ⟦ B ⟧ ρ' ↦ m1' ↦ m2' ↦ refl n' ↘ ^?b0'  }} |- _ =>
         eapply mk_rel_mod_eval with (a:=b0) (a':=b0')
       end.
       do 2 (econstructor; mauto).
       do 2 (econstructor; mauto). mauto.
-      admit. mauto.
     + handle_per_univ_elem_irrel.
       econstructor; mauto.
-      eapply H36; eauto.
+      eapply H35; eauto.
   - admit.
     (* assert {{ Dom ρσ ↦ m1 ≈ ρ'σ ↦ m1' ∈ env_relΔA }} by (unfold env_relΔA; mauto 3).
     handle_per_ctx_env_irrel.
