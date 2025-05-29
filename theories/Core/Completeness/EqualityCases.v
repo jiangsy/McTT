@@ -164,39 +164,6 @@ Proof.
   mauto 4.
 Qed.
 
-(* Lemma rel_exp_eqrec_per_ctx_env_gen : forall {Γ i A},
-    {{ Γ ⊨ A : Type@i }} ->
-    exists env_relΓ, (
-      {{ EF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} /\ 
-        exists elem_relA, (
-          (forall (ρ ρ' : env) (equiv_ρ_ρ' : env_relΓ ρ ρ'), rel_typ i A ρ A ρ' (elem_relA ρ ρ' equiv_ρ_ρ')) /\
-            {{EF Γ, A ≈ Γ, A ∈ per_ctx_env ↘ cons_per_ctx_env env_relΓ elem_relA}} /\
-              exists elem_relAwk, (
-                forall (ρ ρ' : env) (equiv_ρ_ρ' : (cons_per_ctx_env env_relΓ elem_relA) ρ ρ'), rel_typ i {{{ A[Wk] }}} ρ {{{ A[Wk] }}} ρ' (elem_relAwk ρ ρ' equiv_ρ_ρ')
-              )
-        )
-    ).
-Proof.
-  intros * HA.
-  apply rel_exp_eqrec_wf_Awk in HA as HA'.
-  apply rel_exp_eqrec_wf_EqAwkwk in HA as HEq.
-  invert_rel_exp_of_typ HA. destruct_conjs.
-  (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relA]; shelve_unifiable; [eassumption |]).
-  eexists; split; mauto.
-  eexists; split; mauto.
-  split.
-  econstructor; mauto 3; try reflexivity; typeclasses eauto.
-  invert_rel_exp_of_typ HA'. destruct_conjs.
-  (on_all_hyp: fun H => unshelve eapply (rel_exp_under_ctx_implies_rel_typ_under_ctx _) in H as [elem_relA']; shelve_unifiable; [eassumption |]).
-  eexists; intros.
-  destruct_by_head cons_per_ctx_env.
-  invert_per_ctx_envs.
-  handle_per_ctx_env_irrel.
-  (on_all_hyp: destruct_rel_by_assumption x).
-  econstructor; mauto.
-  admit.
-Abort. *)
-
 Lemma eval_eqrec_sub_neut : forall {Γ env_relΓ σ Δ env_relΔ i j A A' M1 M1' M2 M2' B B' BR BR' m m'},
     {{ DF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} ->
     {{ DF Δ ≈ Δ ∈ per_ctx_env ↘ env_relΔ }} ->
@@ -316,7 +283,12 @@ Proof.
   functional_read_rewrite_clear.
   eexists. split.
   - eapply read_ne_eqrec; mauto.
-  - eapply read_ne_eqrec with (b:=m'1) (br:=m'0) (bbr:=m'2); eauto.
+  - match goal with
+    | _: {{ ⟦ B' ⟧ ρ'σ' ↦ ⇑! a' s ↦ ⇑! a' (S s) ↦ ⇑! (Eq a' ⇑! a' s ⇑! a' (S s)) (S (S s)) ↘ ^?b0'' }} ,
+        _: {{ ⟦ B' ⟧ ρ'σ' ↦ ⇑! a' s ↦ ⇑! a' s ↦ refl ⇑! a' s ↘ ^?bbr0'  }} ,
+          _: {{ ⟦ BR' ⟧ ρ'σ' ↦ ⇑! a' s ↘ ^?br0' }} |- _ =>
+      eapply read_ne_eqrec with (b:=b0'') (br:=br0') (bbr:=bbr0'); eauto
+    end.
     + repeat econstructor; mauto 3.
     + repeat econstructor; mauto 3.
     + repeat econstructor; mauto 3.
@@ -354,29 +326,7 @@ Proof.
   simplify_evals.
   mauto.
 Qed.
-
-Lemma equiv_rel_PER : forall {A R R'},
-    (@PER A) R ->
-    R' <~> R ->
-    PER R'.
-Proof.
-  intros. inversion H. 
-  unfold Symmetric in *. 
-  unfold Transitive in *. auto.
-  constructor.
-  - unfold Symmetric. intros. auto.
-    apply H0. apply PER_Symmetric. apply H0. auto.
-  - unfold Transitive. intros.
-    apply H0 in H1. apply H0 in H2.
-    apply H0. eauto.
-Qed.
-
-Ltac assert_PER :=
-  match goal with
-    | H: ?R ?x ?y |- _ =>
-      assert (PER R) by (eapply equiv_rel_PER; eauto)
-  end.
-
+    
 Lemma rel_exp_eqrec_sub : forall {Γ σ Δ i A M1 M2 j B BR N},
     {{ Γ ⊨s σ : Δ }} ->
     {{ Δ ⊨ A : Type@i }} ->
@@ -450,9 +400,10 @@ Proof.
     assert {{ Dom ρσ ↦ m1 ↦ m2 ≈ ρ'σ ↦ m1' ↦ m2' ∈ env_relΔAA }} by (unfold env_relΔAA; unshelve eexists; intuition).
     assert {{ Dom ρσ ↦ n ↦ n ≈ ρσ ↦ m1 ↦ m2 ∈ env_relΔAA }}. {
       unfold env_relΔAA; unshelve eexists; intuition. simpl. 
+      saturate_PER.
       (* TODO *)
       apply H43. 
-      assert_PER. etransitivity; eauto. etransitivity; eauto. symmetry; auto.
+      etransitivity; eauto. etransitivity; eauto. symmetry; auto.
     }
     (on_all_hyp: destruct_rel_by_assumption env_relΔAA).
     simplify_evals.
@@ -461,9 +412,10 @@ Proof.
     assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ refl n ≈ ρ'σ ↦ m1' ↦ m2' ↦ refl n' ∈ env_relΔAAEq }} by (unshelve eexists; simpl; intuition; eauto).
     assert {{ Dom ρσ ↦ n ↦ n ↦ refl n ≈ ρσ ↦ m1 ↦ m2 ↦ refl n ∈ env_relΔAAEq }}. {
       unfold env_relΔAA; unshelve eexists; intuition. simpl. 
+      saturate_PER.
       (* TODO *)
       apply H46. econstructor; mauto; 
-      apply H42; auto; assert_PER.
+      apply H42; auto.
       etransitivity; symmetry; eauto. symmetry; auto.
       etransitivity; symmetry; eauto. symmetry; auto.
     }
@@ -629,9 +581,10 @@ Proof.
     assert {{ Dom ρ ↦ m1 ↦ m2 ≈ ρ' ↦ m1' ↦ m2' ∈ env_relΓAA }} by (unfold env_relΓAA; unshelve eexists; intuition).
     assert {{ Dom ρ ↦ n ↦ n ≈ ρ ↦ m1 ↦ m2 ∈ env_relΓAA }}. {
       unfold env_relΓAA; unshelve eexists; intuition. simpl. 
+      saturate_PER.
       (* TODO *)
       apply H51. apply H60. 
-      assert_PER. etransitivity; eauto. etransitivity; eauto. symmetry; auto.
+      etransitivity; eauto. etransitivity; eauto. symmetry; auto.
     }
     (on_all_hyp: destruct_rel_by_assumption env_relΓAA).
     simplify_evals.
@@ -643,9 +596,10 @@ Proof.
     }
     assert {{ Dom ρ ↦ n ↦ n ↦ refl n ≈ ρ ↦ m1 ↦ m2 ↦ refl n ∈ env_relΓAAEq }}. {
       unfold env_relΓAA; unshelve eexists; intuition. simpl. 
+      saturate_PER.
       (* TODO *)
       apply H57. econstructor; mauto;
-      apply H59; auto; assert_PER. 
+      apply H59; auto.
       etransitivity; symmetry; eauto. symmetry; auto.
       etransitivity; symmetry; eauto. symmetry; auto.
     }

@@ -396,6 +396,33 @@ Proof.
     auto.
 Qed.
 
+Lemma equiv_rel_PER A (R R' : relation A) :
+    (@PER A) R ->
+    relation_equivalence R R' ->
+    PER R'.
+Proof.
+  intros. inversion H. 
+  unfold Symmetric in *. 
+  unfold Transitive in *. auto.
+  constructor.
+  - unfold Symmetric. intros. auto.
+    apply H0. apply PER_Symmetric. apply H0. auto.
+  - unfold Transitive. intros.
+    apply H0 in H1. apply H0 in H2.
+    apply H0. eauto.
+Qed.
+
+#[global]
+Ltac saturate_PER :=
+  repeat match goal with
+    | H : ?R ?a ?b , H1 : relation_equivalence ?R ?R' , H2 : PER ?R' |- _ =>
+        assert (PER R) by (eapply equiv_rel_PER; eauto; try symmetry; eauto);
+        fail_if_dup
+    | H : ?R ?a ?b , H1 : relation_equivalence ?R ?R' , H2 : PER ?R |- _ =>
+        assert (PER R') by (eapply equiv_rel_PER; eauto);
+        fail_if_dup
+    end.
+    
 #[global]
 Ltac saturate_refl :=
   repeat match goal with
