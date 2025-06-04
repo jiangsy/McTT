@@ -287,13 +287,12 @@ We use the next equality to make unification on `out_rel` works
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">equiv_p'_p'</span> : <span class="id" title="var">env_relΓ</span> ρ' ρ') <span class="id" title="tactic">by</span> (<span class="id" title="var">etransitivity</span>; [<span class="id" title="tactic">symmetry</span> |]; <span class="id" title="var">eassumption</span>).<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">rename</span> <span class="id" title="var">x2</span> <span class="id" title="var">into</span> <span class="id" title="var">in_rel</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">handle_per_univ_elem_irrel</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">in_rel</span> <span class="id" title="var">m1</span> <span class="id" title="var">m2</span>) <span class="id" title="tactic">by</span> (<span class="id" title="var">etransitivity</span>; [| <span class="id" title="tactic">symmetry</span>]; <span class="id" title="var">eassumption</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">in_rel</span> <span class="id" title="var">m1</span> <span class="id" title="var">m'2</span>) <span class="id" title="tactic">by</span> <span class="id" title="tactic">intuition</span>.<br/>
-&nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">in_rel</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">in_rel0</span> <span class="id" title="var">m1</span> <span class="id" title="var">m2</span>) <span class="id" title="tactic">by</span> (<span class="id" title="var">etransitivity</span>; [| <span class="id" title="tactic">symmetry</span>]; <span class="id" title="var">eassumption</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">in_rel0</span> <span class="id" title="var">m1</span> <span class="id" title="var">m'2</span>) <span class="id" title="tactic">by</span> <span class="id" title="tactic">intuition</span>.<br/>
+&nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">in_rel0</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">handle_per_univ_elem_irrel</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">eexists</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">split</span>; <span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span>...<br/>
@@ -319,7 +318,6 @@ We use the next equality to make unification on `out_rel` works
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΔ</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">rename</span> <span class="id" title="var">x0</span> <span class="id" title="var">into</span> <span class="id" title="var">in_rel</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">handle_per_univ_elem_irrel</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>.<br/>
@@ -371,7 +369,6 @@ We use the next equality to make unification on `out_rel` works
 &nbsp;&nbsp;<span class="id" title="var">eexists_rel_exp_of_pi</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">rename</span> <span class="id" title="var">x</span> <span class="id" title="var">into</span> <span class="id" title="var">in_rel</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">do</span> 2 <span class="id" title="tactic">eexists</span>.<br/>
