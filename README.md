@@ -62,7 +62,7 @@ opam update
 opam switch create coq-8.20.0 4.14.2
 opam pin add coq 8.20.0
 opam repo add coq-released https://coq.inria.fr/opam/released
-opam install -y menhir coq-equations coq-menhirlib ppx_inline_test
+opam install -y menhir coq-equations coq-menhirlib ppx_inline_test ppx_expect
 ```
 
 ## Development
