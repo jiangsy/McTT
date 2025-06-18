@@ -56,7 +56,7 @@
 <td>Z</td>
 <td><a href="indexpage.html#global__">_</a></td>
 <td><a href="indexpage.html#global_*">other</a></td>
-<td>(1319 entries)</td>
+<td>(1344 entries)</td>
 </tr>
 <tr>
 <td>Notation Index</td>
@@ -216,7 +216,7 @@
 <td>Z</td>
 <td>_</td>
 <td>other</td>
-<td>(620 entries)</td>
+<td>(645 entries)</td>
 </tr>
 <tr>
 <td>Constructor Index</td>
@@ -721,6 +721,8 @@
 <a href="Mctt.Core.Semantic.Evaluation.Definitions.html#eval_exp">eval_exp</a> [inductive, in <a href="Mctt.Core.Semantic.Evaluation.Definitions.html">Mctt.Core.Semantic.Evaluation.Definitions</a>]<br/>
 <a href="Mctt.Core.Completeness.EqualityCases.html#eval_eqrec_neut_same_ctx">eval_eqrec_neut_same_ctx</a> [lemma, in <a href="Mctt.Core.Completeness.EqualityCases.html">Mctt.Core.Completeness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Completeness.EqualityCases.html#eval_eqrec_sub_neut">eval_eqrec_sub_neut</a> [lemma, in <a href="Mctt.Core.Completeness.EqualityCases.html">Mctt.Core.Completeness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Completeness.EqualityCases.html#127beb1bc87b238358528e05f2f787d6">eval_eqrec_relΓAAEq_helper</a> [lemma, in <a href="Mctt.Core.Completeness.EqualityCases.html">Mctt.Core.Completeness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Completeness.EqualityCases.html#ee382ef332bf322812644f45c2d021e1">eval_eqrec_relΓA_helper</a> [lemma, in <a href="Mctt.Core.Completeness.EqualityCases.html">Mctt.Core.Completeness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Syntactic.Syntax.html#exp">exp</a> [inductive, in <a href="Mctt.Core.Syntactic.Syntax.html">Mctt.Core.Syntactic.Syntax</a>]<br/>
 <a href="Mctt.Core.Syntactic.Syntax.html#exp_to_num">exp_to_num</a> [definition, in <a href="Mctt.Core.Syntactic.Syntax.html">Mctt.Core.Syntactic.Syntax</a>]<br/>
 <a href="Mctt.Core.Syntactic.Syntax.html#exp_to_nat">exp_to_nat</a> [definition, in <a href="Mctt.Core.Syntactic.Syntax.html">Mctt.Core.Syntactic.Syntax</a>]<br/>
@@ -740,6 +742,9 @@
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_elim_sub_rhs_typ">exp_eq_elim_sub_rhs_typ</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_elim_sub_lhs_typ_gen">exp_eq_elim_sub_lhs_typ_gen</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_natrec_cong_rhs_typ">exp_eq_natrec_cong_rhs_typ</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_compose_exp_twice">exp_eq_compose_exp_twice</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_compose_typ_twice">exp_eq_compose_typ_twice</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_compose_typ">exp_eq_compose_typ</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_succ_sub_rhs">exp_succ_sub_rhs</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_succ_sub_lhs">exp_succ_sub_lhs</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_zero_sub_lhs">exp_zero_sub_lhs</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
@@ -846,10 +851,16 @@
 <a href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html#glu_nat_escape">glu_nat_escape</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html">Mctt.Core.Soundness.LogicalRelation.CoreLemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html#glu_nat_per_nat">glu_nat_per_nat</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html">Mctt.Core.Soundness.LogicalRelation.CoreLemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec">glu_rel_eq_eqrec</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec_synprop_gen_N">glu_rel_eq_eqrec_synprop_gen_N</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec_synprop_gen_M1M2">glu_rel_eq_eqrec_synprop_gen_M1M2</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec_synprop_gen_A">glu_rel_eq_eqrec_synprop_gen_A</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec_synprop_gen">glu_rel_eq_eqrec_synprop_gen</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_exp_eq_clean_inversion">glu_rel_exp_eq_clean_inversion</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_refl">glu_rel_eq_refl</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq">glu_rel_eq</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Soundness.TermStructureCases.html#glu_rel_exp_sub">glu_rel_exp_sub</a> [lemma, in <a href="Mctt.Core.Soundness.TermStructureCases.html">Mctt.Core.Soundness.TermStructureCases</a>]<br/>
 <a href="Mctt.Core.Soundness.TermStructureCases.html#glu_rel_exp_vlookup">glu_rel_exp_vlookup</a> [lemma, in <a href="Mctt.Core.Soundness.TermStructureCases.html">Mctt.Core.Soundness.TermStructureCases</a>]<br/>
+<a href="Mctt.Core.Soundness.UniverseCases.html#glu_rel_exp_typ_sub_clean_inversion">glu_rel_exp_typ_sub_clean_inversion</a> [lemma, in <a href="Mctt.Core.Soundness.UniverseCases.html">Mctt.Core.Soundness.UniverseCases</a>]<br/>
 <a href="Mctt.Core.Soundness.UniverseCases.html#glu_rel_exp_sub_typ">glu_rel_exp_sub_typ</a> [lemma, in <a href="Mctt.Core.Soundness.UniverseCases.html">Mctt.Core.Soundness.UniverseCases</a>]<br/>
 <a href="Mctt.Core.Soundness.UniverseCases.html#glu_rel_exp_clean_inversion2'">glu_rel_exp_clean_inversion2'</a> [lemma, in <a href="Mctt.Core.Soundness.UniverseCases.html">Mctt.Core.Soundness.UniverseCases</a>]<br/>
 <a href="Mctt.Core.Soundness.UniverseCases.html#glu_rel_exp_typ">glu_rel_exp_typ</a> [lemma, in <a href="Mctt.Core.Soundness.UniverseCases.html">Mctt.Core.Soundness.UniverseCases</a>]<br/>
@@ -866,6 +877,8 @@
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_sub_clean_inversion3">glu_rel_sub_clean_inversion3</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_sub_clean_inversion2">glu_rel_sub_clean_inversion2</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_sub_clean_inversion1">glu_rel_sub_clean_inversion1</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
+<a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_ctx_env_cons_clean_inversion'">glu_ctx_env_cons_clean_inversion'</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
+<a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_ctx_env_cons_clean_inversion'_helper">glu_ctx_env_cons_clean_inversion'_helper</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_exp_to_wf_exp">glu_rel_exp_to_wf_exp</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_exp_clean_inversion2">glu_rel_exp_clean_inversion2</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_exp_clean_inversion1">glu_rel_exp_clean_inversion1</a> [lemma, in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
@@ -1582,6 +1595,10 @@
 <a href="Mctt.Core.Soundness.Weakening.Lemmas.html#weakening_escape">weakening_escape</a> [lemma, in <a href="Mctt.Core.Soundness.Weakening.Lemmas.html">Mctt.Core.Soundness.Weakening.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.Weakening.Definitions.html#weakening_sind">weakening_sind</a> [definition, in <a href="Mctt.Core.Soundness.Weakening.Definitions.html">Mctt.Core.Soundness.Weakening.Definitions</a>]<br/>
 <a href="Mctt.Core.Soundness.Weakening.Definitions.html#weakening_ind">weakening_ind</a> [definition, in <a href="Mctt.Core.Soundness.Weakening.Definitions.html">Mctt.Core.Soundness.Weakening.Definitions</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#wf_exp_eq_eqrec_cong_sub">wf_exp_eq_eqrec_cong_sub</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#8fe1b65fcf0c949dcb48730c42b47550">wf_exp_eq_σM1M2N</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#130832ee889927e76b74745a52de50f0">wf_exp_eq_eqrec_id0refl0σm_σmmreflm</a> [lemma, in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Syntactic.SystemOpt.html#wf_exp_eq_eqrec_cong'">wf_exp_eq_eqrec_cong'</a> [lemma, in <a href="Mctt.Core.Syntactic.SystemOpt.html">Mctt.Core.Syntactic.SystemOpt</a>]<br/>
 <a href="Mctt.Core.Syntactic.SystemOpt.html#wf_exp_eq_refl_sub'">wf_exp_eq_refl_sub'</a> [lemma, in <a href="Mctt.Core.Syntactic.SystemOpt.html">Mctt.Core.Syntactic.SystemOpt</a>]<br/>
 <a href="Mctt.Core.Syntactic.SystemOpt.html#wf_subtyp_pi'">wf_subtyp_pi'</a> [lemma, in <a href="Mctt.Core.Syntactic.SystemOpt.html">Mctt.Core.Syntactic.SystemOpt</a>]<br/>
 <a href="Mctt.Core.Syntactic.SystemOpt.html#wf_exp_eq_pi_eta'">wf_exp_eq_pi_eta'</a> [lemma, in <a href="Mctt.Core.Syntactic.SystemOpt.html">Mctt.Core.Syntactic.SystemOpt</a>]<br/>
@@ -1728,6 +1745,14 @@
 <a href="Mctt.Core.Syntactic.System.Definitions.html#wf_ctx_extend">wf_ctx_extend</a> [constructor, in <a href="Mctt.Core.Syntactic.System.Definitions.html">Mctt.Core.Syntactic.System.Definitions</a>]<br/>
 <a href="Mctt.Core.Syntactic.System.Definitions.html#wf_ctx_empty">wf_ctx_empty</a> [constructor, in <a href="Mctt.Core.Syntactic.System.Definitions.html">Mctt.Core.Syntactic.System.Definitions</a>]<br/>
 <a href="Mctt.Core.Syntactic.System.Definitions.html#wf_ctx">wf_ctx</a> [inductive, in <a href="Mctt.Core.Syntactic.System.Definitions.html">Mctt.Core.Syntactic.System.Definitions</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#22997ca5ac20ae6675830c429a0962f2">wf_exp_eq_eqrec_Aσwkwkwkτ3</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#6591f83453137ecb1d2144b3ce77be3d">wf_exp_eq_eqrec_Aσwkwkwkτ2</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#8377f66e4e82b32f6f36e1ee7c91e298">wf_exp_eq_eqrec_Aσwkwkwkτ1</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#ab7d931e17f5afa190dc811f7c64069d">wf_exp_eq_eqrec_Aσwkwk_Aσwkwk</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#wf_eq_exp_sub_cong_twice">wf_eq_exp_sub_cong_twice</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#wf_eq_typ_exp_sub_cong_twice">wf_eq_typ_exp_sub_cong_twice</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#wf_eq_typ_exp_sub_cong">wf_eq_typ_exp_sub_cong</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#wf_ctx_eq_extend''">wf_ctx_eq_extend''</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#wf_subtyp_subst">wf_subtyp_subst</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#wf_subtyp_subst_eq">wf_subtyp_subst_eq</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#wf_ctx_sub_length">wf_ctx_sub_length</a> [lemma, in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
@@ -2124,6 +2149,8 @@
 <a href="Mctt.Core.Completeness.NatCases.html#eval_natrec_sub_neut">eval_natrec_sub_neut</a> [in <a href="Mctt.Core.Completeness.NatCases.html">Mctt.Core.Completeness.NatCases</a>]<br/>
 <a href="Mctt.Core.Completeness.EqualityCases.html#eval_eqrec_neut_same_ctx">eval_eqrec_neut_same_ctx</a> [in <a href="Mctt.Core.Completeness.EqualityCases.html">Mctt.Core.Completeness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Completeness.EqualityCases.html#eval_eqrec_sub_neut">eval_eqrec_sub_neut</a> [in <a href="Mctt.Core.Completeness.EqualityCases.html">Mctt.Core.Completeness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Completeness.EqualityCases.html#127beb1bc87b238358528e05f2f787d6">eval_eqrec_relΓAAEq_helper</a> [in <a href="Mctt.Core.Completeness.EqualityCases.html">Mctt.Core.Completeness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Completeness.EqualityCases.html#ee382ef332bf322812644f45c2d021e1">eval_eqrec_relΓA_helper</a> [in <a href="Mctt.Core.Completeness.EqualityCases.html">Mctt.Core.Completeness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Semantic.Consequences.html#exp_eq_pi_inversion">exp_eq_pi_inversion</a> [in <a href="Mctt.Core.Semantic.Consequences.html">Mctt.Core.Semantic.Consequences</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_typ_q_sigma_then_weak_weak_extend_succ_var_1">exp_eq_typ_q_sigma_then_weak_weak_extend_succ_var_1</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_sub_decompose_double_q_with_id_double_extend">exp_sub_decompose_double_q_with_id_double_extend</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
@@ -2136,6 +2163,9 @@
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_elim_sub_rhs_typ">exp_eq_elim_sub_rhs_typ</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_elim_sub_lhs_typ_gen">exp_eq_elim_sub_lhs_typ_gen</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_natrec_cong_rhs_typ">exp_eq_natrec_cong_rhs_typ</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_compose_exp_twice">exp_eq_compose_exp_twice</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_compose_typ_twice">exp_eq_compose_typ_twice</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#exp_eq_compose_typ">exp_eq_compose_typ</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_succ_sub_rhs">exp_succ_sub_rhs</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_succ_sub_lhs">exp_succ_sub_lhs</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#exp_zero_sub_lhs">exp_zero_sub_lhs</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
@@ -2225,10 +2255,16 @@
 <a href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html#glu_nat_escape">glu_nat_escape</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html">Mctt.Core.Soundness.LogicalRelation.CoreLemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html#glu_nat_per_nat">glu_nat_per_nat</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html">Mctt.Core.Soundness.LogicalRelation.CoreLemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec">glu_rel_eq_eqrec</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec_synprop_gen_N">glu_rel_eq_eqrec_synprop_gen_N</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec_synprop_gen_M1M2">glu_rel_eq_eqrec_synprop_gen_M1M2</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec_synprop_gen_A">glu_rel_eq_eqrec_synprop_gen_A</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_eqrec_synprop_gen">glu_rel_eq_eqrec_synprop_gen</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_exp_eq_clean_inversion">glu_rel_exp_eq_clean_inversion</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq_refl">glu_rel_eq_refl</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Soundness.EqualityCases.html#glu_rel_eq">glu_rel_eq</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
 <a href="Mctt.Core.Soundness.TermStructureCases.html#glu_rel_exp_sub">glu_rel_exp_sub</a> [in <a href="Mctt.Core.Soundness.TermStructureCases.html">Mctt.Core.Soundness.TermStructureCases</a>]<br/>
 <a href="Mctt.Core.Soundness.TermStructureCases.html#glu_rel_exp_vlookup">glu_rel_exp_vlookup</a> [in <a href="Mctt.Core.Soundness.TermStructureCases.html">Mctt.Core.Soundness.TermStructureCases</a>]<br/>
+<a href="Mctt.Core.Soundness.UniverseCases.html#glu_rel_exp_typ_sub_clean_inversion">glu_rel_exp_typ_sub_clean_inversion</a> [in <a href="Mctt.Core.Soundness.UniverseCases.html">Mctt.Core.Soundness.UniverseCases</a>]<br/>
 <a href="Mctt.Core.Soundness.UniverseCases.html#glu_rel_exp_sub_typ">glu_rel_exp_sub_typ</a> [in <a href="Mctt.Core.Soundness.UniverseCases.html">Mctt.Core.Soundness.UniverseCases</a>]<br/>
 <a href="Mctt.Core.Soundness.UniverseCases.html#glu_rel_exp_clean_inversion2'">glu_rel_exp_clean_inversion2'</a> [in <a href="Mctt.Core.Soundness.UniverseCases.html">Mctt.Core.Soundness.UniverseCases</a>]<br/>
 <a href="Mctt.Core.Soundness.UniverseCases.html#glu_rel_exp_typ">glu_rel_exp_typ</a> [in <a href="Mctt.Core.Soundness.UniverseCases.html">Mctt.Core.Soundness.UniverseCases</a>]<br/>
@@ -2245,6 +2281,8 @@
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_sub_clean_inversion3">glu_rel_sub_clean_inversion3</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_sub_clean_inversion2">glu_rel_sub_clean_inversion2</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_sub_clean_inversion1">glu_rel_sub_clean_inversion1</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
+<a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_ctx_env_cons_clean_inversion'">glu_ctx_env_cons_clean_inversion'</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
+<a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_ctx_env_cons_clean_inversion'_helper">glu_ctx_env_cons_clean_inversion'_helper</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_exp_to_wf_exp">glu_rel_exp_to_wf_exp</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_exp_clean_inversion2">glu_rel_exp_clean_inversion2</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html#glu_rel_exp_clean_inversion1">glu_rel_exp_clean_inversion1</a> [in <a href="Mctt.Core.Soundness.LogicalRelation.Lemmas.html">Mctt.Core.Soundness.LogicalRelation.Lemmas</a>]<br/>
@@ -2627,6 +2665,10 @@
 <a href="Mctt.Core.Soundness.Weakening.Lemmas.html#weakening_conv">weakening_conv</a> [in <a href="Mctt.Core.Soundness.Weakening.Lemmas.html">Mctt.Core.Soundness.Weakening.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.Weakening.Lemmas.html#weakening_resp_equiv">weakening_resp_equiv</a> [in <a href="Mctt.Core.Soundness.Weakening.Lemmas.html">Mctt.Core.Soundness.Weakening.Lemmas</a>]<br/>
 <a href="Mctt.Core.Soundness.Weakening.Lemmas.html#weakening_escape">weakening_escape</a> [in <a href="Mctt.Core.Soundness.Weakening.Lemmas.html">Mctt.Core.Soundness.Weakening.Lemmas</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#wf_exp_eq_eqrec_cong_sub">wf_exp_eq_eqrec_cong_sub</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#8fe1b65fcf0c949dcb48730c42b47550">wf_exp_eq_σM1M2N</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Soundness.EqualityCases.html#130832ee889927e76b74745a52de50f0">wf_exp_eq_eqrec_id0refl0σm_σmmreflm</a> [in <a href="Mctt.Core.Soundness.EqualityCases.html">Mctt.Core.Soundness.EqualityCases</a>]<br/>
+<a href="Mctt.Core.Syntactic.SystemOpt.html#wf_exp_eq_eqrec_cong'">wf_exp_eq_eqrec_cong'</a> [in <a href="Mctt.Core.Syntactic.SystemOpt.html">Mctt.Core.Syntactic.SystemOpt</a>]<br/>
 <a href="Mctt.Core.Syntactic.SystemOpt.html#wf_exp_eq_refl_sub'">wf_exp_eq_refl_sub'</a> [in <a href="Mctt.Core.Syntactic.SystemOpt.html">Mctt.Core.Syntactic.SystemOpt</a>]<br/>
 <a href="Mctt.Core.Syntactic.SystemOpt.html#wf_subtyp_pi'">wf_subtyp_pi'</a> [in <a href="Mctt.Core.Syntactic.SystemOpt.html">Mctt.Core.Syntactic.SystemOpt</a>]<br/>
 <a href="Mctt.Core.Syntactic.SystemOpt.html#wf_exp_eq_pi_eta'">wf_exp_eq_pi_eta'</a> [in <a href="Mctt.Core.Syntactic.SystemOpt.html">Mctt.Core.Syntactic.SystemOpt</a>]<br/>
@@ -2657,6 +2699,14 @@
 <a href="Mctt.Core.Syntactic.System.Definitions.html#wf_exp_eq_subtyp'">wf_exp_eq_subtyp'</a> [in <a href="Mctt.Core.Syntactic.System.Definitions.html">Mctt.Core.Syntactic.System.Definitions</a>]<br/>
 <a href="Mctt.Core.Syntactic.System.Definitions.html#wf_sub_subtyp'">wf_sub_subtyp'</a> [in <a href="Mctt.Core.Syntactic.System.Definitions.html">Mctt.Core.Syntactic.System.Definitions</a>]<br/>
 <a href="Mctt.Core.Syntactic.System.Definitions.html#wf_exp_subtyp'">wf_exp_subtyp'</a> [in <a href="Mctt.Core.Syntactic.System.Definitions.html">Mctt.Core.Syntactic.System.Definitions</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#22997ca5ac20ae6675830c429a0962f2">wf_exp_eq_eqrec_Aσwkwkwkτ3</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#6591f83453137ecb1d2144b3ce77be3d">wf_exp_eq_eqrec_Aσwkwkwkτ2</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#8377f66e4e82b32f6f36e1ee7c91e298">wf_exp_eq_eqrec_Aσwkwkwkτ1</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#ab7d931e17f5afa190dc811f7c64069d">wf_exp_eq_eqrec_Aσwkwk_Aσwkwk</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#wf_eq_exp_sub_cong_twice">wf_eq_exp_sub_cong_twice</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#wf_eq_typ_exp_sub_cong_twice">wf_eq_typ_exp_sub_cong_twice</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#wf_eq_typ_exp_sub_cong">wf_eq_typ_exp_sub_cong</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
+<a href="Mctt.Core.Syntactic.Corollaries.html#wf_ctx_eq_extend''">wf_ctx_eq_extend''</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#wf_subtyp_subst">wf_subtyp_subst</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#wf_subtyp_subst_eq">wf_subtyp_subst_eq</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
 <a href="Mctt.Core.Syntactic.Corollaries.html#wf_ctx_sub_length">wf_ctx_sub_length</a> [in <a href="Mctt.Core.Syntactic.Corollaries.html">Mctt.Core.Syntactic.Corollaries</a>]<br/>
@@ -3281,7 +3331,7 @@
 <td>Z</td>
 <td><a href="indexpage.html#global__">_</a></td>
 <td><a href="indexpage.html#global_*">other</a></td>
-<td>(1319 entries)</td>
+<td>(1344 entries)</td>
 </tr>
 <tr>
 <td>Notation Index</td>
@@ -3441,7 +3491,7 @@
 <td>Z</td>
 <td>_</td>
 <td>other</td>
-<td>(620 entries)</td>
+<td>(645 entries)</td>
 </tr>
 <tr>
 <td>Constructor Index</td>

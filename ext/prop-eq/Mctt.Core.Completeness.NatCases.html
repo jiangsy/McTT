@@ -69,7 +69,6 @@
 &nbsp;&nbsp;<span class="id" title="tactic">eexists</span>; <span class="id" title="tactic">split</span>; <span class="id" title="var">mauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">per_univ_elem_econstructor</span>; <span class="id" title="var">mauto</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
 <br/>
@@ -90,7 +89,7 @@
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span> * [<span class="id" title="var">env_relΓ</span>].<br/>
 &nbsp;&nbsp;<span class="id" title="var">eexists_rel_exp_of_typ</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span> 3.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">eexists</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">per_univ_elem_econstructor</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>

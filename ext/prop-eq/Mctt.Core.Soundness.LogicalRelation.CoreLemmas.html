@@ -180,7 +180,7 @@
 <br/>
 #[<span class="id" title="var">global</span>]<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Ltac</span> <span class="id" title="var">destruct_glu_eq</span> :=<br/>
-&nbsp;&nbsp;<span class="id" title="var">match_by_head1</span> <span class="id" title="var">glu_eq</span> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="var">match_by_head1</span> <span class="id" title="var">glu_eq</span> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="tactic">dependent</span> <span class="id" title="tactic">destruction</span> <span class="id" title="var">H</span>).<br/>
 
 <br/>
 <span class="id" title="keyword">Lemma</span> <a id="glu_univ_elem_trm_resp_typ_exp_eq" class="idref" href="#glu_univ_elem_trm_resp_typ_exp_eq"><span class="id" title="lemma">glu_univ_elem_trm_resp_typ_exp_eq</span></a> : <span class="id" title="keyword">forall</span> <a id="i:177" class="idref" href="#i:177"><span class="id" title="binder">i</span></a> <a id="P:178" class="idref" href="#P:178"><span class="id" title="binder">P</span></a> <a id="El:179" class="idref" href="#El:179"><span class="id" title="binder">El</span></a> <a id="a:180" class="idref" href="#a:180"><span class="id" title="binder">a</span></a>,<br/>
@@ -360,7 +360,8 @@
 
 <br/>
 &nbsp;&nbsp;- <span class="id" title="var">handle_per_univ_elem_irrel</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_glu_eq</span>; <span class="id" title="var">saturate_refl_for</span> <span class="id" title="var">R</span>; <span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span> <span class="id" title="keyword">using</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl1"><span class="id" title="lemma">PER_refl1</span></a> <span class="id" title="var">_</span> <span class="id" title="var">R</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl1"><span class="id" title="lemma">PER_refl1</span></a> <span class="id" title="var">_</span> <span class="id" title="var">R</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_glu_eq</span>; <span class="id" title="var">saturate_refl_for</span> <span class="id" title="var">R</span>; <span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
 <br/>
@@ -807,9 +808,9 @@
 <br/>
 <span class="id" title="keyword">Ltac</span> <span class="id" title="var">invert_glu_univ_elem</span> <span class="id" title="var">H</span> :=<br/>
 &nbsp;&nbsp;(<span class="id" title="var">unshelve</span> <span class="id" title="tactic">eapply</span> (<a class="idref" href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html#glu_univ_elem_pi_clean_inversion2"><span class="id" title="lemma">glu_univ_elem_pi_clean_inversion2</span></a> <span class="id" title="var">_</span> <span class="id" title="var">_</span>) <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="var">shelve_unifiable</span>; [<span class="id" title="var">eassumption</span> | <span class="id" title="var">eassumption</span> |];<br/>
-&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [? [? [? [? [? []]]]]])<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="var">deex_in</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [? [? []]])<br/>
 &nbsp;&nbsp;+ (<span class="id" title="var">unshelve</span> <span class="id" title="tactic">eapply</span> (<a class="idref" href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html#glu_univ_elem_pi_clean_inversion1"><span class="id" title="lemma">glu_univ_elem_pi_clean_inversion1</span></a> <span class="id" title="var">_</span>) <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="var">shelve_unifiable</span>; [<span class="id" title="var">eassumption</span> |];<br/>
-&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [? [? [? [? [? [? [? [? []]]]]]]]])<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="var">deex_in</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [? [? [? []]]])<br/>
 &nbsp;&nbsp;+ <span class="id" title="var">basic_invert_glu_univ_elem</span> <span class="id" title="var">H</span>.<br/>
 
 <br/>
@@ -821,7 +822,8 @@
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">induction</span> 1; <span class="id" title="tactic">intros</span>; <span class="id" title="var">progressive_inversion</span>; <span class="id" title="var">mauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>.<br/>
-&nbsp;&nbsp;- <span class="id" title="var">mauto</span> <span class="id" title="keyword">using</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl2"><span class="id" title="lemma">PER_refl2</span></a> <span class="id" title="var">_</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_bot"><span class="id" title="definition">per_bot</span></a>).<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl2"><span class="id" title="lemma">PER_refl2</span></a> <span class="id" title="var">_</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_bot"><span class="id" title="definition">per_bot</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">mauto</span>.<br/>
 &nbsp;&nbsp;- <span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">H</span> (<a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Datatypes.html#length"><span class="id" title="definition">length</span></a> <span class="id" title="var">Δ</span>)).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_all</span>.<br/>
@@ -883,7 +885,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">handle_per_univ_elem_irrel</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> (<span class="id" title="var">H9</span> <span class="id" title="var">_</span> <span class="id" title="var">equiv_c</span> <span class="id" title="var">_</span> <span class="id" title="var">H4</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">resp_per_IH</span>.<br/>
-&nbsp;&nbsp;- <span class="id" title="tactic">reflexivity</span>.<br/>
 &nbsp;&nbsp;- <span class="id" title="var">simpl_glu_rel</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_per_univ_elem</span> <span class="id" title="var">H10</span>.<br/>
 
@@ -918,8 +919,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">simplify_evals</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;- <span class="id" title="var">resp_per_IH</span>.<br/>
-&nbsp;&nbsp;- <span class="id" title="var">mauto</span> <span class="id" title="keyword">using</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl2"><span class="id" title="lemma">PER_refl2</span></a> <span class="id" title="var">_</span> <span class="id" title="var">R</span>).<br/>
-&nbsp;&nbsp;- <span class="id" title="var">mauto</span> <span class="id" title="keyword">using</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl2"><span class="id" title="lemma">PER_refl2</span></a> <span class="id" title="var">_</span> <span class="id" title="var">R</span>).<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl2"><span class="id" title="lemma">PER_refl2</span></a> <span class="id" title="var">_</span> <span class="id" title="var">R</span>). <span class="id" title="var">mauto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl2"><span class="id" title="lemma">PER_refl2</span></a> <span class="id" title="var">_</span> <span class="id" title="var">R</span>). <span class="id" title="var">mauto</span>.<br/>
 &nbsp;&nbsp;- <span class="id" title="tactic">split</span>; <span class="id" title="tactic">intros</span> []; <span class="id" title="tactic">econstructor</span>; <span class="id" title="tactic">intuition</span>.<br/>
 &nbsp;&nbsp;- <span class="id" title="tactic">split</span>; <span class="id" title="tactic">intros</span> []; <span class="id" title="tactic">econstructor</span>; <span class="id" title="tactic">intuition</span>;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_glu_eq</span>;<br/>
@@ -933,12 +934,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">symmetry</span>. <span class="id" title="tactic">trivial</span>.<br/>
 &nbsp;&nbsp;- <span class="id" title="var">simpl_glu_rel</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>; <span class="id" title="tactic">eauto</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_glu_eq</span>; <span class="id" title="var">progressive_invert</span> <span class="id" title="var">H20</span>; <span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span> 3; <span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_glu_eq</span>; <span class="id" title="var">match_by_head1</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_eq"><span class="id" title="inductive">per_eq</span></a> <span class="id" title="var">progressive_invert</span>; <span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span> 3; <span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">etransitivity</span>; <span class="id" title="var">mauto</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">etransitivity</span>; <span class="id" title="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">symmetry</span>. <span class="id" title="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">resp_per_IH</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">specialize</span> (<span class="id" title="var">H20</span> (<a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Datatypes.html#length"><span class="id" title="definition">length</span></a> <span class="id" title="var">Δ</span>)).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">match_by_head1</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_bot"><span class="id" title="definition">per_bot</span></a> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="tactic">specialize</span> (<span class="id" title="var">H</span> (<a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Datatypes.html#length"><span class="id" title="definition">length</span></a> <span class="id" title="var">Δ</span>))).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_all</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">functional_read_rewrite_clear</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">mauto</span>.<br/>
@@ -1218,7 +1219,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* <span class="id" title="tactic">assert</span> <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a id="fe145d6a1bc570a4eaa3275cb617a642" class="idref" href="#fe145d6a1bc570a4eaa3275cb617a642"><span class="id" title="binder"><span id="0edea08b6d0a27e1fa9cb6cbea324eda" class="id"><span id="d5a34782685ccbf3a00ac2709c8ef1ff" class="id"><span id="bd3176051e2160a40afc0ad3c2ac003d" class="id">Δ0</span></span></span></span></a> <a class="idref" href="Mctt.Core.Soundness.Weakening.Definitions.html#d3d59b3a970811affd489fb596e4c0b1"><span class="id" title="notation">⊢</span></a><a class="idref" href="Mctt.Core.Soundness.Weakening.Definitions.html#d3d59b3a970811affd489fb596e4c0b1"><span class="id" title="notation">w</span></a> <a id="69d2e05288c88862dd9b01f92a94bc43" class="idref" href="#69d2e05288c88862dd9b01f92a94bc43"><span class="id" title="binder"><span id="023078082905ce78268f050923c21c76" class="id"><span id="34719f0d0aec98b1a207e4cd882281b5" class="id"><span id="c0c025eda62330b424813ba960b2f07c" class="id">σ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Syntactic.Syntax.html#54003342e48a710b14cd857b30a11f43"><span class="id" title="notation">∘</span></a> <a id="c2ee33eb190f31ec915346ebb041eb6e" class="idref" href="#c2ee33eb190f31ec915346ebb041eb6e"><span class="id" title="binder"><span id="12c6ed6872577bf4a7882e5c1b78af6e" class="id"><span id="c42cf30fc2ec5e4569a52996a667a757" class="id"><span id="50e022eb0cc79dd3bc00fb92182923f9" class="id">σ0</span></span></span></span></a> <a class="idref" href="Mctt.Core.Soundness.Weakening.Definitions.html#d3d59b3a970811affd489fb596e4c0b1"><span class="id" title="notation">:</span></a> <a id="372491c0fd95438936d675ead46aea2a" class="idref" href="#372491c0fd95438936d675ead46aea2a"><span class="id" title="binder"><span id="637b607693a5ab57dc1c43ae09202388" class="id"><span id="334eff19478dd5a7b138b8e4dcde1525" class="id"><span id="4aa759a043bdb791c28af23f60d4d377" class="id">Γ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a> <span class="id" title="tactic">by</span> <span class="id" title="var">mauto</span> 4.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">bulky_rewrite</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">etransitivity</span>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[| <span class="id" title="var">deepexec</span> <span class="id" title="var">H14</span> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="tactic">apply</span> <span class="id" title="var">H</span>)].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[| <span class="id" title="var">deepexec</span> <span class="id" title="var">H13</span> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="tactic">apply</span> <span class="id" title="var">H</span>)].<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">mauto</span> 4.<br/>
 &nbsp;&nbsp;- <span class="id" title="var">destruct_conjs</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">split</span>; [<span class="id" title="var">mauto</span> 3 |].<br/>
