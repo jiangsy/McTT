@@ -109,15 +109,15 @@ Lemma eval_exp_order_sound : forall m p a,
 with eval_natrec_order_sound : forall A MZ MS m p r,
     {{ rec m ⟦return A | zero -> MZ | succ -> MS end⟧ p ↘ r }} ->
     eval_natrec_order A MZ MS m p
-with eval_app_order_sound: forall m n r,
-  {{ $| m & n |↘ r }} ->
-  eval_app_order m n
+with eval_app_order_sound : forall m n r,
+    {{ $| m & n |↘ r }} ->
+    eval_app_order m n
 with eval_eqrec_order_sound : forall B BR a m1 m2 n p r,
     {{ eqrec n as Eq a m1 m2 ⟦return B | refl -> BR end⟧ p ↘ r }} ->
     eval_eqrec_order a B BR m1 m2 n p
-with eval_sub_order_sound: forall σ p p',
-  {{ ⟦ σ ⟧s p ↘ p' }} ->
-  eval_sub_order σ p.
+with eval_sub_order_sound : forall σ p p',
+    {{ ⟦ σ ⟧s p ↘ p' }} ->
+    eval_sub_order σ p.
 Proof with (econstructor; intros; functional_eval_rewrite_clear; eauto).
   - clear eval_exp_order_sound; induction 1...
   - clear eval_natrec_order_sound; induction 1...
