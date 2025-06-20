@@ -1599,6 +1599,7 @@
 &nbsp;&nbsp;<span class="id" title="var">destruct_glu_rel_exp_with_sub</span>;<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_glu_rel_sub_with_sub</span>;<br/>
 &nbsp;&nbsp;<span class="id" title="var">simplify_evals</span>;<br/>
+&nbsp;&nbsp;<span class="id" title="var">handle_functional_glu_univ_elem</span>;<br/>
 &nbsp;&nbsp;<span class="id" title="var">match_by_head</span> <span class="id" title="var">glu_univ_elem</span> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="var">directed</span> <span class="id" title="var">invert_glu_univ_elem</span> <span class="id" title="var">H</span>);<br/>
 &nbsp;&nbsp;<span class="id" title="var">handle_functional_glu_univ_elem</span>;<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="Mctt.Core.Soundness.LogicalRelation.Definitions.html#univ_glu_exp_pred'"><span class="id" title="definition">univ_glu_exp_pred'</span></a> <span class="id" title="tactic">in</span> *;<br/>
@@ -1609,6 +1610,7 @@
 <span class="id" title="keyword">Ltac</span> <span class="id" title="var">apply_glu_rel_exp_judge</span> :=<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_glu_rel_exp_with_sub</span>;<br/>
 &nbsp;&nbsp;<span class="id" title="var">simplify_evals</span>;<br/>
+&nbsp;&nbsp;<span class="id" title="var">handle_functional_glu_univ_elem</span>;<br/>
 &nbsp;&nbsp;<span class="id" title="var">match_by_head</span> <span class="id" title="var">glu_univ_elem</span> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="var">directed</span> <span class="id" title="var">invert_glu_univ_elem</span> <span class="id" title="var">H</span>);<br/>
 &nbsp;&nbsp;<span class="id" title="var">handle_functional_glu_univ_elem</span>;<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="Mctt.Core.Soundness.LogicalRelation.Definitions.html#univ_glu_exp_pred'"><span class="id" title="definition">univ_glu_exp_pred'</span></a> <span class="id" title="tactic">in</span> *;<br/>
