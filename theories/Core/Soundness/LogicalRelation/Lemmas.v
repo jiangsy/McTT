@@ -1428,6 +1428,7 @@ Ltac apply_glu_rel_judge :=
   destruct_glu_rel_exp_with_sub;
   destruct_glu_rel_sub_with_sub;
   simplify_evals;
+  handle_functional_glu_univ_elem;
   match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H);
   handle_functional_glu_univ_elem;
   unfold univ_glu_exp_pred' in *;
@@ -1438,6 +1439,7 @@ Ltac apply_glu_rel_judge :=
 Ltac apply_glu_rel_exp_judge :=
   destruct_glu_rel_exp_with_sub;
   simplify_evals;
+  handle_functional_glu_univ_elem;
   match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H);
   handle_functional_glu_univ_elem;
   unfold univ_glu_exp_pred' in *;
