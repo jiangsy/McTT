@@ -656,10 +656,10 @@ Proof.
   saturate_syn_judge.
   assert {{ EG Γ, A ∈ glu_ctx_env ↘ SbΓA }} by (invert_glu_rel_exp HA; econstructor; mauto 3; try reflexivity).
   assert {{ Γ ⊩s Id,,M1 : Γ, A }} by (eapply glu_rel_sub_extend; mauto 3; bulky_rewrite).
-  assert {{ ⊩ Γ , A }} by mauto.
+  assert {{ ⊩ Γ, A }} by mauto.
   assert {{ Γ ⊩s Id,,M1,,M2 : Γ, A, A[Wk] }} by (eapply glu_rel_sub_extend; mauto 4).
-  assert {{ ⊩ Γ , A, A[Wk] }} by (unshelve mauto; eauto).
-  assert {{ Γ , A ⊩ A[Wk] : Type@i }} by (unshelve mauto; eauto).
+  assert {{ ⊩ Γ, A, A[Wk] }} by (unshelve mauto; eauto).
+  assert {{ Γ, A ⊩ A[Wk] : Type@i }} by (unshelve mauto; eauto).
   saturate_syn_judge.
   pose (SbΓAA := cons_glu_sub_pred i {{{ Γ , A }}} {{{ A[Wk] }}} SbΓA).
   assert {{ EG Γ, A , A[Wk] ∈ glu_ctx_env ↘ SbΓAA }} by (invert_glu_rel_exp H13; econstructor; mauto 3; try reflexivity).
@@ -735,8 +735,6 @@ Proof.
   (* slow *)
   handle_functional_glu_univ_elem.
   saturate_glu_typ_from_el.
-  deepexec (glu_univ_elem_per_univ i) ltac:(fun H => pose proof H).
-  match_by_head per_univ ltac:(fun H => unfold per_univ in H; deex_in H).
   saturate_glu_info.
 
   match goal with
@@ -963,7 +961,7 @@ Proof.
         assert {{ ⟦ Eq A[Wk∘Wk] #1 #0 ⟧ (ρ ↦ ⇑! a (length Ψ) ↦ ⇑! a (S (length Ψ))) ↘ Eq a (⇑! a (length Ψ)) (⇑! a (S (length Ψ)))}}
           by (econstructor; mauto 3; constructor).
         assert {{ ⊢ Ψ, A[σ∘τ], A[σ∘τ][Wk], (Eq A[Wk∘Wk] #1 #0)[q (q (σ∘τ))] }} by (eapply glu_rel_eq_eqrec_synprop_gen_A; mauto 3).
-        handle_per_univ_elem_irrel.
+        apply_relation_equivalence.
         eapply @cons_glu_sub_pred_helper with
           (P:=eq_glu_typ_pred i d{{{⇑! a (length Ψ)}}} d{{{⇑! a (S (length Ψ))}}} P El)
           (El:=eq_glu_exp_pred i d{{{⇑! a (length Ψ)}}} d{{{⇑! a (S (length Ψ))}}} R P El); mauto 2.
@@ -1040,7 +1038,6 @@ Proof.
       destruct_glu_rel_exp_with_sub.
       simplify_evals.
       match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
-      apply_predicate_equivalence.
       match_by_head read_ne ltac:(fun H => directed inversion_clear H).
       handle_functional_glu_univ_elem.
       inversion_clear_by_head eq_glu_exp_pred.
