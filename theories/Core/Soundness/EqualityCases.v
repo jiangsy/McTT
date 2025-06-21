@@ -715,11 +715,18 @@ Proof.
   | [ _ : {{ ⟦ A ⟧ ρ ↘ ^?a' }} ,
         _ : {{ ⟦ M1 ⟧ ρ ↘ ^?m1' }} ,
           _ : {{ ⟦ M2 ⟧ ρ ↘ ^?m2' }} ,
-            _ : {{ ⟦ N ⟧ ρ ↘ ^?n' }} |- _ ] =>
+            _ : {{ ⟦ N ⟧ ρ ↘ ^?n' }} , 
+              _ : {{ ⟦ B ⟧ ρ ↦ ^?m1' ↦ ^?m1' ↦ refl ^?m1' ↘ ^?b0 }} , 
+                _ : {{ ⟦ B ⟧ ρ ↦ ^?m1' ↦ ^?m2' ↦ ^?n' ↘ ^?b1 }} , 
+                  _ : {{ ⟦ BR ⟧ ρ ↦ ^?m1' ↘ ^?br' }} |- _
+            ] =>
     rename a' into a;
     rename n' into n;
     rename m1' into m1'';
-    rename m2' into m2''
+    rename m2' into m2'';
+    rename b0 into b;
+    rename b1 into b';
+    rename br' into br
   end; rename m1'' into m1; rename m2'' into m2.
 
   repeat invert_glu_rel1.
@@ -852,10 +859,18 @@ Proof.
     simplify_evals.
     handle_per_univ_elem_irrel.
     eexists; split; mauto 3.
-    (* m9 (⟦ BR ⟧ ρ ↦ m') -> El7 -> m (⟦ B ⟧ ρ ↦ m' ↦ m' ↦ refl m') *)
-    (* m8 (⟦ BR ⟧ ρ ↦ m) -> El0 -> m7 (⟦ B ⟧ ρ ↦ m1 ↦ m2 ↦ refl m') *)
-    (* by relating m7 and m, we can show El7 is equivalent to El0 by glu_univ_elem_resp_per_univ *)
-    assert (exists R, {{ DF m7 ≈ m ∈ per_univ_elem j ↘ R }}).
+
+    match goal with
+    | [ _ : {{ ⟦ B ⟧ ρ ↦ m' ↦ m' ↦ refl m' ↘ ^?b0 }} , 
+          _ : {{ ⟦ BR ⟧ ρ ↦ m' ↘ ^?br0 }} |- _  ] =>
+      rename b0 into b'';
+      rename br0 into br'
+    end.
+
+    (* br' (⟦ BR ⟧ ρ ↦ m') -> El7 -> b'' (⟦ B ⟧ ρ ↦ m' ↦ m' ↦ refl m') *)
+    (* El0 -> b' (⟦ B ⟧ ρ ↦ m1 ↦ m2 ↦ refl m') *)
+    (* by relating b' and b'', we can show El7 is equivalent to El0 by glu_univ_elem_resp_per_univ *)
+    assert (exists R, {{ DF b' ≈ b'' ∈ per_univ_elem j ↘ R }}).
     {
       assert {{ Γ ⊢ A : Type@i }} as HwfA by mauto 3.
       assert {{ Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ⊢ B : Type@j }} as HwfB by auto.
@@ -882,7 +897,7 @@ Proof.
       simplify_evals. mauto.
     }
     deex. handle_per_univ_elem_irrel.
-    eapply glu_univ_elem_resp_per_univ with (a':=m) in H67 as H'; mauto 3.
+    eapply glu_univ_elem_resp_per_univ with (a':=b'') in H67 as H'; mauto 3.
     handle_functional_glu_univ_elem.
     eapply glu_univ_elem_trm_resp_typ_exp_eq; eauto.
     eapply glu_univ_elem_trm_resp_exp_eq; eauto.
@@ -1034,6 +1049,16 @@ Proof.
       destruct_conjs.
       clear_dups.
       rename Γ0 into Ψ.
+
+      match goal with
+      | _ : {{ Rtyp a in length Ψ ↘ ^?VAστ' }} ,
+          _ : {{ Rnf ⇓ a m1 in length Ψ ↘ ^?VM1στ' }} ,
+            _ : {{ Rnf ⇓ a m2 in length Ψ ↘ ^?VM2στ' }} |- _  => 
+        rename VAστ' into VAστ;
+        rename VM1στ' into VM1στ;
+        rename VM2στ' into VM2στ
+      end.
+
       assert {{ Ψ ⊢ A[σ∘τ] ® glu_typ_top i a}} as [] by (eapply realize_glu_typ_top; mauto 2).
       assert {{ Ψ ⊢ M1[σ∘τ] : A[σ∘τ] ® m1 ∈ glu_elem_top i a }} as [] by (eapply realize_glu_elem_top; eassumption).
       assert {{ Ψ ⊢ M2[σ∘τ] : A[σ∘τ] ® m2 ∈ glu_elem_top i a }} as [] by (eapply realize_glu_elem_top with (El:=El); eauto).
@@ -1045,10 +1070,10 @@ Proof.
       assert {{ Ψ ⊢ A[σ∘τ][Id] ≈ A[σ∘τ] : Type@i }} by mauto 2.
       eapply (@wf_exp_eq_eqrec_cong_sub _ _ Γ i j); fold nf_to_exp; fold ne_to_exp; eauto.
       * transitivity {{{ A[σ∘τ][Id] }}}; mauto 3.
-      * assert {{ Ψ ⊢ M1[σ∘τ][Id] ≈ M0 : A[σ∘τ][Id] }} by mauto 3.
+      * assert {{ Ψ ⊢ M1[σ∘τ][Id] ≈ VM1στ : A[σ∘τ][Id] }} by mauto 3.
         eapply wf_exp_eq_conv'; mauto 2.
         transitivity {{{ M1[σ∘τ][Id] }}}; [mauto 4 | mauto 2].
-      * assert {{ Ψ ⊢ M2[σ∘τ][Id] ≈ M3 : A[σ∘τ][Id] }} by mauto 3.
+      * assert {{ Ψ ⊢ M2[σ∘τ][Id] ≈ VM2στ : A[σ∘τ][Id] }} by mauto 3.
         eapply wf_exp_eq_conv'; mauto 2.
         transitivity {{{ M2[σ∘τ][Id] }}}; [mauto 4 | mauto 2].
       * assert {{ Ψ ⊢ N[σ∘τ][Id] ≈ N1 : (Eq A M1 M2)[σ∘τ][Id] }} by mauto 3.
