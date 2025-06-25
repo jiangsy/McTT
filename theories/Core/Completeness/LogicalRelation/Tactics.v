@@ -38,6 +38,7 @@ Ltac invert_rel_typ_body :=
   clear_dups;
   try rewrite <- per_univ_elem_equation_1 in *.
 
+(* TODO: unify with the uip version above *)
 Ltac invert_rel_typ_body_nouip :=
   simplify_evals;
   match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem_nouip H); subst;

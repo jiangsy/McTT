@@ -636,6 +636,7 @@ Ltac invert_glu_univ_elem H :=
    destruct H as [? [? [? [? [? [? [? [? []]]]]]]]])
   + basic_invert_glu_univ_elem H.
 
+(* TODO: unify with the uip version above *)
 Ltac invert_glu_univ_elem_nouip H :=
   (unshelve eapply (glu_univ_elem_pi_clean_inversion2 _ _) in H; shelve_unifiable; [eassumption | eassumption |];
    destruct H as [? [? [? [? [? []]]]]])

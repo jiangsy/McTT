@@ -34,6 +34,7 @@ Ltac destruct_rel_mod_app :=
         dependent destruction H
     end;
   unmark_all.
+(* TODO: unify with the uip version above *)
 Ltac destruct_rel_mod_eval_nouip :=
   repeat
     match goal with
@@ -43,6 +44,7 @@ Ltac destruct_rel_mod_eval_nouip :=
         dependent inversion_clear H
     end;
   unmark_all.
+(* TODO: unify with the uip version above *)
 Ltac destruct_rel_mod_app_nouip :=
   repeat
     match goal with
@@ -69,6 +71,7 @@ Ltac basic_invert_per_univ_elem H :=
   dependent destruction H;
   try rewrite <- per_univ_elem_equation_1 in *.
 
+(* TODO: unify with the uip version above *)
 Ltac basic_invert_per_univ_elem_nouip H :=
   progress simp per_univ_elem in H;
   (* TODO: change the following line to `dependent inversion_clear H;` fails some proofs currently *)

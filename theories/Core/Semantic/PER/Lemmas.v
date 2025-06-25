@@ -603,6 +603,7 @@ Ltac invert_per_univ_elem H :=
   (unshelve eapply (per_univ_elem_pi_clean_inversion _) in H; shelve_unifiable; [eassumption |]; destruct H as [? []])
   + basic_invert_per_univ_elem H.
 
+(* TODO: unify with the uip version above *)
 Ltac invert_per_univ_elem_nouip H :=
   (unshelve eapply (per_univ_elem_pi_clean_inversion _) in H; shelve_unifiable; [eassumption |]; destruct H as [? []])
   + basic_invert_per_univ_elem_nouip H.
