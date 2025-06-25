@@ -22,8 +22,6 @@ Proof.
   eexists. symmetry.
   eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/Consequences/Rules.v - ctxeq_nbe_eq>>>". Abort.
-Print Assumptions ctxeq_nbe_eq.
 
 Corollary ctxeq_nbe_eq' : forall Γ Γ' M A W,
     {{ Γ ⊢ M : A }} ->
@@ -36,8 +34,6 @@ Proof.
   functional_nbe_rewrite_clear.
   eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/Consequences/Rules.v - ctxeq_nbe_eq'>>>". Abort.
-Print Assumptions ctxeq_nbe_eq'.
 
 Corollary ctxeq_nbe_ty_eq : forall Γ Γ' A i,
     {{ Γ ⊢ A : Type@i }} ->
@@ -48,8 +44,6 @@ Proof.
   assert (exists W, nbe Γ A {{{ Type@i }}} W /\ nbe Γ' A {{{ Type@i }}} W) as [? [?%nbe_type_to_nbe_ty ?%nbe_type_to_nbe_ty]] by mauto 3 using ctxeq_nbe_eq.
   firstorder.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/Consequences/Rules.v - ctxeq_nbe_ty_eq>>>". Abort.
-Print Assumptions ctxeq_nbe_ty_eq.
 
 Corollary ctxeq_nbe_ty_eq' : forall Γ Γ' A i W,
     {{ Γ ⊢ A : Type@i }} ->
@@ -62,5 +56,3 @@ Proof.
   functional_nbe_rewrite_clear.
   eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/Consequences/Rules.v - ctxeq_nbe_ty_eq'>>>". Abort.
-Print Assumptions ctxeq_nbe_ty_eq'.

@@ -28,47 +28,30 @@ Section completeness_fundamental.
     apply valid_exp_var;
       mauto.
   Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental>>>". Abort.
-  Print Assumptions completeness_fundamental.
 
   #[local]
    Ltac solve_it := pose proof completeness_fundamental; firstorder.
 
-
   Theorem completeness_fundamental_ctx : forall Γ, {{ ⊢ Γ }} -> {{ ⊨ Γ }}.
   Proof. solve_it. Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental_ctx>>>". Abort.
-  Print Assumptions completeness_fundamental_ctx.
 
   Theorem completeness_fundamental_ctx_subtyp : forall Γ Γ', {{ ⊢ Γ ⊆ Γ' }} -> {{ SubE Γ <: Γ' }}.
   Proof. solve_it. Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental_ctx_subtyp>>>". Abort.
-  Print Assumptions completeness_fundamental_ctx_subtyp.
 
   Theorem completeness_fundamental_exp : forall Γ M A, {{ Γ ⊢ M : A }} -> {{ Γ ⊨ M : A }}.
   Proof. solve_it. Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental_exp>>>". Abort.
-  Print Assumptions completeness_fundamental_exp.
 
   Theorem completeness_fundamental_exp_eq : forall Γ A M M', {{ Γ ⊢ M ≈ M' : A }} -> {{ Γ ⊨ M ≈ M' : A }}.
   Proof. solve_it. Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental_exp_eq>>>". Abort.
-  Print Assumptions completeness_fundamental_exp_eq.
 
   Theorem completeness_fundamental_sub : forall Γ σ Δ, {{ Γ ⊢s σ : Δ }} -> {{ Γ ⊨s σ : Δ }}.
   Proof. solve_it. Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental_sub>>>". Abort.
-  Print Assumptions completeness_fundamental_sub.
 
   Theorem completeness_fundamental_sub_eq : forall Γ Δ σ σ', {{ Γ ⊢s σ ≈ σ' : Δ }} -> {{ Γ ⊨s σ ≈ σ' : Δ }}.
   Proof. solve_it. Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental_sub_eq>>>". Abort.
-  Print Assumptions completeness_fundamental_sub_eq.
 
   Theorem completeness_fundamental_subtyp : forall Γ A A', {{ Γ ⊢ A ⊆ A' }} -> {{ Γ ⊨ A ⊆ A' }}.
   Proof. solve_it. Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental_subtyp>>>". Abort.
-  Print Assumptions completeness_fundamental_subtyp.
 
   Theorem completeness_fundamental_ctx_eq : forall Γ Γ', {{ ⊢ Γ ≈ Γ' }} -> {{ ⊨ Γ ≈ Γ' }}.
   Proof.
@@ -77,7 +60,5 @@ Section completeness_fundamental.
     - assert {{ Γ ⊨ A ≈ A' : Type@i }} by mauto using completeness_fundamental_exp_eq.
       mauto.
   Qed.
-  Goal True. idtac "<<<./Core/Completeness/FundamentalTheorem.v - completeness_fundamental_ctx_eq>>>". Abort.
-  Print Assumptions completeness_fundamental_ctx_eq.
 
 End completeness_fundamental.

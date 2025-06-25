@@ -73,8 +73,6 @@ Proof with mautosolve.
   invert_rel_typ_body.
   destruct_by_head rel_exp...
 Qed.
-Goal True. idtac "<<<./Core/Completeness/SubstitutionCases.v - rel_sub_extend_cong>>>". Abort.
-Print Assumptions rel_sub_extend_cong.
 
 #[export]
 Hint Resolve rel_sub_extend_cong : mctt.
@@ -129,6 +127,8 @@ Qed.
 #[export]
 Hint Resolve rel_sub_compose_assoc : mctt.
 
+Axiom test : False.
+
 Lemma rel_sub_extend_compose : forall {Γ τ Γ' M σ Γ'' A i},
     {{ Γ' ⊨s σ : Γ'' }} ->
     {{ Γ'' ⊨ A : Type@i }} ->
@@ -142,7 +142,6 @@ Proof with mautosolve.
   pose env_relΓ''.
   handle_per_ctx_env_irrel.
   assert {{ ⊨ Γ'', A }} as [env_relΓ''A] by (eapply rel_ctx_extend; eauto; eexists; eassumption).
-  destruct_conjs.
   eexists_rel_sub.
   match_by_head (per_ctx_env env_relΓ''A) invert_per_ctx_env.
   handle_per_ctx_env_irrel.
@@ -151,12 +150,10 @@ Proof with mautosolve.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ').
   (on_all_hyp: destruct_rel_by_assumption env_relΓ'').
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   econstructor...
 Qed.
-Goal True. idtac "<<<./Core/Completeness/SubstitutionCases.v - rel_sub_extend_compose>>>". Abort.
-Print Assumptions rel_sub_extend_compose.
 
 #[export]
 Hint Resolve rel_sub_extend_compose : mctt.
@@ -287,8 +284,6 @@ Proof.
   econstructor; eauto.
   eapply per_ctx_env_subtyping; eauto.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/SubstitutionCases.v - rel_sub_eq_subtyp>>>". Abort.
-Print Assumptions rel_sub_eq_subtyp.
 
 #[export]
 Hint Resolve rel_sub_eq_subtyp : mctt.

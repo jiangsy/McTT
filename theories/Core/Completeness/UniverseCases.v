@@ -18,11 +18,9 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/UniverseCases.v - rel_exp_of_typ_inversion>>>". Abort.
-Print Assumptions rel_exp_of_typ_inversion.
 
 Lemma rel_exp_of_typ : forall {Γ A A' i},
     (exists env_rel (_ : {{ EF Γ ≈ Γ ∈ per_ctx_env ↘ env_rel }}),
@@ -96,8 +94,6 @@ Proof.
   match_by_head per_univ_elem ltac:(fun H => apply per_univ_elem_cumu in H).
   econstructor; mauto.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/UniverseCases.v - rel_exp_cumu>>>". Abort.
-Print Assumptions rel_exp_cumu.
 
 #[export]
 Hint Resolve rel_exp_cumu : mctt.

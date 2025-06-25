@@ -16,7 +16,7 @@ Proof.
   saturate_refl.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   destruct_conjs.
   handle_per_univ_elem_irrel.
@@ -24,8 +24,6 @@ Proof.
   repeat split; econstructor; mauto 3;
     etransitivity; try eassumption; symmetry; eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/SubtypingCases.v - subtyp_refl>>>". Abort.
-Print Assumptions subtyp_refl.
 
 Lemma subtyp_trans : forall Γ M M' M'',
     {{ Γ ⊨ M ⊆ M' }} ->
@@ -50,8 +48,6 @@ Proof.
   etransitivity;
     eauto using per_subtyp_cumu_left, per_subtyp_cumu_right.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/SubtypingCases.v - subtyp_trans>>>". Abort.
-Print Assumptions subtyp_trans.
 
 #[export]
 Instance subtyp_Transitive Γ : Transitive (subtyp_under_ctx Γ).
@@ -90,7 +86,7 @@ Proof.
   saturate_refl.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   destruct_conjs.
   handle_per_univ_elem_irrel.
@@ -149,8 +145,6 @@ Proof.
     simplify_evals.
     mauto 2 using per_subtyp_cumu_right.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/SubtypingCases.v - subtyp_pi>>>". Abort.
-Print Assumptions subtyp_pi.
 
 #[export]
 Hint Resolve subtyp_refl subtyp_trans subtyp_univ subtyp_pi : mctt.

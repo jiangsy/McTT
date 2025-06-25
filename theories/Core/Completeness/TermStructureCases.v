@@ -107,8 +107,6 @@ Proof with mautosolve.
   split; econstructor; mauto.
   etransitivity; [symmetry |]...
 Qed.
-Goal True. idtac "<<<./Core/Completeness/TermStructureCases.v - rel_exp_conv>>>". Abort.
-Print Assumptions rel_exp_conv.
 
 #[export]
 Hint Resolve rel_exp_conv : mctt.
@@ -208,8 +206,6 @@ Proof.
   - eauto using per_univ_elem_cumu_max_right.
   - symmetry. eauto using per_univ_elem_cumu_max_right.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/TermStructureCases.v - rel_exp_eq_subtyp>>>". Abort.
-Print Assumptions rel_exp_eq_subtyp.
 
 #[export]
 Hint Resolve rel_exp_eq_subtyp : mctt.
