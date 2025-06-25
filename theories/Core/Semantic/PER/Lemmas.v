@@ -603,6 +603,10 @@ Ltac invert_per_univ_elem H :=
   (unshelve eapply (per_univ_elem_pi_clean_inversion _) in H; shelve_unifiable; [eassumption |]; destruct H as [? []])
   + basic_invert_per_univ_elem H.
 
+Ltac invert_per_univ_elem_nouip H :=
+  (unshelve eapply (per_univ_elem_pi_clean_inversion _) in H; shelve_unifiable; [eassumption |]; destruct H as [? []])
+  + basic_invert_per_univ_elem_nouip H.
+
 Lemma per_univ_elem_cumu : forall i a0 a1 R,
     {{ DF a0 ≈ a1 ∈ per_univ_elem i ↘ R }} ->
     {{ DF a0 ≈ a1 ∈ per_univ_elem (S i) ↘ R }}.
@@ -668,22 +672,20 @@ Proof.
   induction 1; intros;
     handle_per_univ_elem_irrel;
     saturate_refl;
-    (on_all_hyp: fun H => directed invert_per_univ_elem H);
+    (on_all_hyp: fun H => directed invert_per_univ_elem_nouip H);
     handle_per_univ_elem_irrel;
     clear_refl_eqs;
     trivial.
   - firstorder mauto.
   - intros.
     handle_per_univ_elem_irrel.
-    destruct_rel_mod_eval.
+    destruct_rel_mod_eval_nouip.
     saturate_refl_for per_univ_elem.
-    destruct_rel_mod_app.
+    destruct_rel_mod_app_nouip.
     simplify_evals.
     econstructor; eauto.
     intuition.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_elem_subtyping>>>". Abort.
-Print Assumptions per_elem_subtyping.
 
 Lemma per_elem_subtyping_gen : forall a b i a' b' R R' m n,
     {{ Sub a <: b at i }} ->
@@ -695,8 +697,6 @@ Proof.
   intros.
   eapply per_elem_subtyping; saturate_refl; try eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_elem_subtyping_gen>>>". Abort.
-Print Assumptions per_elem_subtyping_gen.
 
 Lemma per_subtyp_refl1 : forall a b i R,
     {{ DF a ≈ b ∈ per_univ_elem i ↘ R }} ->
@@ -740,19 +740,17 @@ Proof.
   induction 1; intros ? Hsub; simpl in *.
   1-3: progressive_inversion; mauto.
   - econstructor; lia.
-  - dependent destruction Hsub.
+  - inversion Hsub; subst.
     handle_per_univ_elem_irrel.
     econstructor; eauto.
     + etransitivity; eassumption.
     + intros.
       saturate_refl.
-      (on_all_hyp: fun H => directed invert_per_univ_elem H).
-      destruct_rel_mod_eval.
+      (on_all_hyp: fun H => directed invert_per_univ_elem_nouip H).
+      destruct_rel_mod_eval_nouip.
       handle_per_univ_elem_irrel.
       intuition.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_subtyp_trans>>>". Abort.
-Print Assumptions per_subtyp_trans.
 
 #[export]
 Hint Resolve per_subtyp_trans : mctt.
@@ -771,8 +769,6 @@ Lemma per_subtyp_transp : forall a b i a' b' R R',
 Proof.
   mauto using per_subtyp_refl1, per_subtyp_refl2.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_subtyp_transp>>>". Abort.
-Print Assumptions per_subtyp_transp.
 
 Lemma per_subtyp_cumu : forall a1 a2 i,
     {{ Sub a1 <: a2 at i }} ->
@@ -1024,8 +1020,6 @@ Proof.
   econstructor; eauto.
   typeclasses eauto.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_ctx_env_cons'>>>". Abort.
-Print Assumptions per_ctx_env_cons'.
 
 #[export]
 Hint Resolve per_ctx_env_cons' : mctt.
@@ -1117,8 +1111,6 @@ Proof.
   - saturate_refl.
     eauto using per_univ_elem_cumu_max_left, per_univ_elem_cumu_max_right.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_ctx_env_subtyping>>>". Abort.
-Print Assumptions per_ctx_env_subtyping.
 
 Lemma per_ctx_subtyp_refl1 : forall Γ Δ R,
     {{ EF Γ ≈ Δ ∈ per_ctx_env ↘ R }} ->
@@ -1170,8 +1162,6 @@ Proof.
     + typeclasses eauto.
     + solve_refl.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_ctx_subtyp_trans>>>". Abort.
-Print Assumptions per_ctx_subtyp_trans.
 
 #[export]
 Hint Resolve per_ctx_subtyp_trans : mctt.
