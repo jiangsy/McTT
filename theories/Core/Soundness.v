@@ -30,8 +30,6 @@ Proof.
   assert {{ Γ ⊢ M ≈ M[Id][Id] : A[Id][Id] }} as -> by mauto.
   mauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness.v - soundness>>>". Abort.
-Print Assumptions soundness.
 
 Theorem soundness' : forall {Γ M A W},
     {{ Γ ⊢ M : A }} ->

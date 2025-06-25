@@ -11,6 +11,7 @@ Ltac basic_invert_glu_univ_elem H :=
 
 Ltac basic_invert_glu_univ_elem_nouip H :=
   progress simp glu_univ_elem in H;
+  (* TODO: change the following line to `dependent inversion_clear H;` fails some proofs currently *)
   inversion H; subst;
   try rewrite <- glu_univ_elem_equation_1 in *.
 

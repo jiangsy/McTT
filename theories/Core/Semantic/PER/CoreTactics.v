@@ -71,7 +71,7 @@ Ltac basic_invert_per_univ_elem H :=
 
 Ltac basic_invert_per_univ_elem_nouip H :=
   progress simp per_univ_elem in H;
-  (* TODO: change the following to dependent inversion_clear H fails some proofs currently *)
+  (* TODO: change the following line to `dependent inversion_clear H;` fails some proofs currently *)
   inversion H; subst;
   try rewrite <- per_univ_elem_equation_1 in *.
 
