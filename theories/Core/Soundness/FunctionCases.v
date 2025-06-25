@@ -102,8 +102,6 @@ Proof.
     handle_functional_glu_univ_elem.
     eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/FunctionCases.v - glu_rel_exp_pi>>>". Abort.
-Print Assumptions glu_rel_exp_pi.
 
 #[export]
 Hint Resolve glu_rel_exp_pi : mctt.
@@ -133,8 +131,6 @@ Proof.
   simplify_evals.
   mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/FunctionCases.v - glu_rel_exp_of_pi>>>". Abort.
-Print Assumptions glu_rel_exp_of_pi.
 
 Lemma glu_rel_exp_fn_helper : forall {Γ M A B i},
     {{ Γ ⊩ A : Type@i }} ->

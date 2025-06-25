@@ -15,8 +15,6 @@ Proof.
   functional_nbe_rewrite_clear.
   reflexivity.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - idempotent_nbe_ty>>>". Abort.
-Print Assumptions idempotent_nbe_ty.
 
 #[export]
 Hint Resolve idempotent_nbe_ty : mctt.
@@ -37,8 +35,6 @@ Proof.
   functional_read_rewrite_clear.
   etransitivity; [| symmetry]; eauto.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - adjust_exp_eq_level>>>". Abort.
-Print Assumptions adjust_exp_eq_level.
 
 Lemma exp_eq_pi_inversion : forall {Γ A B A' B' i},
     {{ Γ ⊢ Π A B ≈ Π A' B' : Type@i }} ->
@@ -65,8 +61,6 @@ Proof.
   split; [mauto 3 |].
   etransitivity; [| symmetry]; mauto 2.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - exp_eq_pi_inversion>>>". Abort.
-Print Assumptions exp_eq_pi_inversion.
 
 Lemma nf_of_pi : forall {Γ M A B},
     {{ Γ ⊢ M : Π A B }} ->
@@ -78,8 +72,6 @@ Proof.
   dir_inversion_clear_by_head read_nf.
   do 2 eexists; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - nf_of_pi>>>". Abort.
-Print Assumptions nf_of_pi.
 
 #[export]
 Hint Resolve nf_of_pi : mctt.
@@ -88,8 +80,6 @@ Theorem canonical_form_of_pi : forall {M A B},
     {{ ⋅ ⊢ M : Π A B }} ->
     exists W1 W2, nbe {{{ ⋅ }}} M {{{ Π A B }}} n{{{ λ W1 W2 }}}.
 Proof. mauto 3. Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - canonical_form_of_pi>>>". Abort.
-Print Assumptions canonical_form_of_pi.
 
 #[export]
 Hint Resolve canonical_form_of_pi : mctt.
@@ -118,8 +108,7 @@ Proof with mautosolve 4.
   - eassert ({{ ⋅ ⊢ ^_ : ℕ }} /\ {{ ⋅ ⊢ ℕ ⊆ ℕ }}) as [? _]...
   - match_by_head1 (wf_exp {{{ ⋅ }}} {{{ ℕ }}}) ltac:(fun H => contradict H)...
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - canonical_form_of_nat>>>". Abort.
-Print Assumptions canonical_form_of_nat.
+
 #[export]
 Hint Resolve canonical_form_of_nat : mctt.
 
@@ -139,8 +128,6 @@ Proof with mautosolve 4.
     gen_presups;
     match_by_head1 (wf_exp {{{ ⋅ }}} {{{ Type@i }}}) ltac:(fun H => contradict H)...
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - canonical_form_of_typ>>>". Abort.
-Print Assumptions canonical_form_of_typ.
 
 #[export]
 Hint Resolve canonical_form_of_typ : mctt.
@@ -181,8 +168,6 @@ Proof with (congruence + firstorder (mautosolve 4 + lia)).
   - right; right.
     do 4 eexists...
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - subtyp_spec>>>". Abort.
-Print Assumptions subtyp_spec.
 
 #[export]
 Hint Resolve subtyp_spec : mctt.
@@ -208,8 +193,6 @@ Proof with (congruence + mautosolve 3).
     assert {{ ⋅, Type@i ⊢ Type@i ≈ Π ^_ ^_ : Type@_ }} by mauto 3.
     assert ({{{ Π ^_ ^_ }}} = {{{ Type@i }}}) by mauto 3...
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - consistency_ne_helper>>>". Abort.
-Print Assumptions consistency_ne_helper.
 
 Theorem consistency : forall {i} M,
     ~ {{ ⋅ ⊢ M : Π Type@i #0 }}.
@@ -237,5 +220,3 @@ Proof with (congruence + mautosolve 3).
     assert {{ ^_ ⊢ B ⊆ #0 }} by (etransitivity; [| eapply ctxeq_subtyp]; mauto 4).
     eapply consistency_ne_helper...
 Qed.
-Goal True. idtac "<<<./Core/Semantic/Consequences.v - consistency>>>". Abort.
-Print Assumptions consistency.

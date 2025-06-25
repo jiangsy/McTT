@@ -105,8 +105,6 @@ Proof.
     functional_read_rewrite_clear.
     mauto 2.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Subtyping/Lemmas.v - alg_subtyping_complete>>>". Abort.
-Print Assumptions alg_subtyping_complete.
 
 Lemma alg_subtyping_sound : forall Γ A B i,
     {{ Γ ⊢a A ⊆ B }} ->
@@ -125,5 +123,3 @@ Proof.
   transitivity B'; [eassumption |].
   mauto.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Subtyping/Lemmas.v - alg_subtyping_sound>>>". Abort.
-Print Assumptions alg_subtyping_sound.

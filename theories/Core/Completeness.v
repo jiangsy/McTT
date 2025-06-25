@@ -22,6 +22,8 @@ Proof with mautosolve.
   destruct_by_head rel_exp.
   unshelve epose proof (per_elem_then_per_top _ _ (length Γ)) as [? []]; shelve_unifiable...
 Qed.
+Goal True. idtac "<<<./Core/Completeness.v - completeness>>>". Abort.
+Print Assumptions completeness.
 
 Lemma completeness_ty : forall {Γ i A A'},
     {{ Γ ⊢ A ≈ A' : Type@i }} ->

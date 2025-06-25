@@ -82,8 +82,6 @@ Proof.
     assert {{ Γ ⊢ A ≈ B : Type@i }} as <- by mauto 2 using soundness_ty'.
     mauto 3.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_sound>>>". Abort.
-Print Assumptions alg_type_sound.
 
 Lemma alg_type_check_sound : forall {Γ i A M},
     {{ Γ ⊢a M ⟸ A }} ->
@@ -93,16 +91,12 @@ Lemma alg_type_check_sound : forall {Γ i A M},
 Proof.
   pose proof alg_type_sound; intuition.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_check_sound>>>". Abort.
-Print Assumptions alg_type_check_sound.
 
 Lemma alg_type_infer_sound : forall {Γ A M},
     {{ Γ ⊢a M ⟹ A }} -> {{ ⊢ Γ }} -> {{ Γ ⊢ M : A }}.
 Proof.
   pose proof alg_type_sound; intuition.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_infer_sound>>>". Abort.
-Print Assumptions alg_type_infer_sound.
 
 Lemma alg_type_infer_normal : forall {Γ A A' M},
     {{ ⊢ Γ }} ->
@@ -143,8 +137,6 @@ Proof with (f_equiv; mautosolve 4).
     assert {{ Γ ⊢ B[Id,,N] : Type@i }} by mauto 3...
   - assert (exists i, {{ Γ ⊢ A : Type@i }}) as [i] by mauto 2...
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_infer_normal>>>". Abort.
-Print Assumptions alg_type_infer_normal.
 
 #[export]
 Hint Resolve alg_type_infer_normal : mctt.
@@ -164,8 +156,6 @@ Proof.
   inversion Hnfsub; subst; [contradiction |].
   firstorder.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_check_typ_implies_alg_type_infer_typ>>>". Abort.
-Print Assumptions alg_type_check_typ_implies_alg_type_infer_typ.
 
 #[export]
 Hint Resolve alg_type_check_typ_implies_alg_type_infer_typ : mctt.
@@ -205,8 +195,6 @@ Proof.
   assert (nbe_ty {{{ Γ, A }}} B0 B0) by mauto 4 using ctxeq_nbe_ty_eq'.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_check_pi_implies_alg_type_infer_pi>>>". Abort.
-Print Assumptions alg_type_check_pi_implies_alg_type_infer_pi.
 
 #[export]
 Hint Resolve alg_type_check_pi_implies_alg_type_infer_pi : mctt.
@@ -220,8 +208,6 @@ Proof.
   assert {{ Γ0 ⊢a B ⊆ A' }} by mauto 3 using alg_subtyping_complete.
   mauto 3 using alg_subtyping_trans.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_check_subtyp>>>". Abort.
-Print Assumptions alg_type_check_subtyp.
 
 #[export]
 Hint Resolve alg_type_check_subtyp : mctt.
@@ -233,8 +219,6 @@ Corollary alg_type_check_conv : forall {Γ i A A' M},
 Proof.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_check_conv>>>". Abort.
-Print Assumptions alg_type_check_conv.
 
 #[export]
 Hint Resolve alg_type_check_conv : mctt.
@@ -287,8 +271,6 @@ Proof.
   - assert (exists W, nbe_ty Γ A W /\ {{ Γ ⊢ A ≈ W : Type@i }}) as [W []] by (eapply soundness_ty; mauto 3).
     econstructor; mauto 4 using alg_subtyping_complete.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_check_complete>>>". Abort.
-Print Assumptions alg_type_check_complete.
 
 #[export]
 Hint Resolve alg_type_check_complete : mctt.
@@ -303,8 +285,6 @@ Proof.
   inversion_clear Hcheck.
   firstorder.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_infer_complete>>>". Abort.
-Print Assumptions alg_type_infer_complete.
 
 #[export]
 Hint Resolve alg_type_infer_complete : mctt.
@@ -316,8 +296,6 @@ Corollary alg_type_infer_typ_complete : forall {Γ i A},
 Proof.
   mauto 4 using alg_type_check_complete.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_infer_typ_complete>>>". Abort.
-Print Assumptions alg_type_infer_typ_complete.
 
 #[export]
 Hint Resolve alg_type_infer_typ_complete : mctt.
@@ -329,8 +307,6 @@ Corollary alg_type_infer_pi_complete : forall {Γ i A},
 Proof.
   mauto 4 using alg_type_check_complete.
 Qed.
-Goal True. idtac "<<<./Algorithmic/Typing/Lemmas.v - alg_type_infer_pi_complete>>>". Abort.
-Print Assumptions alg_type_infer_pi_complete.
 
 #[export]
 Hint Resolve alg_type_infer_pi_complete : mctt.
