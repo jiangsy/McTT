@@ -40,7 +40,7 @@ Ltac destruct_rel_mod_eval_nouip :=
     | H : (forall c c' (equiv_c_c' : {{ Dom c ≈ c' ∈ ?in_rel }}), rel_mod_eval _ _ _ _ _ _) |- _ =>
         destruct_rel_by_assumption in_rel H; mark H
     | H : rel_mod_eval _ _ _ _ _ _ |- _ =>
-        inversion H; subst
+        dependent inversion_clear H
     end;
   unmark_all.
 Ltac destruct_rel_mod_app_nouip :=
@@ -49,7 +49,7 @@ Ltac destruct_rel_mod_app_nouip :=
     | H : (forall c c' (equiv_c_c' : {{ Dom c ≈ c' ∈ ?in_rel }}), rel_mod_app _ _ _ _ _) |- _ =>
         destruct_rel_by_assumption in_rel H; mark H
     | H : rel_mod_app _ _ _ _ _ |- _ =>
-        inversion H; subst
+        dependent inversion_clear H
     end;
   unmark_all.
 Ltac destruct_rel_typ :=
@@ -71,6 +71,7 @@ Ltac basic_invert_per_univ_elem H :=
 
 Ltac basic_invert_per_univ_elem_nouip H :=
   progress simp per_univ_elem in H;
+  (* TODO: change the following to dependent inversion_clear H fails some proofs currently *)
   inversion H; subst;
   try rewrite <- per_univ_elem_equation_1 in *.
 
