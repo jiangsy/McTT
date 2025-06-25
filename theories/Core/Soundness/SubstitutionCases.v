@@ -86,8 +86,6 @@ Proof.
   enough {{ Δ ⊢s (σ1 ∘ σ2) ∘ σ ≈ σ1 ∘ (σ2 ∘ σ) : Γ3 }} as -> by eassumption.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/SubstitutionCases.v - glu_rel_sub_compose>>>". Abort.
-Print Assumptions glu_rel_sub_compose.
 
 #[export]
 Hint Resolve glu_rel_sub_compose : mctt.
@@ -116,7 +114,7 @@ Proof.
     destruct_glu_rel_sub_with_sub.
     destruct_glu_rel_exp_with_sub.
     simplify_evals.
-    match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+    match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
     apply_predicate_equivalence.
     unfold univ_glu_exp_pred' in *.
     destruct_conjs.
@@ -145,8 +143,6 @@ Proof.
       mautosolve 3.
     + enough {{ Δ0 ⊢s Wk∘((σ,,M)∘σ0) ≈ σ∘σ0 : Δ }} as ->; eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/SubstitutionCases.v - glu_rel_sub_extend>>>". Abort.
-Print Assumptions glu_rel_sub_extend.
 
 #[export]
 Hint Resolve glu_rel_sub_extend : mctt.

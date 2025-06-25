@@ -9,6 +9,11 @@ Ltac basic_invert_glu_univ_elem H :=
   dependent destruction H;
   try rewrite <- glu_univ_elem_equation_1 in *.
 
+Ltac basic_invert_glu_univ_elem_nouip H :=
+  progress simp glu_univ_elem in H;
+  inversion H; subst;
+  try rewrite <- glu_univ_elem_equation_1 in *.
+
 Ltac basic_glu_univ_elem_econstructor :=
   progress simp glu_univ_elem;
   econstructor;

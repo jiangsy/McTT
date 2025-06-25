@@ -129,7 +129,7 @@ Proof.
     progressive_inversion.
     transitivity {{{ Type@j[σ] }}}; mauto 4.
   - handle_functional_glu_univ_elem.
-    match_by_head glu_univ_elem invert_glu_univ_elem.
+    match_by_head glu_univ_elem invert_glu_univ_elem_nouip.
     clear_dups.
     apply_equiv_left.
     repeat split; eauto.
@@ -159,7 +159,7 @@ Proof.
     progressive_inversion.
     transitivity {{{ ℕ[σ] }}}; mauto 3.
   - handle_functional_glu_univ_elem.
-    match_by_head glu_univ_elem invert_glu_univ_elem.
+    match_by_head glu_univ_elem invert_glu_univ_elem_nouip.
     apply_equiv_left.
     repeat split; eauto.
     econstructor; trivial.
@@ -312,8 +312,6 @@ Proof.
       specialize (H11 (length Δ)) as [? []].
       firstorder.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/Realizability.v - realize_glu_univ_elem_gen>>>". Abort.
-Print Assumptions realize_glu_univ_elem_gen.
 
 Corollary realize_glu_typ_top : forall a i P El,
     {{ DG a ∈ glu_univ_elem i ↘ P ↘ El }} ->
@@ -327,8 +325,6 @@ Proof.
   simpl in *. destruct_all.
   eapply realize_glu_univ_elem_gen; eauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/Realizability.v - realize_glu_typ_top>>>". Abort.
-Print Assumptions realize_glu_typ_top.
 
 Theorem realize_glu_elem_bot : forall a i P El,
     {{ DG a ∈ glu_univ_elem i ↘ P ↘ El }} ->
@@ -339,8 +335,6 @@ Proof.
   intros.
   eapply realize_glu_univ_elem_gen; eauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/Realizability.v - realize_glu_elem_bot>>>". Abort.
-Print Assumptions realize_glu_elem_bot.
 
 Theorem realize_glu_elem_top : forall a i P El,
     {{ DG a ∈ glu_univ_elem i ↘ P ↘ El }} ->
@@ -355,8 +349,6 @@ Proof.
   eapply realize_glu_univ_elem_gen; eauto.
   eapply glu_univ_elem_per_elem; eauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/Realizability.v - realize_glu_elem_top>>>". Abort.
-Print Assumptions realize_glu_elem_top.
 
 #[export]
 Hint Resolve realize_glu_typ_top realize_glu_elem_top : mctt.
@@ -370,5 +362,3 @@ Proof.
   eapply realize_glu_elem_bot; mauto 4.
   eauto using var_glu_elem_bot.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/Realizability.v - var0_glu_elem>>>". Abort.
-Print Assumptions var0_glu_elem.

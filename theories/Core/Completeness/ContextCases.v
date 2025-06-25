@@ -40,8 +40,6 @@ Proof with intuition.
     mauto.
   - apply Equivalence_Reflexive.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/ContextCases.v - rel_ctx_extend>>>". Abort.
-Print Assumptions rel_ctx_extend.
 
 Lemma rel_ctx_extend' : forall {Γ A i},
     {{ Γ ⊨ A : Type@i }} ->
@@ -52,8 +50,6 @@ Proof.
   destruct H as [? []].
   eexists. eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/ContextCases.v - rel_ctx_extend'>>>". Abort.
-Print Assumptions rel_ctx_extend'.
 
 #[export]
 Hint Resolve rel_ctx_extend rel_ctx_extend' : mctt.
@@ -78,8 +74,6 @@ Proof.
   simplify_evals.
   eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Completeness/ContextCases.v - rel_ctx_sub_extend>>>". Abort.
-Print Assumptions rel_ctx_sub_extend.
 
 #[export]
 Hint Resolve rel_ctx_sub_empty rel_ctx_sub_extend : mctt.

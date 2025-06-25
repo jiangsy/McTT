@@ -70,7 +70,7 @@ Proof with mautosolve.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   (on_all_hyp: destruct_rel_by_assumption env_relΔ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp...
 Qed.
 
@@ -127,8 +127,6 @@ Qed.
 #[export]
 Hint Resolve rel_sub_compose_assoc : mctt.
 
-Axiom test : False.
-
 Lemma rel_sub_extend_compose : forall {Γ τ Γ' M σ Γ'' A i},
     {{ Γ' ⊨s σ : Γ'' }} ->
     {{ Γ'' ⊨ A : Type@i }} ->
@@ -171,7 +169,7 @@ Proof with mautosolve.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ').
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   econstructor...
 Qed.

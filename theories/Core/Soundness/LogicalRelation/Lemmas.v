@@ -53,8 +53,6 @@ Proof with mautosolve 4.
   assert {{ Γ ⊢ A'[Id] ≈ V : Type@(max i j) }} by mauto 4 using lift_exp_eq_max_right.
   autorewrite with mctt in *...
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_typ_unique_upto_exp_eq>>>". Abort.
-Print Assumptions glu_univ_elem_typ_unique_upto_exp_eq.
 
 #[export]
 Hint Resolve glu_univ_elem_typ_unique_upto_exp_eq : mctt.
@@ -70,8 +68,6 @@ Proof with mautosolve 4.
   intros.
   replace j with (max i j) by lia...
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_typ_unique_upto_exp_eq_ge>>>". Abort.
-Print Assumptions glu_univ_elem_typ_unique_upto_exp_eq_ge.
 
 #[export]
 Hint Resolve glu_univ_elem_typ_unique_upto_exp_eq_ge : mctt.
@@ -82,8 +78,6 @@ Lemma glu_univ_elem_typ_unique_upto_exp_eq' : forall {i a P El Γ A A'},
     {{ Γ ⊢ A' ® P }} ->
     {{ Γ ⊢ A ≈ A' : Type@i }}.
 Proof. mautosolve 4. Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_typ_unique_upto_exp_eq'>>>". Abort.
-Print Assumptions glu_univ_elem_typ_unique_upto_exp_eq'.
 
 #[export]
 Hint Resolve glu_univ_elem_typ_unique_upto_exp_eq' : mctt.
@@ -101,8 +95,6 @@ Proof with mautosolve 4.
   assert {{ DG a ∈ glu_univ_elem i ↘ P' ↘ El' }} by (setoid_rewrite Hper; eassumption).
   handle_functional_glu_univ_elem...
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_per_univ_elem_typ_escape>>>". Abort.
-Print Assumptions glu_univ_elem_per_univ_elem_typ_escape.
 
 #[export]
 Hint Resolve glu_univ_elem_per_univ_elem_typ_escape : mctt.
@@ -118,8 +110,6 @@ Proof.
   intros * [] **...
   mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_per_univ_typ_escape>>>". Abort.
-Print Assumptions glu_univ_elem_per_univ_typ_escape.
 
 #[export]
 Hint Resolve glu_univ_elem_per_univ_typ_escape : mctt.
@@ -146,8 +136,6 @@ Proof.
   assert {{ DF a ≈ a ∈ per_univ_elem j ↘ R }} by mauto.
   mauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_cumu_ge>>>". Abort.
-Print Assumptions glu_univ_elem_cumu_ge.
 
 #[export]
 Hint Resolve glu_univ_elem_cumu_ge : mctt.
@@ -266,8 +254,7 @@ Section glu_univ_elem_cumulativity.
     - destruct_by_head neut_glu_exp_pred.
       econstructor...
   Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_cumulativity_ge>>>". Abort.
-Print Assumptions glu_univ_elem_cumulativity_ge.
+
 End glu_univ_elem_cumulativity.
 
 Corollary glu_univ_elem_typ_cumu_ge : forall {i j a P P' El El' Γ A},
@@ -280,8 +267,6 @@ Proof.
   intros.
   eapply glu_univ_elem_cumulativity_ge; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_typ_cumu_ge>>>". Abort.
-Print Assumptions glu_univ_elem_typ_cumu_ge.
 
 Corollary glu_univ_elem_typ_cumu_max_left : forall {i j a P P' El El' Γ A},
     {{ DG a ∈ glu_univ_elem i ↘ P ↘ El }} ->
@@ -293,8 +278,6 @@ Proof.
   assert (i <= max i j) by lia.
   eapply glu_univ_elem_typ_cumu_ge; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_typ_cumu_max_left>>>". Abort.
-Print Assumptions glu_univ_elem_typ_cumu_max_left.
 
 Corollary glu_univ_elem_typ_cumu_max_right : forall {i j a P P' El El' Γ A},
     {{ DG a ∈ glu_univ_elem j ↘ P ↘ El }} ->
@@ -306,8 +289,6 @@ Proof.
   assert (j <= max i j) by lia.
   eapply glu_univ_elem_typ_cumu_ge; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_typ_cumu_max_right>>>". Abort.
-Print Assumptions glu_univ_elem_typ_cumu_max_right.
 
 Corollary glu_univ_elem_exp_cumu_ge : forall {i j a P P' El El' Γ A M m},
     i <= j ->
@@ -319,8 +300,6 @@ Proof.
   intros. gen m M A Γ.
   eapply glu_univ_elem_cumulativity_ge; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_exp_cumu_ge>>>". Abort.
-Print Assumptions glu_univ_elem_exp_cumu_ge.
 
 Corollary glu_univ_elem_exp_cumu_max_left : forall {i j a P P' El El' Γ A M m},
     {{ DG a ∈ glu_univ_elem i ↘ P ↘ El }} ->
@@ -332,8 +311,6 @@ Proof.
   assert (i <= max i j) by lia.
   eapply glu_univ_elem_exp_cumu_ge; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_exp_cumu_max_left>>>". Abort.
-Print Assumptions glu_univ_elem_exp_cumu_max_left.
 
 Corollary glu_univ_elem_exp_cumu_max_right : forall {i j a P P' El El' Γ A M m},
     {{ DG a ∈ glu_univ_elem j ↘ P ↘ El }} ->
@@ -345,8 +322,6 @@ Proof.
   assert (j <= max i j) by lia.
   eapply glu_univ_elem_exp_cumu_ge; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_exp_cumu_max_right>>>". Abort.
-Print Assumptions glu_univ_elem_exp_cumu_max_right.
 
 Corollary glu_univ_elem_exp_lower :  forall {i j a P P' El El' Γ A M m},
     i <= j ->
@@ -359,8 +334,6 @@ Proof.
   intros * ? ? ?. gen m M A Γ.
   eapply glu_univ_elem_cumulativity_ge; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_exp_lower>>>". Abort.
-Print Assumptions glu_univ_elem_exp_lower.
 
 Corollary glu_univ_elem_exp_lower_max_left :  forall {i j a P P' El El' Γ A M m},
     {{ DG a ∈ glu_univ_elem i ↘ P ↘ El }} ->
@@ -373,8 +346,6 @@ Proof.
   assert (i <= max i j) by lia.
   eapply glu_univ_elem_exp_lower; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_exp_lower_max_left>>>". Abort.
-Print Assumptions glu_univ_elem_exp_lower_max_left.
 
 Corollary glu_univ_elem_exp_lower_max_right :  forall {i j a P P' El El' Γ A M m},
     {{ DG a ∈ glu_univ_elem j ↘ P ↘ El }} ->
@@ -387,8 +358,6 @@ Proof.
   assert (j <= max i j) by lia.
   eapply glu_univ_elem_exp_lower; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_exp_lower_max_right>>>". Abort.
-Print Assumptions glu_univ_elem_exp_lower_max_right.
 
 Lemma glu_univ_elem_exp_conv : forall {i j k a a' P P' El El' Γ A M m},
     {{ Dom a ≈ a' ∈ per_univ k }} ->
@@ -407,8 +376,6 @@ Proof.
   assert {{ Γ ⊢ M : A ® m ∈ Eltop }} by (eapply glu_univ_elem_exp_cumu_max_right; [| | eassumption]; eassumption).
   eapply glu_univ_elem_exp_lower_max_left; mauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_exp_conv>>>". Abort.
-Print Assumptions glu_univ_elem_exp_conv.
 
 Lemma glu_univ_elem_per_subtyp_typ_escape : forall {i a a' P P' El El' Γ A A'},
     {{ Sub a <: a' at i }} ->
@@ -492,8 +459,6 @@ Proof.
     }
     mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_per_subtyp_typ_escape>>>". Abort.
-Print Assumptions glu_univ_elem_per_subtyp_typ_escape.
 
 #[export]
 Hint Resolve glu_univ_elem_per_subtyp_typ_escape : mctt.
@@ -579,8 +544,6 @@ Proof.
       assert {{ Δ ⊢ OT'[σ,,N] ⊆ OT[σ,,N] }} by mauto 3.
       intuition.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_per_subtyp_trm_if>>>". Abort.
-Print Assumptions glu_univ_elem_per_subtyp_trm_if.
 
 Lemma glu_univ_elem_per_subtyp_trm_conv : forall {i j k a a' P P' El El' Γ A A' M m},
     {{ Sub a <: a' at i }} ->
@@ -601,8 +564,6 @@ Proof.
   assert {{ Γ ⊢ M : A' ® m ∈ Eltop' }} by (eapply glu_univ_elem_per_subtyp_trm_if; mauto).
   eapply glu_univ_elem_exp_lower; mauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_univ_elem_per_subtyp_trm_conv>>>". Abort.
-Print Assumptions glu_univ_elem_per_subtyp_trm_conv.
 
 (** *** Lemmas for [glu_rel_typ_with_sub] and [glu_rel_exp_with_sub] *)
 
@@ -812,8 +773,6 @@ Proof.
   eexists; eapply glu_univ_elem_per_elem; mauto using per_univ_elem_cumu_max_right.
   eapply glu_univ_elem_exp_cumu_max_left; [| | eassumption]; eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_ctx_env_per_env>>>". Abort.
-Print Assumptions glu_ctx_env_per_env.
 
 Lemma glu_ctx_env_wf_ctx : forall {Γ Sb},
     {{ EG Γ ∈ glu_ctx_env ↘ Sb }} ->
@@ -845,8 +804,6 @@ Proof.
   enough {{ ⊨ Γ }} by eassumption.
   mauto using completeness_fundamental_ctx.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_ctx_env_per_ctx_env>>>". Abort.
-Print Assumptions glu_ctx_env_per_ctx_env.
 
 #[export]
 Hint Resolve glu_ctx_env_per_ctx_env : mctt.
@@ -902,8 +859,6 @@ Proof.
   autorewrite with mctt.
   eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_ctx_env_resp_per_ctx_helper>>>". Abort.
-Print Assumptions glu_ctx_env_resp_per_ctx_helper.
 
 Corollary functional_glu_ctx_env : forall {Γ Sb Sb'},
     {{ EG Γ ∈ glu_ctx_env ↘ Sb }} ->
@@ -914,8 +869,6 @@ Proof.
   assert {{ ⊢ Γ ≈ Γ }} by mauto using glu_ctx_env_wf_ctx.
   split; eapply glu_ctx_env_resp_per_ctx_helper; eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - functional_glu_ctx_env>>>". Abort.
-Print Assumptions functional_glu_ctx_env.
 
 Ltac apply_functional_glu_ctx_env1 :=
   let tactic_error o1 o2 := fail 2 "functional_glu_ctx_env biconditional between" o1 "and" o2 "cannot be solved" in
@@ -960,8 +913,6 @@ Proof.
   split; intros [];
     econstructor; intuition.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_ctx_env_cons_clean_inversion>>>". Abort.
-Print Assumptions glu_ctx_env_cons_clean_inversion.
 
 Ltac invert_glu_ctx_env H :=
   (unshelve eapply (glu_ctx_env_cons_clean_inversion _) in H; shelve_unifiable; [eassumption |];
@@ -1006,8 +957,6 @@ Proof.
   autorewrite with mctt.
   eassumption.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_ctx_env_subtyp_sub_if>>>". Abort.
-Print Assumptions glu_ctx_env_subtyp_sub_if.
 
 Lemma glu_ctx_env_sub_monotone : forall Γ Sb,
     {{ EG Γ ∈ glu_ctx_env ↘ Sb }} ->
@@ -1089,8 +1038,6 @@ Proof.
     assert {{ Γ, A ⊢s Id∘Wk ≈ Wk∘Id : Γ }} as <- by (transitivity {{{ Wk }}}; mauto 3).
     eapply glu_ctx_env_sub_monotone; mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - initial_env_glu_rel_exp>>>". Abort.
-Print Assumptions initial_env_glu_rel_exp.
 
 (** *** Tactics for [glu_rel_*] *)
 
@@ -1148,8 +1095,6 @@ Proof.
   handle_functional_glu_ctx_env.
   mauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_rel_exp_clean_inversion1>>>". Abort.
-Print Assumptions glu_rel_exp_clean_inversion1.
 
 Definition glu_rel_exp_clean_inversion2_result i Sb M A :=
   forall Δ σ ρ,
@@ -1177,8 +1122,6 @@ Proof.
   econstructor; mauto 3.
   eapply glu_univ_elem_exp_conv; revgoals; mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_rel_exp_clean_inversion2>>>". Abort.
-Print Assumptions glu_rel_exp_clean_inversion2.
 
 Ltac invert_glu_rel_exp H :=
   (unshelve eapply (glu_rel_exp_clean_inversion2 _ _) in H; shelve_unifiable; [eassumption | eassumption |];
@@ -1201,8 +1144,6 @@ Proof.
   destruct_glu_rel_exp_with_sub.
   enough {{ Γ ⊢ M[Id] : A[Id] }} as HId; mauto 3 using glu_univ_elem_trm_escape.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_rel_exp_to_wf_exp>>>". Abort.
-Print Assumptions glu_rel_exp_to_wf_exp.
 
 #[export]
 Hint Resolve glu_rel_exp_to_wf_exp : mctt.
@@ -1223,8 +1164,6 @@ Proof.
   rewrite_predicate_equivalence_right.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_rel_sub_clean_inversion1>>>". Abort.
-Print Assumptions glu_rel_sub_clean_inversion1.
 
 Lemma glu_rel_sub_clean_inversion2 : forall {Γ τ Γ' Sb'},
     {{ EG Γ' ∈ glu_ctx_env ↘ Sb' }} ->
@@ -1242,8 +1181,6 @@ Proof.
   rewrite_predicate_equivalence_right.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_rel_sub_clean_inversion2>>>". Abort.
-Print Assumptions glu_rel_sub_clean_inversion2.
 
 Lemma glu_rel_sub_clean_inversion3 : forall {Γ Sb τ Γ' Sb'},
     {{ EG Γ ∈ glu_ctx_env ↘ Sb }} ->
@@ -1259,8 +1196,6 @@ Proof.
   rewrite_predicate_equivalence_right.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_rel_sub_clean_inversion3>>>". Abort.
-Print Assumptions glu_rel_sub_clean_inversion3.
 
 Ltac invert_glu_rel_sub H :=
   (unshelve eapply (glu_rel_sub_clean_inversion3 _ _) in H; shelve_unifiable; [eassumption | eassumption |])
@@ -1284,8 +1219,6 @@ Proof.
   destruct_glu_rel_sub_with_sub.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/LogicalRelation/Lemmas.v - glu_rel_sub_wf_sub>>>". Abort.
-Print Assumptions glu_rel_sub_wf_sub.
 
 #[export]
 Hint Resolve glu_rel_sub_wf_sub : mctt.

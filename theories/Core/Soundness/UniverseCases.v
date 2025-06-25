@@ -34,13 +34,11 @@ Proof.
   split; mauto 4.
   eexists; repeat split; mauto.
   intros.
-  match_by_head1 glu_univ_elem invert_glu_univ_elem.
+  match_by_head1 glu_univ_elem invert_glu_univ_elem_nouip.
   apply_predicate_equivalence.
   cbn.
   mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/UniverseCases.v - glu_rel_exp_typ>>>". Abort.
-Print Assumptions glu_rel_exp_typ.
 
 #[export]
 Hint Resolve glu_rel_exp_typ : mctt.
@@ -54,8 +52,6 @@ Proof.
   assert {{ Γ ⊩ Type@i : Type@(S i) }} by mauto 3.
   eapply glu_rel_exp_clean_inversion2 in HM; mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/UniverseCases.v - glu_rel_exp_clean_inversion2'>>>". Abort.
-Print Assumptions glu_rel_exp_clean_inversion2'.
 
 Ltac invert_glu_rel_exp H ::=
   (unshelve eapply (glu_rel_exp_clean_inversion2' _) in H; shelve_unifiable; [eassumption |];
@@ -77,8 +73,6 @@ Proof.
   assert {{ Γ ⊩ A[σ] : Type@i[σ] }} by mauto 4.
   mauto 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/UniverseCases.v - glu_rel_exp_sub_typ>>>". Abort.
-Print Assumptions glu_rel_exp_sub_typ.
 
 #[export]
 Hint Resolve glu_rel_exp_sub_typ : mctt.

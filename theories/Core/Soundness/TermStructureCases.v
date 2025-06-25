@@ -76,8 +76,6 @@ Proof.
     assert {{ Δ ⊢ #n[Wk∘σ] ≈ #n[Wk][σ] : A[Wk∘σ] }} as <- by mauto 3.
     eapply glu_univ_elem_exp_cumu_max_right; revgoals; mautosolve 4.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/TermStructureCases.v - glu_rel_exp_vlookup>>>". Abort.
-Print Assumptions glu_rel_exp_vlookup.
 
 #[export]
 Hint Resolve glu_rel_exp_vlookup : mctt.
@@ -106,8 +104,6 @@ Proof.
   assert {{ Δ' ⊢ A[σ][τ] ≈ A[σ∘τ] : Type@i }} as -> by mauto 3.
   assert {{ Δ' ⊢ M[σ][τ] ≈ M[σ∘τ] : A[σ∘τ] }} as ->; mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/TermStructureCases.v - glu_rel_exp_sub>>>". Abort.
-Print Assumptions glu_rel_exp_sub.
 
 #[export]
 Hint Resolve glu_rel_exp_sub : mctt.

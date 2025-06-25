@@ -32,8 +32,6 @@ Proof.
   assert (i <= max i k) by lia.
   eapply glu_univ_elem_typ_cumu_ge; revgoals; mauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/SubtypingCases.v - glu_rel_exp_subtyp>>>". Abort.
-Print Assumptions glu_rel_exp_subtyp.
 
 #[export]
 Hint Resolve glu_rel_exp_subtyp : mctt.
@@ -52,8 +50,6 @@ Proof.
   econstructor; mauto.
   eapply glu_ctx_env_subtyp_sub_if; mauto.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/SubtypingCases.v - glu_rel_sub_subtyp>>>". Abort.
-Print Assumptions glu_rel_sub_subtyp.
 
 #[export]
 Hint Resolve glu_rel_sub_subtyp : mctt.
@@ -66,8 +62,6 @@ Lemma glu_rel_exp_conv : forall {Γ M A A' i},
 Proof.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/SubtypingCases.v - glu_rel_exp_conv>>>". Abort.
-Print Assumptions glu_rel_exp_conv.
 
 #[export]
 Hint Resolve glu_rel_exp_conv : mctt.
@@ -80,8 +74,6 @@ Lemma glu_rel_sub_conv : forall {Γ σ Δ Δ'},
 Proof.
   mauto 3.
 Qed.
-Goal True. idtac "<<<./Core/Soundness/SubtypingCases.v - glu_rel_sub_conv>>>". Abort.
-Print Assumptions glu_rel_sub_conv.
 
 #[export]
 Hint Resolve glu_rel_sub_conv : mctt.
