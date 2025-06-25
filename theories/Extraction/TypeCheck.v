@@ -359,6 +359,8 @@ Proof.
   exists Horder.
   dec_complete.
 Qed.
+Goal True. idtac "<<<./Extraction/TypeCheck.v - type_check_complete'>>>". Abort.
+Print Assumptions type_check_complete'.
 
 Lemma type_infer_complete : forall G M A (HG : {{ ⊢ G }}),
     {{ G ⊢a M ⟹ A }} ->
@@ -372,6 +374,8 @@ Proof.
     eexists; reflexivity.
   - contradict H; intuition.
 Qed.
+Goal True. idtac "<<<./Extraction/TypeCheck.v - type_infer_complete>>>". Abort.
+Print Assumptions type_infer_complete.
 
 Section type_check_closed.
   #[local]

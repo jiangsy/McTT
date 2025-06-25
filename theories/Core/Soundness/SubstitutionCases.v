@@ -86,6 +86,8 @@ Proof.
   enough {{ Δ ⊢s (σ1 ∘ σ2) ∘ σ ≈ σ1 ∘ (σ2 ∘ σ) : Γ3 }} as -> by eassumption.
   mauto 3.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/SubstitutionCases.v - glu_rel_sub_compose>>>". Abort.
+Print Assumptions glu_rel_sub_compose.
 
 #[export]
 Hint Resolve glu_rel_sub_compose : mctt.
@@ -143,6 +145,8 @@ Proof.
       mautosolve 3.
     + enough {{ Δ0 ⊢s Wk∘((σ,,M)∘σ0) ≈ σ∘σ0 : Δ }} as ->; eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/SubstitutionCases.v - glu_rel_sub_extend>>>". Abort.
+Print Assumptions glu_rel_sub_extend.
 
 #[export]
 Hint Resolve glu_rel_sub_extend : mctt.

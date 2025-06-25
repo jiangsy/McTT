@@ -19,6 +19,8 @@ Section soundness_fundamental.
   Proof.
     apply syntactic_wf_mut_ind'; mauto 3.
   Qed.
+  Goal True. idtac "<<<./Core/Soundness/FundamentalTheorem.v - soundness_fundamental>>>". Abort.
+  Print Assumptions soundness_fundamental.
 
   #[local]
   Ltac solve_it := pose proof soundness_fundamental; firstorder.

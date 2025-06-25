@@ -24,6 +24,8 @@ Proof.
   invert_rel_typ_body.
   do 2 eexists; repeat split; mauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/FunctionCases.v - rel_exp_of_pi_inversion>>>". Abort.
+Print Assumptions rel_exp_of_pi_inversion.
 
 Lemma rel_exp_of_pi : forall {Γ M M' A B},
     (exists env_rel (_ : {{ EF Γ ≈ Γ ∈ per_ctx_env ↘ env_rel }}) i j,
@@ -111,6 +113,8 @@ Proof with mautosolve.
     reflexivity.
   - solve_refl.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/FunctionCases.v - rel_exp_pi_cong>>>". Abort.
+Print Assumptions rel_exp_pi_cong.
 
 #[export]
 Hint Resolve rel_exp_pi_cong : mctt.
@@ -142,6 +146,8 @@ Proof with mautosolve.
     extract_output_info_with ρσ c ρ'σ' c' env_relΔA...
   - solve_refl.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/FunctionCases.v - rel_exp_pi_sub>>>". Abort.
+Print Assumptions rel_exp_pi_sub.
 
 #[export]
 Hint Resolve rel_exp_pi_sub : mctt.
@@ -175,6 +181,8 @@ Proof with mautosolve.
     destruct_by_head rel_typ.
     handle_per_univ_elem_irrel...
 Qed.
+Goal True. idtac "<<<./Core/Completeness/FunctionCases.v - rel_exp_fn_cong>>>". Abort.
+Print Assumptions rel_exp_fn_cong.
 
 #[export]
 Hint Resolve rel_exp_fn_cong : mctt.
@@ -240,6 +248,8 @@ Proof with intuition.
   eexists.
   split; econstructor; mauto...
 Qed.
+Goal True. idtac "<<<./Core/Completeness/FunctionCases.v - rel_exp_app_cong>>>". Abort.
+Print Assumptions rel_exp_app_cong.
 
 #[export]
 Hint Resolve rel_exp_app_cong : mctt.
@@ -267,6 +277,8 @@ Proof with mautosolve.
   eexists.
   split; econstructor...
 Qed.
+Goal True. idtac "<<<./Core/Completeness/FunctionCases.v - rel_exp_app_sub>>>". Abort.
+Print Assumptions rel_exp_app_sub.
 
 #[export]
 Hint Resolve rel_exp_app_sub : mctt.
@@ -315,6 +327,8 @@ Proof with mautosolve.
   intros.
   (on_all_hyp: destruct_rel_by_assumption in_rel)...
 Qed.
+Goal True. idtac "<<<./Core/Completeness/FunctionCases.v - rel_exp_pi_eta>>>". Abort.
+Print Assumptions rel_exp_pi_eta.
 
 #[export]
 Hint Resolve rel_exp_pi_eta : mctt.

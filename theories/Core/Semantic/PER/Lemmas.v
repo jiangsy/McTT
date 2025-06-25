@@ -657,7 +657,6 @@ Proof.
   lia.
 Qed.
 
-
 Lemma per_elem_subtyping : forall A B i,
     {{ Sub A <: B at i }} ->
     forall R R' a b,
@@ -683,6 +682,8 @@ Proof.
     econstructor; eauto.
     intuition.
 Qed.
+Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_elem_subtyping>>>". Abort.
+Print Assumptions per_elem_subtyping.
 
 Lemma per_elem_subtyping_gen : forall a b i a' b' R R' m n,
     {{ Sub a <: b at i }} ->
@@ -694,6 +695,8 @@ Proof.
   intros.
   eapply per_elem_subtyping; saturate_refl; try eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_elem_subtyping_gen>>>". Abort.
+Print Assumptions per_elem_subtyping_gen.
 
 Lemma per_subtyp_refl1 : forall a b i R,
     {{ DF a ≈ b ∈ per_univ_elem i ↘ R }} ->
@@ -748,6 +751,8 @@ Proof.
       handle_per_univ_elem_irrel.
       intuition.
 Qed.
+Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_subtyp_trans>>>". Abort.
+Print Assumptions per_subtyp_trans.
 
 #[export]
 Hint Resolve per_subtyp_trans : mctt.
@@ -766,6 +771,8 @@ Lemma per_subtyp_transp : forall a b i a' b' R R',
 Proof.
   mauto using per_subtyp_refl1, per_subtyp_refl2.
 Qed.
+Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_subtyp_transp>>>". Abort.
+Print Assumptions per_subtyp_transp.
 
 Lemma per_subtyp_cumu : forall a1 a2 i,
     {{ Sub a1 <: a2 at i }} ->
@@ -1017,6 +1024,8 @@ Proof.
   econstructor; eauto.
   typeclasses eauto.
 Qed.
+Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_ctx_env_cons'>>>". Abort.
+Print Assumptions per_ctx_env_cons'.
 
 #[export]
 Hint Resolve per_ctx_env_cons' : mctt.
@@ -1108,6 +1117,8 @@ Proof.
   - saturate_refl.
     eauto using per_univ_elem_cumu_max_left, per_univ_elem_cumu_max_right.
 Qed.
+Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_ctx_env_subtyping>>>". Abort.
+Print Assumptions per_ctx_env_subtyping.
 
 Lemma per_ctx_subtyp_refl1 : forall Γ Δ R,
     {{ EF Γ ≈ Δ ∈ per_ctx_env ↘ R }} ->
@@ -1159,6 +1170,8 @@ Proof.
     + typeclasses eauto.
     + solve_refl.
 Qed.
+Goal True. idtac "<<<./Core/Semantic/PER/Lemmas.v - per_ctx_subtyp_trans>>>". Abort.
+Print Assumptions per_ctx_subtyp_trans.
 
 #[export]
 Hint Resolve per_ctx_subtyp_trans : mctt.

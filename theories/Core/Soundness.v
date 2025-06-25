@@ -30,6 +30,8 @@ Proof.
   assert {{ Γ ⊢ M ≈ M[Id][Id] : A[Id][Id] }} as -> by mauto.
   mauto.
 Qed.
+Goal True. idtac "<<<./Core/Soundness.v - soundness>>>". Abort.
+Print Assumptions soundness.
 
 Theorem soundness' : forall {Γ M A W},
     {{ Γ ⊢ M : A }} ->
@@ -40,6 +42,8 @@ Proof.
   functional_nbe_rewrite_clear.
   eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness.v - soundness'>>>". Abort.
+Print Assumptions soundness'.
 
 Lemma soundness_ty : forall {Γ i A},
     {{ Γ ⊢ A : Type@i }} ->
@@ -49,6 +53,8 @@ Proof.
   assert (exists W', nbe Γ A {{{ Type@i }}} W' /\ {{ Γ ⊢ A ≈ W' : Type@i }}) as [? [?%nbe_type_to_nbe_ty Heq]] by mauto using soundness.
   firstorder.
 Qed.
+Goal True. idtac "<<<./Core/Soundness.v - soundness_ty>>>". Abort.
+Print Assumptions soundness_ty.
 
 Lemma soundness_ty' : forall {Γ i A B},
     {{ Γ ⊢ A : Type@i }} ->
@@ -60,3 +66,5 @@ Proof.
   functional_nbe_rewrite_clear.
   eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness.v - soundness_ty'>>>". Abort.
+Print Assumptions soundness_ty'.

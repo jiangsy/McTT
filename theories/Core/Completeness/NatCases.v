@@ -310,6 +310,8 @@ Proof.
   do 3 econstructor; mauto.
   repeat econstructor; mauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - eval_natrec_sub_neut>>>". Abort.
+Print Assumptions eval_natrec_sub_neut.
 
 Corollary eval_natrec_neut : forall {Γ env_relΓ MZ MZ' MS MS' A A' i m m'},
     {{ DF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} ->
@@ -332,6 +334,8 @@ Proof.
   simplify_evals.
   mauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - eval_natrec_neut>>>". Abort.
+Print Assumptions eval_natrec_neut.
 
 Lemma eval_natrec_rel : forall {Γ env_relΓ MZ MZ' MS MS' A A' i m m'},
     {{ DF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} ->
@@ -433,6 +437,8 @@ Proof.
     + eexists_rel_exp_of_sub_id_zero.
       eauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - eval_natrec_rel>>>". Abort.
+Print Assumptions eval_natrec_rel.
 
 Lemma rel_exp_natrec_cong_rel_typ: forall {Γ A A' i M M' env_relΓ},
     {{ DF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} ->
@@ -460,6 +466,8 @@ Proof.
   apply rel_exp_implies_rel_typ.
   econstructor; mauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - rel_exp_natrec_cong_rel_typ>>>". Abort.
+Print Assumptions rel_exp_natrec_cong_rel_typ.
 
 Lemma rel_exp_natrec_cong : forall {Γ MZ MZ' MS MS' A A' i M M'},
     {{ Γ, ℕ ⊨ A ≈ A' : Type@i }} ->
@@ -497,6 +505,8 @@ Proof.
   destruct_conjs.
   econstructor; only 1-2: econstructor; mauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - rel_exp_natrec_cong>>>". Abort.
+Print Assumptions rel_exp_natrec_cong.
 
 #[export]
 Hint Resolve rel_exp_natrec_cong : mctt.
@@ -613,6 +623,8 @@ Proof.
     + eexists_rel_exp_of_sub_id_zero.
       eauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - eval_natrec_sub_rel>>>". Abort.
+Print Assumptions eval_natrec_sub_rel.
 
 Lemma rel_exp_natrec_sub_rel_typ: forall {Γ σ Δ A i M env_relΓ},
     {{ DF Γ ≈ Γ ∈ per_ctx_env ↘ env_relΓ }} ->
@@ -635,6 +647,8 @@ Proof.
   handle_per_ctx_env_irrel.
   mauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - rel_exp_natrec_sub_rel_typ>>>". Abort.
+Print Assumptions rel_exp_natrec_sub_rel_typ.
 
 Lemma rel_exp_natrec_sub : forall {Γ σ Δ MZ MS A i M},
     {{ Γ ⊨s σ : Δ }} ->
@@ -675,6 +689,8 @@ Proof.
     by (destruct_conjs; econstructor; mauto).
   mauto 4 using eval_natrec_sub_rel.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - rel_exp_natrec_sub>>>". Abort.
+Print Assumptions rel_exp_natrec_sub.
 
 #[export]
 Hint Resolve rel_exp_natrec_sub : mctt.
@@ -735,6 +751,8 @@ Proof.
   invert_rel_typ_body.
   mauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - rel_exp_nat_beta_succ_rel_typ>>>". Abort.
+Print Assumptions rel_exp_nat_beta_succ_rel_typ.
 
 Lemma rel_exp_nat_beta_succ : forall {Γ MZ MS A i M},
     {{ Γ, ℕ ⊨ A : Type@i }} ->
@@ -767,6 +785,8 @@ Proof.
   dir_inversion_by_head eval_natrec; subst.
   econstructor; mauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/NatCases.v - rel_exp_nat_beta_succ>>>". Abort.
+Print Assumptions rel_exp_nat_beta_succ.
 
 #[export]
 Hint Resolve rel_exp_nat_beta_succ : mctt.

@@ -102,6 +102,8 @@ Proof.
     handle_functional_glu_univ_elem.
     eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/FunctionCases.v - glu_rel_exp_pi>>>". Abort.
+Print Assumptions glu_rel_exp_pi.
 
 #[export]
 Hint Resolve glu_rel_exp_pi : mctt.
@@ -131,6 +133,8 @@ Proof.
   simplify_evals.
   mauto 4.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/FunctionCases.v - glu_rel_exp_of_pi>>>". Abort.
+Print Assumptions glu_rel_exp_of_pi.
 
 Lemma glu_rel_exp_fn_helper : forall {Γ M A B i},
     {{ Γ ⊩ A : Type@i }} ->
@@ -227,6 +231,8 @@ Proof.
     handle_functional_glu_univ_elem.
     mauto 3.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/FunctionCases.v - glu_rel_exp_fn_helper>>>". Abort.
+Print Assumptions glu_rel_exp_fn_helper.
 
 Lemma glu_rel_exp_fn : forall {Γ M A B i},
     {{ Γ ⊩ A : Type@i }} ->
@@ -245,6 +251,8 @@ Proof.
   assert {{ Γ, A ⊩ B : Type@(max i j) }} by mauto 3.
   mauto 3 using glu_rel_exp_fn_helper.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/FunctionCases.v - glu_rel_exp_fn>>>". Abort.
+Print Assumptions glu_rel_exp_fn.
 
 #[export]
 Hint Resolve glu_rel_exp_fn : mctt.
@@ -346,6 +354,8 @@ Proof.
   }
   eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/FunctionCases.v - glu_rel_exp_app_helper>>>". Abort.
+Print Assumptions glu_rel_exp_app_helper.
 
 Lemma glu_rel_exp_app : forall {Γ M N A B i},
     {{ Γ, A ⊩ B : Type@i }} ->
@@ -371,6 +381,8 @@ Proof.
   assert {{ Γ, A ⊩ B : Type@(max i j) }} by mauto 3.
   mauto 2 using glu_rel_exp_app_helper.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/FunctionCases.v - glu_rel_exp_app>>>". Abort.
+Print Assumptions glu_rel_exp_app.
 
 #[export]
 Hint Resolve glu_rel_exp_app : mctt.

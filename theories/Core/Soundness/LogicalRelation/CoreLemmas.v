@@ -283,6 +283,8 @@ Proof.
 
   econstructor; firstorder eauto.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/LogicalRelation/CoreLemmas.v - glu_univ_elem_per_elem>>>". Abort.
+Print Assumptions glu_univ_elem_per_elem.
 
 Lemma glu_univ_elem_trm_typ : forall i P El a,
     {{ DG a ∈ glu_univ_elem i ↘ P ↘ El }} ->

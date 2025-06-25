@@ -73,6 +73,8 @@ Proof with mautosolve.
   invert_rel_typ_body.
   destruct_by_head rel_exp...
 Qed.
+Goal True. idtac "<<<./Core/Completeness/SubstitutionCases.v - rel_sub_extend_cong>>>". Abort.
+Print Assumptions rel_sub_extend_cong.
 
 #[export]
 Hint Resolve rel_sub_extend_cong : mctt.
@@ -153,6 +155,8 @@ Proof with mautosolve.
   destruct_by_head rel_exp.
   econstructor...
 Qed.
+Goal True. idtac "<<<./Core/Completeness/SubstitutionCases.v - rel_sub_extend_compose>>>". Abort.
+Print Assumptions rel_sub_extend_compose.
 
 #[export]
 Hint Resolve rel_sub_extend_compose : mctt.
@@ -283,6 +287,8 @@ Proof.
   econstructor; eauto.
   eapply per_ctx_env_subtyping; eauto.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/SubstitutionCases.v - rel_sub_eq_subtyp>>>". Abort.
+Print Assumptions rel_sub_eq_subtyp.
 
 #[export]
 Hint Resolve rel_sub_eq_subtyp : mctt.

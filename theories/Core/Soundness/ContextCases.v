@@ -22,6 +22,8 @@ Proof.
   eexists.
   econstructor; mauto 3; reflexivity.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/ContextCases.v - glu_rel_ctx_extend>>>". Abort.
+Print Assumptions glu_rel_ctx_extend.
 
 #[export]
 Hint Resolve glu_rel_ctx_extend : mctt.

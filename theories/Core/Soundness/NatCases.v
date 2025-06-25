@@ -44,6 +44,8 @@ Proof.
   assert {{ Γ ⊩ M[σ] : ℕ[σ] }} by mauto 3.
   mautosolve 4.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_exp_sub_nat>>>". Abort.
+Print Assumptions glu_rel_exp_sub_nat.
 
 #[export]
 Hint Resolve glu_rel_exp_sub_nat : mctt.
@@ -57,6 +59,8 @@ Proof.
   assert {{ Γ ⊩ ℕ : Type@0 }} by mauto 3.
   eapply glu_rel_exp_clean_inversion2 in HM; mauto 3.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_exp_clean_inversion2''>>>". Abort.
+Print Assumptions glu_rel_exp_clean_inversion2''.
 
 Ltac invert_glu_rel_exp H ::=
   (unshelve eapply (glu_rel_exp_clean_inversion2'' _) in H; shelve_unifiable; [eassumption |];
@@ -115,6 +119,8 @@ Proof.
   eexists; split; mauto 3.
   econstructor; mauto.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_exp_succ>>>". Abort.
+Print Assumptions glu_rel_exp_succ.
 
 #[export]
 Hint Resolve glu_rel_exp_succ : mctt.
@@ -131,6 +137,8 @@ Proof.
   assert {{ Γ ⊢ ℕ ⊆ ℕ[σ] }} by mautosolve 4.
   assert {{ Γ ⊩ M : ℕ[σ] }}; mautosolve 3.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_sub_extend_nat>>>". Abort.
+Print Assumptions glu_rel_sub_extend_nat.
 
 #[export]
 Hint Resolve glu_rel_sub_extend_nat : mctt.
@@ -188,6 +196,8 @@ Proof.
       by (econstructor; mauto 3).
   bulky_rewrite.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_exp_natrec_zero_helper>>>". Abort.
+Print Assumptions glu_rel_exp_natrec_zero_helper.
 
 Lemma cons_glu_sub_pred_nat_helper : forall {Γ SbΓ Δ σ ρ i M m},
     {{ EG Γ ∈ glu_ctx_env ↘ SbΓ }} ->
@@ -300,6 +310,8 @@ Proof.
   assert {{ Δ ⊢ MS[q (q σ)][Id,,M',,R] ≈ MS[σ,,M',,R] : A[Wk∘Wk,,succ #1][σ,,M',,R] }} as -> by mauto 4.
   eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_exp_natrec_succ_helper>>>". Abort.
+Print Assumptions glu_rel_exp_natrec_succ_helper.
 
 Lemma cons_glu_sub_pred_q_helper : forall {Γ SbΓ Δ σ ρ i A a},
     {{ EG Γ ∈ glu_ctx_env ↘ SbΓ }} ->
@@ -326,6 +338,8 @@ Proof.
     assert {{ Δ, A[σ] ⊢ A[σ∘Wk] ≈ A[σ][Wk] : Type@i }} as -> by mauto 3.
     eapply var0_glu_elem; eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - cons_glu_sub_pred_q_helper>>>". Abort.
+Print Assumptions cons_glu_sub_pred_q_helper.
 
 #[local]
 Hint Resolve cons_glu_sub_pred_q_helper : mctt.
@@ -348,6 +362,8 @@ Proof.
   assert {{ ⊢ Δ, ℕ[σ] ≈ Δ, ℕ }} as <- by mauto 3.
   eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - cons_glu_sub_pred_q_nat_helper>>>". Abort.
+Print Assumptions cons_glu_sub_pred_q_nat_helper.
 
 #[local]
 Hint Resolve cons_glu_sub_pred_q_nat_helper : mctt.
@@ -569,6 +585,8 @@ Proof.
       assert {{ Δ', ℕ, A[q (σ∘τ)] ⊢ A[Wk∘Wk,,succ #1][q (q (σ∘τ))][Id] ≈ A[Wk∘Wk,,succ #1][q (q (σ∘τ))] : Type@i }} as <- by mauto 3.
       mauto 3.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_exp_natrec_neut_helper>>>". Abort.
+Print Assumptions glu_rel_exp_natrec_neut_helper.
 
 Lemma glu_rel_exp_natrec_helper : forall {i Γ SbΓ A MZ MS},
     {{ EG Γ ∈ glu_ctx_env ↘ SbΓ }} ->
@@ -618,6 +636,8 @@ Proof.
   - (** [glu_nat_neut] *)
     mauto 3 using glu_rel_exp_natrec_neut_helper.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_exp_natrec_helper>>>". Abort.
+Print Assumptions glu_rel_exp_natrec_helper.
 
 Lemma glu_rel_exp_natrec : forall {Γ i A MZ MS M},
     {{ Γ, ℕ ⊩ A : Type@i }} ->
@@ -671,6 +691,8 @@ Proof.
   assert {{ Δ ⊢ rec M return A | zero -> MZ | succ -> MS end[σ] ≈ rec M[σ] return A[q σ] | zero -> MZ[σ] | succ -> MS[q (q σ)] end : A[σ,,M[σ]] }} as -> by (econstructor; mauto 3).
   eassumption.
 Qed.
+Goal True. idtac "<<<./Core/Soundness/NatCases.v - glu_rel_exp_natrec>>>". Abort.
+Print Assumptions glu_rel_exp_natrec.
 
 #[export]
 Hint Resolve glu_rel_exp_natrec : mctt.

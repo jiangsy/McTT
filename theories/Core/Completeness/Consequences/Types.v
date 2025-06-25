@@ -24,6 +24,9 @@ Proof with mautosolve.
   match_by_head1 per_univ_elem invert_per_univ_elem.
   reflexivity.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/Consequences/Types.v - exp_eq_typ_implies_eq_level>>>". Abort.
+Print Assumptions exp_eq_typ_implies_eq_level.
+
 #[export]
 Hint Resolve exp_eq_typ_implies_eq_level : mctt.
 
@@ -73,6 +76,9 @@ Proof.
   match_by_head read_ne ltac:(fun H => directed dependent destruction H).
   lia.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/Consequences/Types.v - is_typ_constr_and_exp_eq_var_implies_eq_var>>>". Abort.
+Print Assumptions is_typ_constr_and_exp_eq_var_implies_eq_var.
+
 #[export]
 Hint Resolve is_typ_constr_and_exp_eq_var_implies_eq_var : mctt.
 
@@ -99,6 +105,9 @@ Proof.
   - replace {{{ #x0 }}} with {{{ Type@i }}} by mauto 3 using is_typ_constr_and_exp_eq_var_implies_eq_var.
     reflexivity.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/Consequences/Types.v - is_typ_constr_and_exp_eq_typ_implies_eq_typ>>>". Abort.
+Print Assumptions is_typ_constr_and_exp_eq_typ_implies_eq_typ.
+
 #[export]
 Hint Resolve is_typ_constr_and_exp_eq_typ_implies_eq_typ : mctt.
 
@@ -125,6 +134,8 @@ Proof.
   - replace {{{ #x0 }}} with {{{ ℕ }}} by mauto 3 using is_typ_constr_and_exp_eq_var_implies_eq_var.
     reflexivity.
 Qed.
+Goal True. idtac "<<<./Core/Completeness/Consequences/Types.v - is_typ_constr_and_exp_eq_nat_implies_eq_nat>>>". Abort.
+Print Assumptions is_typ_constr_and_exp_eq_nat_implies_eq_nat.
 
 #[export]
 Hint Resolve is_typ_constr_and_exp_eq_nat_implies_eq_nat : mctt.
