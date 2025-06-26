@@ -106,7 +106,7 @@
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΔ</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>...<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
@@ -184,7 +184,6 @@
 &nbsp;&nbsp;<span class="id" title="tactic">pose</span> <span class="id" title="var">env_relΓ''</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">handle_per_ctx_env_irrel</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">assert</span> <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#881118ddc2efb7df103b812a19ae8468"><span class="id" title="notation">⊨</span></a> <a id="187ce3801a9617a30461c748a2324ec3" class="idref" href="#187ce3801a9617a30461c748a2324ec3"><span class="id" title="binder"><span id="6110726882ce10ba685688e71295d763" class="id"><span id="47a5f07122c7b4f999acf992712607b9" class="id"><span id="d5d01c18475b644c61c4436951d4d1dc" class="id">Γ''</span></span></span></span></a><a class="idref" href="Mctt.Core.Syntactic.Syntax.html#545d14d3749e4214500beb453d7ad50f"><span class="id" title="notation">,</span></a> <a id="A:234" class="idref" href="#A:234"><span class="id" title="binder"><span id="A:235" class="id"><span id="A:238" class="id"><span id="A:239" class="id">A</span></span></span></span></a> <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a> <span class="id" title="keyword">as</span> [] <span class="id" title="tactic">by</span> (<span class="id" title="tactic">eapply</span> <a class="idref" href="Mctt.Core.Completeness.ContextCases.html#rel_ctx_extend"><span class="id" title="lemma">rel_ctx_extend</span></a>; <span class="id" title="tactic">eauto</span>; <span class="id" title="tactic">eexists</span>; <span class="id" title="var">eassumption</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="var">destruct_conjs</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">eexists_rel_sub</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">invert_per_ctx_envs</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">handle_per_ctx_env_irrel</span>.<br/>
@@ -193,7 +192,7 @@
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ'</span>).<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ''</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>...<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
@@ -216,7 +215,7 @@
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ'</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>...<br/>
 <span class="id" title="keyword">Qed</span>.<br/>

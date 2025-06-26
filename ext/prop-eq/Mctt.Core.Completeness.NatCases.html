@@ -51,7 +51,7 @@
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">eassumption</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
@@ -202,7 +202,7 @@
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">mauto</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
@@ -242,7 +242,7 @@
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓℕA</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">mauto</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
@@ -265,7 +265,7 @@
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">eexists</span>; <span class="id" title="tactic">split</span>; <span class="id" title="var">mauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span>.<br/>
@@ -308,7 +308,7 @@
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΔ</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_conjs</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">functional_eval_rewrite_clear</span>.<br/>
@@ -427,7 +427,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">handle_per_ctx_env_irrel</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">on_all_hyp_rev</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span>: <span class="id" title="var">env_relΓ</span> ρ ?ρ0 |- <span class="id" title="var">_</span> =&gt;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rename</span> ρ0 <span class="id" title="var">into</span> ρ'<br/>
@@ -463,7 +463,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">handle_per_ctx_env_irrel</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">on_all_hyp_rev</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span>: <span class="id" title="var">env_relΓ</span> ρ ?ρ0 |- <span class="id" title="var">_</span> =&gt;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rename</span> ρ0 <span class="id" title="var">into</span> ρ'<br/>
@@ -511,7 +511,7 @@
 &nbsp;&nbsp;<span class="id" title="var">handle_per_ctx_env_irrel</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp_rev</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_univ"><span class="id" title="definition">per_univ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Lemmas.html#rel_exp_implies_rel_typ"><span class="id" title="lemma">rel_exp_implies_rel_typ</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
@@ -607,7 +607,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">handle_per_ctx_env_irrel</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">on_all_hyp_rev</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΔ</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span>: <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟦</span></a> <a id="484d9a95d4efc6808607b1907a5807e9" class="idref" href="#484d9a95d4efc6808607b1907a5807e9"><span class="id" title="binder"><span id="317cec26347aad83a68d9580102d6e6b" class="id"><span id="df88231e0b93b517def132659497609a" class="id"><span id="c34d1318be18e393fbcc05a63cda29b7" class="id">σ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟧</span></a><a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">s</span></a> <a id="4ad0c8f9a76244f11051827d42f9ae70" class="idref" href="#4ad0c8f9a76244f11051827d42f9ae70"><span class="id" title="binder"><span id="d464d6fa3d19c267cdc9eeb8672df94f" class="id"><span id="aabc2fd79ddad8b69cfd58b255903dc0" class="id"><span id="8f864e4c82de1c33850199f5ed6e68e8" class="id">ρ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">↘</span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#f5c288b7f3706b329f9e440593194ac6"><span class="id" title="notation">^</span></a>?ρ1 <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">_</span>: <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟦</span></a> <a id="6611194e954b3b78738fe8e7323ffae9" class="idref" href="#6611194e954b3b78738fe8e7323ffae9"><span class="id" title="binder"><span id="f0710c18d9b911b04a4c0a9a0dac833e" class="id"><span id="b1c05e97b714de4b7e562adb9c08398e" class="id"><span id="47ade086d9890ff88cea2e04ee341afd" class="id">σ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟧</span></a><a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">s</span></a> <a id="3d7fa2d3cfcab2d928e5f67d2cc87e30" class="idref" href="#3d7fa2d3cfcab2d928e5f67d2cc87e30"><span class="id" title="binder"><span id="123e23bbe9f4b2ad2eca6d9dbf15f699" class="id"><span id="97146b47d00b6719196d9bd4848fa07a" class="id"><span id="4d6704e4d5c6d8d8c4c9e151170c85f7" class="id">ρ'</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">↘</span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#f5c288b7f3706b329f9e440593194ac6"><span class="id" title="notation">^</span></a>?ρ2 <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a> |- <span class="id" title="var">_</span> =&gt;<br/>
@@ -645,7 +645,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">handle_per_ctx_env_irrel</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΔ</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">on_all_hyp_rev</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΔ</span>).<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span>: <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟦</span></a> <a id="3cbd1ca9fa7242779d8cc922582166e5" class="idref" href="#3cbd1ca9fa7242779d8cc922582166e5"><span class="id" title="binder"><span id="bfadbdeaa378c09fa967818e6a00e268" class="id"><span id="3f51b842530a089e10d381ba8d7843ec" class="id"><span id="434f970d34c28130bcbdc9db9322b055" class="id">σ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟧</span></a><a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">s</span></a> <a id="b96b442405b6de2ab05130099bd41184" class="idref" href="#b96b442405b6de2ab05130099bd41184"><span class="id" title="binder"><span id="5c45f16a6f1f8666b9cd171d24c124e0" class="id"><span id="775f8288707597d8f0374e8b3a47997f" class="id"><span id="eff5a3cd0df5de0f8879cba662115a3a" class="id">ρ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">↘</span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#f5c288b7f3706b329f9e440593194ac6"><span class="id" title="notation">^</span></a>?ρ1 <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">_</span>: <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟦</span></a> <a id="8aa7a812cd568bae0a4fd060fce0d895" class="idref" href="#8aa7a812cd568bae0a4fd060fce0d895"><span class="id" title="binder"><span id="4b575a4dbcff0867234711132e319fe8" class="id"><span id="69fef09a98623d6a4cd377e1cf1efb7b" class="id"><span id="ffd7ecd4b7608522c2a9de40d55f11c9" class="id">σ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟧</span></a><a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">s</span></a> <a id="f2e7eeb0df8f29f3b24d2622014a8e7f" class="idref" href="#f2e7eeb0df8f29f3b24d2622014a8e7f"><span class="id" title="binder"><span id="daa9241f0d45b50fd8500f1745a0ae7d" class="id"><span id="952eccb71b4c733de9ed9e754a4a7c55" class="id"><span id="97d544a2169abca534a11a7cd00c1ca9" class="id">ρ'</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">↘</span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#f5c288b7f3706b329f9e440593194ac6"><span class="id" title="notation">^</span></a>?ρ2 <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a> |- <span class="id" title="var">_</span> =&gt;<br/>
@@ -716,7 +716,7 @@
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΔ</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <span class="id" title="var">_</span>: <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟦</span></a> <a id="fd7213e409585c0d0b9e513c6d751a32" class="idref" href="#fd7213e409585c0d0b9e513c6d751a32"><span class="id" title="binder"><span id="c75edb0ad8b6132f77b7c015dde7dd23" class="id"><span id="a143799676d3e3185d4b5d3c11f6b806" class="id"><span id="30a8f8c70610171db21490c8426a58b8" class="id">σ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">⟧</span></a><a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">s</span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#f5c288b7f3706b329f9e440593194ac6"><span class="id" title="notation">^</span></a>?ρ0 <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#fb4372a57c3d066845b17ca7d0234d9f"><span class="id" title="notation">↘</span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#f5c288b7f3706b329f9e440593194ac6"><span class="id" title="notation">^</span></a>?ρσ0 <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">_</span>: <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#f4703d289d2ad2235fd7bb619e9074fc"><span class="id" title="notation">⟦</span></a> <a id="A:1727" class="idref" href="#A:1727"><span class="id" title="binder"><span id="A:1728" class="id"><span id="A:1731" class="id"><span id="A:1732" class="id">A</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#f4703d289d2ad2235fd7bb619e9074fc"><span class="id" title="notation">⟧</span></a> <a id="c4ee1b1ffb0da54acf6d7395e63071fc" class="idref" href="#c4ee1b1ffb0da54acf6d7395e63071fc"><span class="id" title="binder"><span id="8985e761d11b20a8d5d37a2af691e8f2" class="id"><span id="dd1110df1a0cc7bde71e50833808b8a8" class="id"><span id="ed84b7824315a0c4b990a2c81a55bea3" class="id">ρσ</span></span></span></span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#68d4860157a5f337c13a6d592de51519"><span class="id" title="notation">↦</span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#f5c288b7f3706b329f9e440593194ac6"><span class="id" title="notation">^</span></a>?<span class="id" title="var">m0</span> <a class="idref" href="Mctt.Core.Semantic.Evaluation.Definitions.html#f4703d289d2ad2235fd7bb619e9074fc"><span class="id" title="notation">↘</span></a> <a class="idref" href="Mctt.Core.Semantic.Domain.html#f5c288b7f3706b329f9e440593194ac6"><span class="id" title="notation">^</span></a>?<span class="id" title="var">a0</span> <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a>,<br/>
@@ -759,7 +759,7 @@
 &nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Completeness.LogicalRelation.Definitions.html#rel_exp"><span class="id" title="inductive">rel_exp</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <span class="id" title="var">_</span>: <span class="id" title="var">env_relΓ</span> ρ ?ρ0 |- <span class="id" title="var">_</span> =&gt;<br/>
@@ -796,7 +796,7 @@
 &nbsp;&nbsp;<span class="id" title="var">destruct_conjs</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">handle_per_ctx_env_irrel</span>.<br/>
 &nbsp;&nbsp;(<span class="id" title="var">on_all_hyp_rev</span>: <span class="id" title="var">destruct_rel_by_assumption</span> <span class="id" title="var">env_relΓ</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">mauto</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
@@ -818,7 +818,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">by</span> (<span class="id" title="tactic">eapply</span> <a class="idref" href="Mctt.Core.Completeness.NatCases.html#rel_exp_nat_beta_succ_rel_typ"><span class="id" title="lemma">rel_exp_nat_beta_succ_rel_typ</span></a>; <span class="id" title="var">mauto</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">eexists</span>; <span class="id" title="tactic">split</span>; [<span class="id" title="var">eassumption</span> |].<br/>
 &nbsp;&nbsp;<span class="id" title="var">destruct_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#rel_typ"><span class="id" title="definition">rel_typ</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">invert_rel_typ_body_nouip</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <span class="id" title="var">_</span>: <span class="id" title="var">env_relΓ</span> ρ ?ρ0 |- <span class="id" title="var">_</span> =&gt;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rename</span> ρ0 <span class="id" title="var">into</span> ρ'<br/>

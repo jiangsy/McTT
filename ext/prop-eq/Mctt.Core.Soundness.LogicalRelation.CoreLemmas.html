@@ -343,22 +343,18 @@
 <span class="id" title="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">induction</span> 1 <span class="id" title="keyword">using</span> <a class="idref" href="Mctt.Core.Soundness.LogicalRelation.Definitions.html#glu_univ_elem_ind"><span class="id" title="definition">glu_univ_elem_ind</span></a>; <span class="id" title="tactic">intros</span>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">match_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_univ_elem"><span class="id" title="definition">per_univ_elem</span></a> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="var">directed</span> <span class="id" title="var">invert_per_univ_elem</span> <span class="id" title="var">H</span>);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">match_by_head</span> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_univ_elem"><span class="id" title="definition">per_univ_elem</span></a> <span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt; <span class="id" title="var">directed</span> <span class="id" title="var">invert_per_univ_elem_nouip</span> <span class="id" title="var">H</span>);<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">simpl_glu_rel</span>;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">try</span> <span class="id" title="tactic">fold</span> (<a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_univ"><span class="id" title="definition">per_univ</span></a> <span class="id" title="var">j</span> <span class="id" title="var">m</span> <span class="id" title="var">m</span>);<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">mauto</span> 4.<br/>
 
 <br/>
 &nbsp;&nbsp;- <span class="id" title="tactic">intros</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_rel_mod_app</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_rel_mod_eval</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_rel_mod_app_nouip</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_rel_mod_eval_nouip</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">functional_eval_rewrite_clear</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">do_per_univ_elem_irrel_assert</span>.<br/>
-
-<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">econstructor</span>; <span class="id" title="tactic">firstorder</span> <span class="id" title="tactic">eauto</span>.<br/>
-
-<br/>
 &nbsp;&nbsp;- <span class="id" title="var">handle_per_univ_elem_irrel</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> (<a class="idref" href="Mctt.LibTactics.html#PER_refl1"><span class="id" title="lemma">PER_refl1</span></a> <span class="id" title="var">_</span> <span class="id" title="var">R</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_glu_eq</span>; <span class="id" title="var">saturate_refl_for</span> <span class="id" title="var">R</span>; <span class="id" title="tactic">econstructor</span>; <span class="id" title="var">mauto</span>.<br/>
@@ -814,6 +810,15 @@
 &nbsp;&nbsp;+ <span class="id" title="var">basic_invert_glu_univ_elem</span> <span class="id" title="var">H</span>.<br/>
 
 <br/>
+<span class="comment">(*&nbsp;TODO:&nbsp;unify&nbsp;with&nbsp;the&nbsp;uip&nbsp;version&nbsp;above&nbsp;*)</span><br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">invert_glu_univ_elem_nouip</span> <span class="id" title="var">H</span> :=<br/>
+&nbsp;&nbsp;(<span class="id" title="var">unshelve</span> <span class="id" title="tactic">eapply</span> (<a class="idref" href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html#glu_univ_elem_pi_clean_inversion2"><span class="id" title="lemma">glu_univ_elem_pi_clean_inversion2</span></a> <span class="id" title="var">_</span> <span class="id" title="var">_</span>) <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="var">shelve_unifiable</span>; [<span class="id" title="var">eassumption</span> | <span class="id" title="var">eassumption</span> |];<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [? [? [? [? [? []]]]]])<br/>
+&nbsp;&nbsp;+ (<span class="id" title="var">unshelve</span> <span class="id" title="tactic">eapply</span> (<a class="idref" href="Mctt.Core.Soundness.LogicalRelation.CoreLemmas.html#glu_univ_elem_pi_clean_inversion1"><span class="id" title="lemma">glu_univ_elem_pi_clean_inversion1</span></a> <span class="id" title="var">_</span>) <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="var">shelve_unifiable</span>; [<span class="id" title="var">eassumption</span> |];<br/>
+&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [? [? [? [? [? [? [? [? []]]]]]]]])<br/>
+&nbsp;&nbsp;+ <span class="id" title="var">basic_invert_glu_univ_elem_nouip</span> <span class="id" title="var">H</span>.<br/>
+
+<br/>
 <span class="id" title="keyword">Lemma</span> <a id="glu_nat_resp_per_nat" class="idref" href="#glu_nat_resp_per_nat"><span class="id" title="lemma">glu_nat_resp_per_nat</span></a> : <span class="id" title="keyword">forall</span> <a id="m:1317" class="idref" href="#m:1317"><span class="id" title="binder">m</span></a> <a id="n:1318" class="idref" href="#n:1318"><span class="id" title="binder">n</span></a>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">{{</span></a> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#a0092480f8234c90d43caac9569b7f0f"><span class="id" title="notation">Dom</span></a> <a id="m:1319" class="idref" href="#m:1319"><span class="id" title="binder"><span id="m:1320" class="id">m</span></span></a> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#a0092480f8234c90d43caac9569b7f0f"><span class="id" title="notation">≈</span></a> <a id="n:1321" class="idref" href="#n:1321"><span class="id" title="binder"><span id="n:1322" class="id">n</span></span></a> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#a0092480f8234c90d43caac9569b7f0f"><span class="id" title="notation">∈</span></a> <a class="idref" href="Mctt.Core.Semantic.PER.Definitions.html#per_nat"><span class="id" title="inductive">per_nat</span></a> <a class="idref" href="Mctt.Core.Base.html#2e12ae37c5a5c7396a13d7170e0de451"><span class="id" title="notation">}}</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <a id="ec449120dc8d6a34ed288c170df4c5be" class="idref" href="#ec449120dc8d6a34ed288c170df4c5be"><span class="id" title="binder">Γ</span></a> <a id="M:1324" class="idref" href="#M:1324"><span class="id" title="binder">M</span></a>,<br/>
@@ -833,11 +838,11 @@
 
 <br/>
 #[<span class="id" title="var">local</span>]<br/>
-&nbsp;<span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">glu_nat_resp_per_nat</span> : <span class="id" title="var">mctt</span>.<br/>
+<span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">glu_nat_resp_per_nat</span> : <span class="id" title="var">mctt</span>.<br/>
 
 <br/>
 #[<span class="id" title="var">local</span>]<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">Ltac</span> <span class="id" title="var">resp_per_IH</span> :=<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">resp_per_IH</span> :=<br/>
 &nbsp;&nbsp;<span class="id" title="var">match_by_head1</span> <span class="id" title="var">glu_univ_elem</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">ltac</span>:(<span class="id" title="keyword">fun</span> <span class="id" title="var">H</span> =&gt;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
