@@ -19,7 +19,7 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   eassumption.
 Qed.
 
@@ -154,7 +154,7 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   mauto.
 Qed.
 
@@ -191,7 +191,7 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓℕA).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   mauto.
 Qed.
 
@@ -213,7 +213,7 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   eexists; split; mauto.
   econstructor; mauto.
@@ -254,7 +254,7 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΔ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   destruct_conjs.
   functional_eval_rewrite_clear.
@@ -371,7 +371,7 @@ Proof.
     handle_per_ctx_env_irrel.
     (on_all_hyp_rev: destruct_rel_by_assumption env_relΓ).
     destruct_by_head rel_typ.
-    invert_rel_typ_body.
+    invert_rel_typ_body_nouip.
     match goal with
     | _: env_relΓ ρ ?ρ0 |- _ =>
         rename ρ0 into ρ'
@@ -407,7 +407,7 @@ Proof.
     handle_per_ctx_env_irrel.
     (on_all_hyp: destruct_rel_by_assumption env_relΓ).
     (on_all_hyp_rev: destruct_rel_by_assumption env_relΓ).
-    invert_rel_typ_body.
+    invert_rel_typ_body_nouip.
     match goal with
     | _: env_relΓ ρ ?ρ0 |- _ =>
         rename ρ0 into ρ'
@@ -454,7 +454,7 @@ Proof.
   handle_per_ctx_env_irrel.
   (on_all_hyp_rev: destruct_rel_by_assumption env_relΓ).
   destruct_by_head per_univ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   apply rel_exp_implies_rel_typ.
   econstructor; mauto.
 Qed.
@@ -547,7 +547,7 @@ Proof.
     handle_per_ctx_env_irrel.
     (on_all_hyp_rev: destruct_rel_by_assumption env_relΔ).
     destruct_by_head rel_typ.
-    invert_rel_typ_body.
+    invert_rel_typ_body_nouip.
     match goal with
     | _: {{ ⟦ σ ⟧s ρ ↘ ^?ρ1 }},
         _: {{ ⟦ σ ⟧s ρ' ↘ ^?ρ2 }} |- _ =>
@@ -585,7 +585,7 @@ Proof.
     handle_per_ctx_env_irrel.
     (on_all_hyp: destruct_rel_by_assumption env_relΔ).
     (on_all_hyp_rev: destruct_rel_by_assumption env_relΔ).
-    invert_rel_typ_body.
+    invert_rel_typ_body_nouip.
     match goal with
     | _: {{ ⟦ σ ⟧s ρ ↘ ^?ρ1 }},
         _: {{ ⟦ σ ⟧s ρ' ↘ ^?ρ2 }} |- _ =>
@@ -654,7 +654,7 @@ Proof.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   (on_all_hyp: destruct_rel_by_assumption env_relΔ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   match goal with
   | _: {{ ⟦ σ ⟧s ^?ρ0 ↘ ^?ρσ0 }},
       _: {{ ⟦ A ⟧ ρσ ↦ ^?m0 ↘ ^?a0 }},
@@ -695,7 +695,7 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   match goal with
   | _: env_relΓ ρ ?ρ0 |- _ =>
@@ -730,7 +730,7 @@ Proof.
   destruct_conjs.
   handle_per_ctx_env_irrel.
   (on_all_hyp_rev: destruct_rel_by_assumption env_relΓ).
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   mauto.
 Qed.
 
@@ -751,7 +751,7 @@ Proof.
       by (eapply rel_exp_nat_beta_succ_rel_typ; mauto).
   eexists; split; [eassumption |].
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   match goal with
   | _: env_relΓ ρ ?ρ0 |- _ =>
       rename ρ0 into ρ'

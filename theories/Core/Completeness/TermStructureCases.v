@@ -182,7 +182,6 @@ Proof.
     eapply rel_typ_implies_rel_exp; eauto.
 Qed.
 
-
 Lemma rel_exp_eq_subtyp : forall Γ M M' A A',
     {{ Γ ⊨ M ≈ M' : A }} ->
     {{ Γ ⊨ A ⊆ A' }} ->

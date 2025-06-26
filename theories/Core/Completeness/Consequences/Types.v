@@ -17,13 +17,14 @@ Proof with mautosolve.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_conjs.
-  match_by_head1 per_univ_elem invert_per_univ_elem.
+  match_by_head1 per_univ_elem invert_per_univ_elem_nouip.
   reflexivity.
 Qed.
+
 #[export]
 Hint Resolve exp_eq_typ_implies_eq_level : mctt.
 
@@ -50,13 +51,13 @@ Proof.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   gen_presups.
   assert (exists A, {{ #x : A ∈ Γ }} /\ {{ Γ ⊢ A ⊆ Type@i }}) as [? [? _]] by mauto 2.
   assert (exists a, ρ x = d{{{ ⇑! a (length Γ - x - 1) }}}) as [? Heq] by mauto 2.
   destruct Histyp;
-    invert_rel_typ_body;
+    invert_rel_typ_body_nouip;
     destruct_conjs;
     rewrite Heq in *;
     match_by_head1 per_univ_elem invert_per_univ_elem.
@@ -74,6 +75,7 @@ Proof.
   match_by_head read_ne ltac:(fun H => directed dependent destruction H).
   lia.
 Qed.
+
 #[export]
 Hint Resolve is_typ_constr_and_exp_eq_var_implies_eq_var : mctt.
 
@@ -90,16 +92,17 @@ Proof.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   destruct Histyp;
-    invert_rel_typ_body;
+    invert_rel_typ_body_nouip;
     destruct_conjs;
     match_by_head1 per_univ_elem invert_per_univ_elem.
   - reflexivity.
   - replace {{{ #x0 }}} with {{{ Type@i }}} by mauto 3 using is_typ_constr_and_exp_eq_var_implies_eq_var.
     reflexivity.
 Qed.
+
 #[export]
 Hint Resolve is_typ_constr_and_exp_eq_typ_implies_eq_typ : mctt.
 
@@ -116,14 +119,14 @@ Proof.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   destruct Histyp;
-    invert_rel_typ_body;
+    invert_rel_typ_body_nouip;
     destruct_conjs;
-    match_by_head1 per_univ_elem invert_per_univ_elem.
+    match_by_head1 per_univ_elem invert_per_univ_elem_nouip.
   - reflexivity.
-  - replace {{{ #x0 }}} with {{{ ℕ }}} by mauto 3 using is_typ_constr_and_exp_eq_var_implies_eq_var.
+  - replace {{{ #x }}} with {{{ ℕ }}} by mauto 3 using is_typ_constr_and_exp_eq_var_implies_eq_var.
     reflexivity.
 Qed.
 

@@ -342,6 +342,7 @@ Section glu_univ_elem_cumulativity.
     - destruct_by_head neut_glu_exp_pred.
       econstructor...
   Qed.
+
 End glu_univ_elem_cumulativity.
 
 Corollary glu_univ_elem_typ_cumu_ge : forall {i j a P P' El El' Γ A},

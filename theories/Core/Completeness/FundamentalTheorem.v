@@ -33,7 +33,6 @@ Section completeness_fundamental.
   #[local]
    Ltac solve_it := pose proof completeness_fundamental; firstorder.
 
-
   Theorem completeness_fundamental_ctx : forall Γ, {{ ⊢ Γ }} -> {{ ⊨ Γ }}.
   Proof. solve_it. Qed.
 
@@ -62,4 +61,5 @@ Section completeness_fundamental.
     - assert {{ Γ ⊨ A ≈ A' : Type@i }} by mauto using completeness_fundamental_exp_eq.
       mauto.
   Qed.
+
 End completeness_fundamental.
