@@ -31,26 +31,24 @@ Proof.
   assert {{ Δ ⊢s σ : Γ }} by mauto 4.
   split; mauto 3.
   apply_glu_rel_judge.
-  saturate_glu_typ_from_el.
-  unify_glu_univ_lvl i.
+  handle_functional_glu_univ_elem.
   deepexec glu_univ_elem_per_univ ltac:(fun H => pose proof H).
-  match_by_head per_univ ltac:(fun H => destruct H).
+  destruct_by_head per_univ.
   do 2 deepexec glu_univ_elem_per_elem ltac:(fun H => pose proof H; fail_at_if_dup ltac:(4)).
 
   eexists; repeat split; mauto.
   - eexists. per_univ_elem_econstructor; mauto. reflexivity.
   - intros.
     match_by_head1 glu_univ_elem invert_glu_univ_elem.
-    handle_per_univ_elem_irrel.
     handle_functional_glu_univ_elem.
+    handle_per_univ_elem_irrel.
     econstructor; mauto 3;
       intros Ψ τ **;
       assert {{ Ψ ⊢s τ : Δ }} by mauto 2;
       assert {{ Ψ ⊢s σ ∘ τ ® ρ ∈ SbΓ }} by (eapply glu_ctx_env_sub_monotone; eassumption);
       assert {{ Ψ ⊢s σ ∘ τ : Γ }} by mauto 2;
       apply_glu_rel_judge;
-      handle_functional_glu_univ_elem;
-      unify_glu_univ_lvl i.
+      handle_functional_glu_univ_elem.
     + bulky_rewrite.
     + assert {{ Ψ ⊢ M[σ][τ] ≈ M[σ ∘ τ] : A[σ ∘ τ] }} by mauto 3.
       bulky_rewrite.
@@ -75,21 +73,22 @@ Proof.
   assert {{ Δ ⊢s σ : Γ }} by mauto 4.
   apply_glu_rel_judge.
   saturate_glu_typ_from_el.
-  deepexec glu_univ_elem_per_univ ltac:(fun H => pose proof H).
-  match_by_head per_univ ltac:(fun H => unfold per_univ in H; deex_once_in H).
-  deepexec glu_univ_elem_per_elem ltac:(fun H => pose proof H; fail_at_if_dup ltac:(4)).
+  deepexec glu_univ_elem_per_univ ltac:(fun P => let H := fresh "H" in pose proof P as H; unfold per_univ in H; deex_once_in H).
+  deepexec glu_univ_elem_per_elem ltac:(fun H => pose proof H).
   saturate_glu_info.
   eexists; repeat split; mauto.
   - glu_univ_elem_econstructor; mauto 3; reflexivity.
-  - do 2 try econstructor; mauto 3;
-    intros Ψ τ **;
-      assert {{ Ψ ⊢s τ : Δ }} by mauto 2;
-    assert {{ Ψ ⊢s σ ∘ τ ® ρ ∈ SbΓ }} by (eapply glu_ctx_env_sub_monotone; eassumption);
-    assert {{ Ψ ⊢s σ ∘ τ : Γ }} by mauto 2;
-    assert {{ Ψ ⊢ M[σ][τ] ≈ M[σ ∘ τ] : A[σ ∘ τ] }} by mauto 3;
-    apply_glu_rel_judge;
-    saturate_glu_typ_from_el;
-    bulky_rewrite.
+  - econstructor; try econstructor;
+      first
+        [ mautosolve 3
+        | intros Ψ τ **;
+            assert {{ Ψ ⊢s τ : Δ }} by mauto 2;
+            assert {{ Ψ ⊢s σ ∘ τ ® ρ ∈ SbΓ }} by (eapply glu_ctx_env_sub_monotone; eassumption);
+            assert {{ Ψ ⊢s σ ∘ τ : Γ }} by mauto 2;
+            assert {{ Ψ ⊢ M[σ][τ] ≈ M[σ ∘ τ] : A[σ ∘ τ] }} by mauto 3;
+            apply_glu_rel_judge;
+            saturate_glu_typ_from_el;
+            bulky_rewrite].
 Qed.
 
 #[export]
@@ -144,21 +143,24 @@ Lemma glu_rel_eq_eqrec_synprop_gen : forall {Γ σ Δ i A},
 Proof.
   intros.
   gen_presups.
-  assert {{ Δ, A ⊢s Wk : Δ }} by mauto 3.
+  assert {{ ⊢ Δ, A }} by mauto 2.
+  assert {{ Δ, A ⊢s Wk : Δ }} by mauto 2.
   assert {{ Δ, A ⊢ A[Wk] : Type@i }} by mauto 2.
-  assert {{ ⊢ Δ, A, A[Wk] }} by mauto 3.
-  assert {{ Δ, A, A[Wk] ⊢s Wk∘Wk : Δ }} by mauto 3.
+  assert {{ ⊢ Δ, A, A[Wk] }} by mauto 2.
+  assert {{ Δ, A, A[Wk] ⊢s Wk : Δ, A }} by mauto 2.
+  assert {{ Δ, A, A[Wk] ⊢s Wk∘Wk : Δ }} by mauto 2.
   assert {{ Δ, A, A[Wk] ⊢ A[Wk∘Wk] : Type@i }} by mauto 2.
-  assert {{ Γ ⊢ A[σ] : Type@i }} by mauto 2.
   assert {{ Δ, A, A[Wk] ⊢ Eq A[Wk∘Wk] #1 #0 : Type@i }} by mauto 2.
 
-  assert {{ Δ, A, A[Wk] ⊢s Wk : Δ, A }} by mauto 2.
+  assert {{ Γ ⊢ A[σ] : Type@i }} by mauto 2.
+  assert {{ ⊢ Γ, A[σ] }} by mauto 2.
   assert {{ Γ, A[σ] ⊢s q σ : Δ, A }} by mauto 2.
-  assert {{ Γ, A[σ] ⊢s Wk : Γ }} by mauto 3.
+  assert {{ Γ, A[σ] ⊢s Wk : Γ }} by mauto 2.
   assert {{ Γ, A[σ] ⊢ A[σ][Wk] : Type@i }} by mauto 2.
-  assert {{ ⊢ Γ, A[σ], A[σ][Wk] }} by mauto 3.
+  assert {{ ⊢ Γ, A[σ], A[σ][Wk] }} by mauto 2.
   assert {{ Γ, A[σ], A[σ][Wk] ⊢s Wk : Γ, A[σ] }} by mauto 2.
-  assert {{ Γ, A[σ], A[σ][Wk] ⊢ A[σ][Wk∘Wk] : Type@i }} by mauto 3.
+  assert {{ Γ, A[σ], A[σ][Wk] ⊢s Wk∘Wk : Γ }} by mauto 2.
+  assert {{ Γ, A[σ], A[σ][Wk] ⊢ A[σ][Wk∘Wk] : Type@i }} by mauto 2.
   assert {{ Γ, A[σ], A[σ][Wk] ⊢ Eq A[σ][Wk∘Wk] #1 #0 : Type@i }} by (econstructor; mauto 2).
   assert {{ Γ, A[σ] ⊢ A[Wk][q σ] ≈ A[σ][Wk] : Type@i }} by mauto 3.
   assert {{ ⊢ Γ, A[σ], A[Wk][q σ] ≈ Γ, A[σ], A[σ][Wk] }} by (econstructor; mauto 3).
@@ -166,30 +168,28 @@ Proof.
   assert {{ Γ, A[σ], A[σ][Wk] ⊢ A[Wk][q σ∘Wk] : Type@i }} by mauto 3.
   assert {{ Γ, A[σ], A[σ][Wk] ⊢ A[Wk][q σ∘Wk] ≈ A[σ][Wk∘Wk] : Type@i }}.
   {
-    transitivity {{{ A[Wk][q σ][Wk] }}}; [mauto 3 |].
-    transitivity {{{ A[σ][Wk][Wk] }}}; [| mauto 2].
-    eapply exp_eq_sub_cong_typ1; mauto 3.
+    transitivity {{{ A[Wk][q σ][Wk] }}}; [mautosolve 3 |].
+    transitivity {{{ A[σ][Wk][Wk] }}}; mautosolve 2.
   }
   assert {{ Γ, A[σ], A[σ][Wk] ⊢ A[Wk∘Wk][q (q σ)] ≈ A[σ][Wk∘Wk] : Type@i }}.
   {
     transitivity {{{ A[Wk][q σ∘Wk] }}}; [| eassumption].
-    transitivity {{{ A[Wk][Wk][q (q σ)] }}}; [eapply exp_eq_sub_cong_typ1; mauto 3 |].
-    transitivity {{{ A[Wk][Wk∘q (q σ)] }}}; [mauto 2 |].
-    eapply exp_eq_sub_cong_typ2'; mauto 3.
+    transitivity {{{ A[Wk][Wk][q (q σ)] }}}; [eapply exp_eq_sub_cong_typ1; mautosolve 3 |].
+    transitivity {{{ A[Wk][Wk∘q (q σ)] }}}; [mautosolve 2 |].
+    eapply exp_eq_sub_cong_typ2'; mautosolve 3.
   }
   assert {{ Γ, A[σ], A[σ][Wk] ⊢ Eq A[σ][Wk∘Wk] #0 #0 : Type@i }} by (econstructor; mauto 2).
   assert {{ Γ, A[σ], A[σ][Wk] ⊢ (Eq A[Wk∘Wk] #1 #0)[q (q σ)] ≈ Eq A[σ][Wk∘Wk] #1 #0 : Type@i }}.
   {
-    etransitivity; [econstructor; mauto 2 |].
-    econstructor; mauto 2.
-    - eapply wf_exp_eq_conv;
-        [eapply ctxeq_exp_eq; [eassumption | eapply exp_eq_var_1_sub_q_sigma] | |];
-        mauto 2.
-    - eapply wf_exp_eq_conv; [econstructor | |]; mauto 2.
-      + eapply wf_conv; mauto 2.
-      + mauto 3.
+    etransitivity; [econstructor; mautosolve 2 |].
+    econstructor; [mautosolve 2 | |].
+    - eapply wf_exp_eq_conv'; mauto 3 using exp_eq_var_1_sub_q_sigma.
+    - eapply wf_exp_eq_conv'; [econstructor; mauto 2 |].
+      + eapply wf_conv'; mauto 2.
+      + etransitivity; mauto 2.
   }
-  assert {{ ⊢ Γ, A[σ], A[σ][Wk], (Eq A[Wk∘Wk] #1 #0)[q (q σ)]}} by (econstructor; mauto 3).
+  assert {{ ⊢ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 }} by mauto 2.
+  assert {{ ⊢ Γ, A[σ], A[σ][Wk], (Eq A[Wk∘Wk] #1 #0)[q (q σ)]}} by (econstructor; mauto 2).
   assert {{ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 ⊢s q (q (q σ)) : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }}
     by (eapply ctxeq_sub; [econstructor | eapply sub_q]; mauto 3).
   assert {{ Γ, A[σ] ⊢ #0 : A[σ][Wk] }} by mauto 3.
@@ -200,45 +200,40 @@ Proof.
   assert {{ Γ, A[σ] ⊢s Id,,#0,,refl A[σ][Wk] #0 : Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 }}.
   {
     econstructor; mauto 2.
-    eapply wf_conv; [econstructor | |]; mauto 2.
+    eapply wf_conv'; [econstructor; mautosolve 2 |].
     symmetry.
-    etransitivity; [econstructor; mauto 3 |].
+    etransitivity; [econstructor; mautosolve 3 |].
     econstructor; eauto.
-    - eapply wf_exp_eq_conv; mauto 2.
-      transitivity {{{ #0[Id] }}}; mauto 2.
-      eapply wf_exp_eq_conv; [econstructor | |]; mauto 3.
-    - eapply wf_exp_eq_conv; [econstructor | |]; mauto 3.
-      transitivity {{{ A[σ][Wk] }}}; mauto 3.
+    - eapply wf_exp_eq_conv'; [| mautosolve 2].
+      transitivity {{{ #0[Id] }}}; [| mautosolve 2].
+      eapply wf_exp_eq_conv'; [econstructor |]; mautosolve 2.
+    - eapply wf_exp_eq_conv'; [econstructor; mautosolve 2 |].
+      transitivity {{{ A[σ][Wk] }}}; mautosolve 2.
   }
   assert {{ Γ, A[σ] ⊢s q (q σ)∘(Id,,#0) ≈ q σ,,#0 : Δ, A, A[Wk] }}.
   {
     eapply sub_eq_q_sigma_id_extend; mauto 2.
-    eapply wf_conv; mauto 2.
+    eapply wf_conv'; mauto 2.
   }
-  assert {{ Γ, A[σ] ⊢ #0 : A[σ][Wk∘Wk][Id,,#0] }} by (eapply wf_conv; mauto 2).
-  assert {{ Γ, A[σ] ⊢ #0[Id,,#0] ≈ #0 : A[σ][Wk][Id] }} by (econstructor; mauto 3).
-  assert {{ Γ, A[σ] ⊢ #1[Id,,#0] ≈ #0[Id] : A[σ][Wk][Id] }} by (eapply wf_exp_eq_var_S_sub; mauto 3).
+  assert {{ Γ, A[σ] ⊢ #0 : A[σ][Wk∘Wk][Id,,#0] }} by (eapply wf_conv'; mauto 2).
+  assert {{ Γ, A[σ] ⊢ #0[Id,,#0] ≈ #0 : A[σ][Wk][Id] }} by (econstructor; mauto 2).
+  assert {{ Γ, A[σ] ⊢ #1[Id,,#0] ≈ #0[Id] : A[σ][Wk][Id] }} by (eapply wf_exp_eq_var_S_sub; mauto 2).
   assert {{ Γ, A[σ] ⊢ #1[Id,,#0] ≈ #0[Id] : A[σ][Wk] }} by mauto 3.
   assert {{ Γ, A[σ] ⊢ #1[Id,,#0] ≈ #0 : A[σ][Wk] }} by mauto 3.
   assert {{ Γ, A[σ] ⊢ #0[Id,,#0] ≈ #0 : A[σ][Wk] }} by mauto 3.
   assert {{ Γ, A[σ] ⊢ #1[Id,,#0] ≈ #0 : A[σ][Wk∘Wk][Id,,#0] }} by mauto 3.
-  assert {{ Γ, A[σ] ⊢ #0[Id,,#0] ≈ #0 : A[σ][Wk∘Wk][Id,,#0] }} by (eapply wf_exp_eq_conv; mauto 2).
-  assert {{ Γ, A[σ] ⊢ (Eq A[σ][Wk∘Wk] #1 #0)[Id,,#0] ≈ Eq A[σ][Wk] #0 #0 : Type@i }} by
-    (etransitivity; econstructor; mauto 2).
+  assert {{ Γ, A[σ] ⊢ #0[Id,,#0] ≈ #0 : A[σ][Wk∘Wk][Id,,#0] }} by (eapply wf_exp_eq_conv'; mauto 2).
+  assert {{ Γ, A[σ] ⊢ (Eq A[σ][Wk∘Wk] #1 #0)[Id,,#0] ≈ Eq A[σ][Wk] #0 #0 : Type@i }}
+    by (etransitivity; econstructor; mauto 2).
   assert {{ Γ, A[σ] ⊢ (Eq A[σ][Wk∘Wk] #0 #0)[Id,,#0] ≈ Eq A[σ][Wk] #0 #0 : Type@i }}
     by (etransitivity; econstructor; mauto 2).
-  assert {{ Γ, A[σ] ⊢s (q (q σ)∘Wk)∘(Id,,#0,,refl A[σ][Wk] #0) : Δ, A, A[Wk] }}.
-  {
-    econstructor; [eassumption |].
-    econstructor; mauto 3.
-  }
-  assert {{ ⊢ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 }} by mauto 2.
+  assert {{ Γ, A[σ] ⊢s (q (q σ)∘Wk)∘(Id,,#0,,refl A[σ][Wk] #0) : Δ, A, A[Wk] }} by (econstructor; mautosolve 3).
   assert {{ Γ, A[σ] ⊢s (q (q σ)∘Wk)∘(Id,,#0,,refl A[σ][Wk] #0) ≈ q (q σ)∘(Id,,#0) : Δ, A, A[Wk] }}.
   {
-    transitivity {{{ q (q σ)∘(Wk∘(Id,,#0,,refl A[σ][Wk] #0)) }}}; [mauto 3 |].
-    econstructor; mauto 2.
-    eapply wf_sub_eq_p_extend with (A:={{{ Eq A[σ][Wk∘Wk] #0 #0 }}}); mauto 2.
-    eapply wf_conv; mauto 2.
+    transitivity {{{ q (q σ)∘(Wk∘(Id,,#0,,refl A[σ][Wk] #0)) }}}; [mautosolve 3 |].
+    econstructor; [| mautosolve 2].
+    eapply wf_sub_eq_p_extend with (A:={{{ Eq A[σ][Wk∘Wk] #0 #0 }}}); [mautosolve 2 | mautosolve 2 |].
+    eapply wf_conv'; mauto 2.
   }
   assert {{ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 ⊢s Wk : Γ, A[σ], A[σ][Wk] }} by mauto 2.
   assert {{ Γ, A[σ] ⊢s (q (q σ)∘Wk)∘(Id,,#0,,refl A[σ][Wk] #0) ≈ q σ,,#0 : Δ, A, A[Wk] }} by mauto 2.
@@ -249,120 +244,116 @@ Proof.
   assert {{ Γ, A[σ] ⊢s q σ,,#0 : Δ, A, A[Wk] }} by mauto 2.
   assert {{ Γ, A[σ] ⊢ A[Wk∘Wk][q σ,,#0] : Type@i }} by mauto 2.
   assert {{ Γ, A[σ] ⊢ A[Wk∘Wk][q σ,,#0] ≈ A[σ][Wk] : Type@i }} by mauto 2.
-  assert {{ Γ, A[σ] ⊢ #0[q σ,,#0] ≈ #0 : A[σ][Wk] }} by (eapply wf_exp_eq_conv; mauto 2).
+  assert {{ Γ, A[σ] ⊢ #0[q σ,,#0] ≈ #0 : A[σ][Wk] }} by (eapply wf_exp_eq_conv'; mauto 2).
   assert {{ Γ, A[σ] ⊢ #0[q σ,,#0] ≈ #0 : A[Wk∘Wk][q σ,,#0] }} by mauto 3.
 
   assert {{ Γ, A[σ] ⊢s σ∘Wk : Δ }} by mauto 2.
   assert {{ Γ, A[σ] ⊢ A[σ][Wk] ≈ A[σ∘Wk] : Type@i }} by mauto 2.
   assert {{ Γ, A[σ] ⊢ #0 : A[σ∘Wk] }} by mauto 3.
 
-  assert {{ Δ, A ⊢ #0 : A[Wk] }} by mauto 3.
-  assert {{ Γ, A[σ] ⊢ #1[q σ,,#0] ≈ #0 : A[σ][Wk] }} by (eapply wf_exp_eq_conv with (A:={{{ A[σ∘Wk] }}}); [eapply sub_lookup_var1 | |]; mauto 3).
+  assert {{ Δ, A ⊢ #0 : A[Wk] }} by mauto 2.
+  assert {{ Γ, A[σ] ⊢ #1[q σ,,#0] ≈ #0 : A[σ][Wk] }} by (eapply wf_exp_eq_conv' with (A:={{{ A[σ∘Wk] }}}); mauto 2 using sub_lookup_var1).
   assert {{ Γ, A[σ] ⊢ #1[q σ,,#0] ≈ #0 : A[Wk∘Wk][q σ,,#0] }} by mauto 3.
 
   assert {{ Γ, A[σ] ⊢s q (q (q σ))∘(Id,,#0,,refl A[σ][Wk] #0) ≈ (q (q σ)∘(Id,,#0)),,refl A[σ][Wk] #0 : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }}.
   {
-    etransitivity;
-      [eapply wf_sub_eq_extend_compose; eauto; mauto 3 |].
-
-    - eapply wf_conv; [mauto 2 | |].
-      + mauto 3.
-      + symmetry.
-        transitivity {{{ (Eq A[Wk∘Wk] #1 #0)[q (q σ)][Wk] }}};
-          [mautosolve 3 |].
-        eapply exp_eq_sub_cong_typ1; mauto 2.
-    - econstructor; mauto 2.
-      eapply wf_exp_eq_conv; [| mautosolve 2 |].
-      + econstructor; mauto 2.
-        eapply wf_conv; [econstructor | |]; mauto 2.
-      + etransitivity; mauto 2.
+    etransitivity.
+    - eapply wf_sub_eq_extend_compose; eauto; [mautosolve 2 |].
+      eapply wf_conv'; [mautosolve 2 |].
+      symmetry.
+      transitivity {{{ (Eq A[Wk∘Wk] #1 #0)[q (q σ)][Wk] }}}; [mautosolve 3 |].
+      eapply exp_eq_sub_cong_typ1; mautosolve 2.
+    - econstructor; [mautosolve 2 | mautosolve 2 |].
+      eapply wf_exp_eq_conv'.
+      + econstructor; [mautosolve 2 | mautosolve 2 |].
+        eapply wf_conv'; [econstructor |]; mautosolve 2.
+      + etransitivity; [mautosolve 2 |].
         symmetry.
         etransitivity;
-          [eapply exp_eq_sub_cong_typ2'; mauto 2 | etransitivity];
+          [eapply exp_eq_sub_cong_typ2'; mautosolve 2 | etransitivity];
           econstructor; mauto 2.
   }
 
-  assert {{ Γ, A[σ] ⊢ A[Wk∘Wk][q (q σ)∘(Id,,#0)] ≈ A[Wk][q σ] : Type@i }} by (etransitivity; mauto 3).
+  assert {{ Γ, A[σ] ⊢ A[Wk∘Wk][q (q σ)∘(Id,,#0)] ≈ A[Wk][q σ] : Type@i }} by mauto 3.
   assert {{ Γ, A[σ] ⊢ A[Wk∘Wk][q (q σ)∘(Id,,#0)] ≈ A[σ][Wk] : Type@i }} by mauto 2.
 
   assert {{ Γ, A[σ] ⊢ #0[q (q σ)∘(Id,,#0)] ≈ #0 : A[σ][Wk] }}.
   {
     transitivity {{{ #0[q σ,,#0] }}}; [| eassumption].
-    eapply wf_exp_eq_conv; [econstructor; [| eassumption] | |]; mauto 3.
+    eapply wf_exp_eq_conv'; [econstructor; [| eassumption] |]; mautosolve 3.
   }
-  assert {{ Γ, A[σ] ⊢ #0[q (q σ)∘(Id,,#0)] ≈ #0 : A[Wk∘Wk][q (q σ)∘(Id,,#0)] }} by (eapply wf_exp_eq_conv; mauto 3).
+  assert {{ Γ, A[σ] ⊢ #0[q (q σ)∘(Id,,#0)] ≈ #0 : A[Wk∘Wk][q (q σ)∘(Id,,#0)] }} by (eapply wf_exp_eq_conv'; mauto 2).
 
   assert {{ Γ, A[σ] ⊢ #1[q (q σ)∘(Id,,#0)] ≈ #0 : A[σ][Wk] }}.
   {
     transitivity {{{ #1[q σ,,#0] }}}; [| eassumption].
-    eapply wf_exp_eq_conv; [econstructor; [| eassumption] | |]; mauto 3.
+    eapply wf_exp_eq_conv'; [econstructor; [| eassumption] |]; mautosolve 3.
   }
-  assert {{ Γ, A[σ] ⊢ #1[q (q σ)∘(Id,,#0)] ≈ #0 : A[Wk∘Wk][q (q σ)∘(Id,,#0)] }} by (eapply wf_exp_eq_conv; mauto 3).
+  assert {{ Γ, A[σ] ⊢ #1[q (q σ)∘(Id,,#0)] ≈ #0 : A[Wk∘Wk][q (q σ)∘(Id,,#0)] }} by (eapply wf_exp_eq_conv'; mauto 2).
 
   assert {{ Γ, A[σ] ⊢s q (q (q σ))∘(Id,,#0,,refl A[σ][Wk] #0) ≈ q σ,,#0,,refl A[σ][Wk] #0 : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }}.
   {
     etransitivity; [eassumption |].
-    econstructor; mauto 2.
+    econstructor; [mautosolve 2 | mautosolve 2 |].
     eapply exp_eq_refl.
-    eapply wf_conv; [mauto 2 | mauto 3 |].
+    eapply wf_conv'; [mautosolve 2 |].
     symmetry.
     etransitivity; econstructor; mauto 2.
   }
 
-  assert {{ Γ, A[σ] ⊢s Id∘q σ : Δ, A }} by mauto 4.
+  assert {{ Γ, A[σ] ⊢s Id∘q σ : Δ, A }} by mauto 3.
   assert {{ Γ, A[σ] ⊢s Id∘q σ ≈ q σ : Δ, A }} by mauto 2.
   assert {{ Γ, A[σ] ⊢ #0[q σ] ≈ #0 : A[σ∘Wk] }} by mauto 2.
   assert {{ Γ, A[σ] ⊢ #0[q σ] ≈ #0 : A[σ][Wk] }} by mauto 3.
-  assert {{ Γ, A[σ] ⊢ #0[q σ] ≈ #0 : A[Wk][q σ] }} by (eapply wf_exp_eq_conv; mauto 2).
+  assert {{ Γ, A[σ] ⊢ #0[q σ] ≈ #0 : A[Wk][q σ] }} by (eapply wf_exp_eq_conv'; mauto 2).
   assert {{ Γ, A[σ] ⊢s (Id,,#0)∘q σ : Δ, A, A[Wk] }} by (econstructor; mauto 2).
   assert {{ Γ, A[σ] ⊢s (Id,,#0)∘q σ ≈ q σ,,#0 : Δ, A, A[Wk] }}.
   {
-    etransitivity; [eapply wf_sub_eq_extend_compose; mauto 3 |].
-    econstructor; eauto.
-    eapply wf_exp_eq_conv; mauto 2.
+    etransitivity; [eapply wf_sub_eq_extend_compose; mautosolve 2 |].
+    econstructor; [eassumption | eassumption |].
+    eapply wf_exp_eq_conv'; [mautosolve 2 |].
     eapply exp_eq_sub_cong_typ2'; mauto 2.
   }
 
   assert {{ Δ, A ⊢ A[Wk∘Wk][Id,,#0] ≈ A[Wk] : Type@i }}
     by (transitivity {{{ A[Wk][Wk][Id,,#0] }}}; [eapply exp_eq_sub_cong_typ1 |]; mauto 3).
-  assert {{ Δ, A ⊢ #0[Id,,#0] ≈ #0 : A[Wk] }} by (eapply wf_exp_eq_conv; [econstructor | |]; mauto 3).
+  assert {{ Δ, A ⊢ #0[Id,,#0] ≈ #0 : A[Wk] }} by (eapply wf_exp_eq_conv'; [econstructor |]; mauto 2).
   assert {{ Δ, A ⊢ A[Wk∘Wk][Id,,#0] : Type@i }} by (eapply exp_sub_typ; mauto 2).
-  assert {{ Δ, A ⊢ #0[Id,,#0] ≈ #0 : A[Wk∘Wk][Id,,#0] }} by (eapply wf_exp_eq_conv; mauto 2).
+  assert {{ Δ, A ⊢ #0[Id,,#0] ≈ #0 : A[Wk∘Wk][Id,,#0] }} by (eapply wf_exp_eq_conv'; mauto 2).
   assert {{ Δ, A ⊢ #1[Id,,#0] ≈ #0 : A[Wk] }}.
   {
-    transitivity {{{ #0[Id] }}}; [| mauto 3].
-    eapply wf_exp_eq_conv; [econstructor | |]; mauto 3.
-    eapply wf_conv; mauto 4.
+    transitivity {{{ #0[Id] }}}; [| mautosolve 2].
+    eapply wf_exp_eq_conv'; [econstructor |]; try mautosolve 2.
+    eapply wf_conv'; mauto 4.
   }
-  assert {{ Δ, A ⊢ #1[Id,,#0] ≈ #0 : A[Wk∘Wk][Id,,#0] }} by (eapply wf_exp_eq_conv; mauto 2).
+  assert {{ Δ, A ⊢ #1[Id,,#0] ≈ #0 : A[Wk∘Wk][Id,,#0] }} by (eapply wf_exp_eq_conv'; mauto 2).
 
   assert {{ Δ, A ⊢ (Eq A[Wk∘Wk] #1 #0)[Id,,#0] ≈ Eq A[Wk] #0 #0 : Type@i }}.
   {
-    transitivity {{{ Eq A[Wk∘Wk][Id,,#0] #1[Id,,#0] #0[Id,,#0]}}}; mauto 3.
-    eapply wf_exp_eq_eq_sub; mauto 3.
+    transitivity {{{ Eq A[Wk∘Wk][Id,,#0] #1[Id,,#0] #0[Id,,#0]}}}; [| mautosolve 2].
+    eapply wf_exp_eq_eq_sub; mauto 2.
   }
 
   assert {{ Δ, A ⊢ refl A[Wk] #0 : (Eq A[Wk∘Wk] #1 #0)[Id,,#0] }}.
   {
-    eapply wf_conv; [mautosolve 2 | |].
-    - mauto 3.
-    - symmetry.
-      etransitivity; econstructor; mauto 2.
+    eapply wf_conv'; [mautosolve 2 |].
+    symmetry.
+    etransitivity; econstructor; mauto 2.
   }
 
   assert {{ Γ, A[σ] ⊢ (Eq A[Wk] #0 #0)[q σ] ≈ Eq A[σ][Wk] #0 #0 : Type@i }}
     by (etransitivity; [econstructor |]; mauto 2).
   assert {{ Γ, A[σ] ⊢ A[Wk∘Wk][(Id,,#0)∘q σ] ≈ A[σ][Wk] : Type@i }} by mauto 3.
   assert {{ Γ, A[σ] ⊢ #1[(Id,,#0)∘q σ] ≈ #0 : A[σ][Wk] }}
-    by (transitivity {{{ #1[q σ,,#0] }}}; [eapply wf_exp_eq_conv |]; mauto 2; econstructor; mauto 3).
-  assert {{ Γ, A[σ] ⊢ #1[(Id,,#0)∘q σ] ≈ #0 : A[Wk∘Wk][(Id,,#0)∘q σ] }} by (eapply wf_exp_eq_conv; mauto 2).
+    by (transitivity {{{ #1[q σ,,#0] }}}; [eapply wf_exp_eq_conv' |]; mauto 2; econstructor; mauto 3).
+  assert {{ Γ, A[σ] ⊢ #1[(Id,,#0)∘q σ] ≈ #0 : A[Wk∘Wk][(Id,,#0)∘q σ] }} by (eapply wf_exp_eq_conv'; mauto 2).
 
   assert {{ Γ, A[σ] ⊢ #0[(Id,,#0)∘q σ] ≈ #0 : A[σ][Wk] }}.
   {
-    transitivity {{{ #0[q σ,,#0] }}}; [eapply wf_exp_eq_conv; [| | eassumption] |]; mauto 2.
+    transitivity {{{ #0[q σ,,#0] }}}; [eapply wf_exp_eq_conv'; [| eassumption] | mautosolve 2].
     econstructor; mauto 3.
   }
-  assert {{ Γ, A[σ] ⊢ #0[(Id,,#0)∘q σ] ≈ #0 : A[Wk∘Wk][(Id,,#0)∘q σ] }} by (eapply wf_exp_eq_conv; mauto 2).
+  assert {{ Γ, A[σ] ⊢ #0[(Id,,#0)∘q σ] ≈ #0 : A[Wk∘Wk][(Id,,#0)∘q σ] }} by (eapply wf_exp_eq_conv'; mauto 2).
 
   assert {{ Γ, A[σ] ⊢ (Eq A[Wk∘Wk] #1 #0)[(Id,,#0)∘q σ] ≈ Eq A[σ][Wk] #0 #0 : Type@i }}
     by (etransitivity; econstructor; mauto 2).
@@ -372,9 +363,9 @@ Proof.
     etransitivity; [eapply wf_sub_eq_extend_compose; mautosolve 2 |].
     econstructor; eauto.
     etransitivity.
-    - eapply wf_exp_eq_conv; mauto 2.
+    - eapply wf_exp_eq_conv'; [mautosolve 2 |].
       etransitivity; mauto 2.
-    - eapply wf_exp_eq_conv; [econstructor | |]; mauto 2.
+    - eapply wf_exp_eq_conv'; [econstructor; mautosolve 2 |].
       etransitivity; mauto 2.
   }
 
@@ -382,31 +373,27 @@ Proof.
 
   assert {{ Δ, A ⊢s Id,,#0,,refl A[Wk] #0 : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }} by (econstructor; mauto 2).
 
-  split. auto. split. auto. split. auto. split. auto. split. auto. split. auto. split. auto. split. auto. split. auto.
-  split. auto. split. auto. split. auto. intros.
-  assert {{ Γ ⊢ A[Wk][σ,,M1] : Type@i }} by (eapply exp_sub_typ; mauto 3).
+  repeat (split; [eassumption |]).
+  intros.
+  assert {{ Γ ⊢ A[Wk][σ,,M1] : Type@i }} by (eapply exp_sub_typ; mauto 2).
   assert {{ Γ ⊢ A[Wk][σ,,M1] ≈ A[σ] : Type@i }} by mauto 2.
   assert {{ Γ ⊢ M2 : A[Wk][σ,,M1] }} by mauto 3.
   assert {{ Γ ⊢s σ,,M1 : Δ, A }} by mauto 2.
   assert {{ Γ ⊢s σ,,M1,,M2 : Δ, A, A[Wk] }} by mauto 2.
-    assert {{ Γ ⊢ A[Wk∘Wk][σ,,M1,,M2] ≈ A[σ] : Type@i }} by mauto 2.
-  assert {{ Γ ⊢ #1[σ,,M1,,M2] ≈ M1 : A[Wk∘Wk][σ,,M1,,M2] }}
-    by (eapply wf_exp_eq_conv; mauto 2 using sub_lookup_var1).
-  assert {{ Γ ⊢ #0[σ,,M1,,M2] ≈ M2 : A[Wk∘Wk][σ,,M1,,M2] }} by (eapply wf_exp_eq_conv with (A:={{{ A[σ] }}}); [eapply sub_lookup_var0 | |]; mauto 3).
+  assert {{ Γ ⊢ A[Wk∘Wk][σ,,M1,,M2] ≈ A[σ] : Type@i }} by mauto 2.
+  assert {{ Γ ⊢ #1[σ,,M1,,M2] ≈ M1 : A[Wk∘Wk][σ,,M1,,M2] }} by (eapply wf_exp_eq_conv'; mauto 2 using sub_lookup_var1).
+  assert {{ Γ ⊢ #0[σ,,M1,,M2] ≈ M2 : A[Wk∘Wk][σ,,M1,,M2] }} by (eapply wf_exp_eq_conv' with (A:={{{ A[σ] }}}); mauto 2 using sub_lookup_var0).
   assert {{ Γ ⊢ (Eq A[Wk∘Wk] #1 #0)[σ,,M1,,M2] ≈ Eq A[σ] M1 M2 : Type@i }}.
   {
-    transitivity {{{ Eq A[Wk∘Wk][σ,,M1,,M2] #1[σ,,M1,,M2] #0[σ,,M1,,M2] }}}; mauto 3.
-    eapply wf_exp_eq_eq_sub; mauto 3.
+    transitivity {{{ Eq A[Wk∘Wk][σ,,M1,,M2] #1[σ,,M1,,M2] #0[σ,,M1,,M2] }}}; [| mautosolve 2].
+    eapply wf_exp_eq_eq_sub; mauto 2.
   }
   assert {{ Γ ⊢s Id,,M1 : Γ, A[σ] }} by mauto 2.
   assert {{ Γ ⊢ A[σ][Wk][Id,,M1] ≈ A[σ] : Type@i }} by mauto 2.
-  assert {{ Γ ⊢ M2 : A[σ][Wk][Id,,M1] }} by (eapply wf_conv; revgoals; mauto 2).
+  assert {{ Γ ⊢ M2 : A[σ][Wk][Id,,M1] }} by (eapply wf_conv'; revgoals; mauto 2).
   assert {{ Γ ⊢s Id,,M1,,M2 : Γ, A[σ], A[σ][Wk] }} by mauto 2.
 
-  assert {{ Γ ⊢ #0[σ,,M1] ≈ M1 : A[Wk][σ,,M1] }}.
-  {
-    eapply wf_exp_eq_conv'; [eapply wf_exp_eq_var_0_sub with (A:=A)|]; mauto 3.
-  }
+  assert {{ Γ ⊢ #0[σ,,M1] ≈ M1 : A[Wk][σ,,M1] }} by (eapply wf_exp_eq_conv'; [eapply wf_exp_eq_var_0_sub with (A:=A) |]; mauto 3).
 
   assert {{ Γ ⊢ (Eq A[Wk] #0 #0)[σ,,M1] ≈ Eq A[σ] M1 M1 : Type@i }} by (etransitivity; econstructor; mauto 2).
 
@@ -414,10 +401,10 @@ Proof.
   assert {{ Γ ⊢ A[Wk∘Wk][σ,,M1,,M2] ≈ A[σ] : Type@i }} by mauto 2.
 
   assert {{ Γ ⊢ #1[Id,,M1,,M2] ≈ M1 : A[σ] }} by mauto 2 using id_sub_lookup_var1.
-  assert {{ Γ ⊢ #1[Id,,M1,,M2] ≈ M1 : A[σ][Wk∘Wk][Id,,M1,,M2] }} by (eapply wf_exp_eq_conv; mauto 2).
+  assert {{ Γ ⊢ #1[Id,,M1,,M2] ≈ M1 : A[σ][Wk∘Wk][Id,,M1,,M2] }} by (eapply wf_exp_eq_conv'; mauto 2).
 
-  assert {{ Γ ⊢ #0[Id,,M1,,M2] ≈ M2 : A[σ] }} by (eapply wf_exp_eq_conv; mauto 2).
-  assert {{ Γ ⊢ #0[Id,,M1,,M2] ≈ M2 : A[σ][Wk∘Wk][Id,,M1,,M2] }} by (eapply wf_exp_eq_conv; mauto 2).
+  assert {{ Γ ⊢ #0[Id,,M1,,M2] ≈ M2 : A[σ] }} by (eapply wf_exp_eq_conv'; mauto 2).
+  assert {{ Γ ⊢ #0[Id,,M1,,M2] ≈ M2 : A[σ][Wk∘Wk][Id,,M1,,M2] }} by (eapply wf_exp_eq_conv'; mauto 2).
 
   assert {{ Γ ⊢ (Eq A[Wk∘Wk] #1 #0)[σ,,M1,,M2] ≈ Eq A[σ] M1 M2 : Type@i }}
     by (etransitivity; econstructor; mauto 2).
@@ -426,52 +413,44 @@ Proof.
 
   assert {{ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 ⊢s q (q σ)∘Wk : Δ, A, A[Wk] }} by mauto 2.
   assert {{ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 ⊢ (Eq A[Wk∘Wk] #1 #0)[q (q σ)∘Wk] ≈ (Eq A[σ][Wk∘Wk] #1 #0)[Wk] : Type@i }}
-    by (etransitivity; [symmetry; eapply exp_eq_sub_compose_typ |]; mauto 2).
+    by (etransitivity; [symmetry |]; mauto 2 using exp_eq_sub_compose_typ).
 
-  assert {{ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 ⊢ #0 : (Eq A[Wk∘Wk] #1 #0)[q (q σ)∘Wk] }} by (eapply wf_conv; mauto 2).
+  assert {{ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 ⊢ #0 : (Eq A[Wk∘Wk] #1 #0)[q (q σ)∘Wk] }} by (eapply wf_conv'; mauto 2).
 
   assert {{ Γ ⊢s (q σ∘Wk)∘(Id,,M1,,M2) : Δ, A }} by (econstructor; mauto 2).
   assert {{ Γ ⊢s (q σ∘Wk)∘(Id,,M1,,M2) ≈ σ,,M1 : Δ, A }}.
   {
     etransitivity; [eapply wf_sub_eq_compose_assoc; eassumption |].
-    etransitivity;
-      [eapply wf_sub_eq_compose_cong;
-       [eapply wf_sub_eq_p_extend with (A:={{{ A[σ][Wk] }}}) | eapply sub_eq_refl] |];
-      mauto 3.
+    transitivity {{{ q σ∘(Id,,M1) }}}; [| mautosolve 3].
+    econstructor; mauto 2.
   }
 
   assert {{ Γ ⊢ A[Wk][(q σ∘Wk)∘(Id,,M1,,M2)] ≈ A[σ] : Type@i }} by (transitivity {{{ A[Wk][σ,,M1] }}}; mauto 2).
-  assert {{ Γ ⊢ #0[Id,,M1,,M2] ≈ M2 : A[Wk][(q σ∘Wk)∘(Id,,M1,,M2)] }} by (eapply wf_exp_eq_conv; revgoals; mauto 2).
+  assert {{ Γ ⊢ #0[Id,,M1,,M2] ≈ M2 : A[Wk][(q σ∘Wk)∘(Id,,M1,,M2)] }} by (eapply wf_exp_eq_conv'; revgoals; mauto 2).
 
-  assert {{ Γ, A[σ], A[σ][Wk] ⊢ #0 : A[Wk][q σ∘Wk] }} by (eapply wf_conv; mauto 2).
+  assert {{ Γ, A[σ], A[σ][Wk] ⊢ #0 : A[Wk][q σ∘Wk] }} by (eapply wf_conv'; mauto 2).
   assert {{ Γ ⊢s q (q σ)∘(Id,,M1,,M2) ≈ σ,,M1,,M2 : Δ, A, A[Wk] }}
-    by (etransitivity; [eapply wf_sub_eq_extend_compose | econstructor]; mauto 2). mauto 3.
+    by (etransitivity; [eapply wf_sub_eq_extend_compose | econstructor]; mauto 2).
 
-  split. auto. split. auto. split. auto. intros.
+  repeat (split; [eassumption |]).
   intros.
-  assert {{ Γ ⊢ N : (Eq A[σ][Wk∘Wk] #1 #0)[Id,,M1,,M2] }} by (eapply wf_conv; mauto 4).
+  assert {{ Γ ⊢ N : (Eq A[σ][Wk∘Wk] #1 #0)[Id,,M1,,M2] }} by (eapply wf_conv'; mauto 2).
   assert {{ Γ ⊢s Id,,M1,,M2,,N : Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 }} by mauto 2.
 
-  assert {{ Γ ⊢ N : (Eq A[Wk∘Wk] #1 #0)[σ,,M1,,M2] }}.
-  {
-    eapply wf_conv with (A:={{{Eq A[σ] M1 M2}}}); [| | symmetry]; mauto 3.
-  }
+  assert {{ Γ ⊢ N : (Eq A[Wk∘Wk] #1 #0)[σ,,M1,,M2] }} by (eapply wf_conv' with (A:={{{Eq A[σ] M1 M2}}}); mauto 2).
   assert {{ Γ ⊢s σ,,M1,,M2,,N : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }} by mauto 2.
   assert {{ Γ ⊢s (q (q σ)∘Wk)∘(Id,,M1,,M2,,N) : Δ, A, A[Wk] }} by mauto 2.
   assert {{ Γ ⊢s (q (q σ)∘Wk)∘(Id,,M1,,M2,,N) ≈ σ,,M1,,M2 : Δ, A, A[Wk] }}.
   {
-    etransitivity; [eapply wf_sub_eq_compose_assoc; eassumption |].
-    etransitivity;
-      [eapply wf_sub_eq_compose_cong;
-       [eapply wf_sub_eq_p_extend with (A:={{{ Eq A[σ][Wk∘Wk] #1 #0 }}}) | eapply sub_eq_refl] |]; mauto 3.
+    transitivity {{{ q (q σ)∘Wk∘(Id,,M1,,M2,,N) }}}; [mautosolve 2 |].
+    transitivity {{{ q (q σ)∘(Id,,M1,,M2) }}}; [| mautosolve 3].
+    econstructor; mauto 2.
   }
 
   assert {{ Γ ⊢ (Eq A[Wk∘Wk] #1 #0)[(q (q σ)∘Wk)∘(Id,,M1,,M2,,N)] ≈ Eq A[σ] M1 M2 : Type@i }} by mauto 3.
   assert {{ Γ ⊢ #0[Id,,M1,,M2,,N] ≈ N : (Eq A[Wk∘Wk] #1 #0)[(q (q σ)∘Wk)∘(Id,,M1,,M2,,N)] }}
-    by (eapply wf_exp_eq_conv with (A:={{{ Eq A[σ] M1 M2 }}}); [econstructor | |]; mauto 3).
-  assert {{ Γ ⊢s q (q (q σ))∘(Id,,M1,,M2,,N) ≈ σ,,M1,,M2,,N : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }}
-    by (etransitivity; mauto 2).
-  auto.
+    by (eapply wf_exp_eq_conv' with (A:={{{ Eq A[σ] M1 M2 }}}); [econstructor |]; mauto 2).
+  etransitivity; mautosolve 2.
 Qed.
 
 Lemma glu_rel_eq_eqrec_synprop_gen_A : forall {Γ σ Δ i A},
@@ -491,8 +470,9 @@ Lemma glu_rel_eq_eqrec_synprop_gen_A : forall {Γ σ Δ i A},
     {{ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 ⊢s q (q (q σ)) : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }} /\
     {{ Γ, A[σ] ⊢s q (q (q σ))∘(Id,,#0,,refl A[σ][Wk] #0) ≈ (Id,,#0,,refl A[Wk] #0)∘q σ : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }}.
 Proof.
-  intros. eapply glu_rel_eq_eqrec_synprop_gen in H0; mauto. destruct_conjs.
-  repeat split; auto.
+  intros * ? H0 **.
+  eapply glu_rel_eq_eqrec_synprop_gen in H0; mauto 2.
+  firstorder.
 Qed.
 
 Lemma glu_rel_eq_eqrec_synprop_gen_M1M2 : forall {Γ σ Δ i A M1 M2},
@@ -504,8 +484,9 @@ Lemma glu_rel_eq_eqrec_synprop_gen_M1M2 : forall {Γ σ Δ i A M1 M2},
     {{ Γ ⊢ (Eq A[σ][Wk∘Wk] #1 #0)[Id,,M1,,M2] ≈ Eq A[σ] M1 M2 : Type@i }} /\
     {{ Γ ⊢ (Eq A[Wk∘Wk] #1 #0)[σ,,M1,,M2] ≈ Eq A[σ] M1 M2 : Type@i }}.
 Proof.
-  intros. eapply glu_rel_eq_eqrec_synprop_gen in H0; mauto. destruct_conjs; mauto 2.
-  specialize (H14 M1 M2 H1 H2). destruct_conjs; mauto 3.
+  intros * ? H0 **.
+  eapply glu_rel_eq_eqrec_synprop_gen in H0; mauto 2.
+  firstorder.
 Qed.
 
 Lemma glu_rel_eq_eqrec_synprop_gen_N : forall {Γ σ Δ i A M1 M2 N},
@@ -516,8 +497,9 @@ Lemma glu_rel_eq_eqrec_synprop_gen_N : forall {Γ σ Δ i A M1 M2 N},
     {{ Γ ⊢ N : Eq A[σ] M1 M2 }} ->
     {{ Γ ⊢s q (q (q σ))∘(Id,,M1,,M2,,N) ≈ (σ,,M1,,M2,,N) : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }}.
 Proof.
-  intros. eapply glu_rel_eq_eqrec_synprop_gen in H0; mauto. destruct_conjs; mauto 2.
-  specialize (H15 M1 M2 H1 H2). destruct_conjs; mauto 2.
+  intros * ? H0 **.
+  eapply glu_rel_eq_eqrec_synprop_gen in H0; mauto 2.
+  firstorder.
 Qed.
 
 Lemma wf_exp_eq_eqrec_id0refl0σm_σmmreflm : forall {Γ Δ i σ A M},
@@ -526,43 +508,40 @@ Lemma wf_exp_eq_eqrec_id0refl0σm_σmmreflm : forall {Γ Δ i σ A M},
     {{ Γ ⊢ M : A[σ] }} ->
     {{ Γ ⊢s (Id,,#0,,refl A[Wk] #0)∘(σ,,M) ≈ σ,,M,,M,,refl A[σ] M : Δ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }}.
 Proof.
-    intros.
-    gen_presups.
-    assert {{ Δ, A ⊢s Wk : Δ }} by mauto 3.
-    assert {{ Δ, A ⊢ A[Wk] : Type@i }} by mauto 2.
-    assert {{ Γ ⊢s Id∘(σ,,M) : Δ, A }} by (econstructor; mauto 3).
-    assert {{ Γ ⊢s Id∘(σ,,M) ≈ (σ,,M) : Δ, A }} by mauto 3.
-    assert {{ Γ ⊢ #0[σ,,M] ≈ M : A[σ] }} by mauto 3.
-    assert {{ Γ ⊢s Wk∘(σ,,M) ≈ σ : Δ }} by mauto 3.
-    assert {{ Δ, A ⊢ #0 : A[Wk][Id] }} by (eapply wf_conv'; mauto 3).
-    assert {{ Δ, A ⊢s Id,,#0 : Δ, A, A[Wk] }} by mauto 3.
-    assert {{ Γ ⊢ #0[σ,,M] ≈ M : A[Wk][Id∘(σ,,M)] }}.
-    {
-      eapply wf_exp_eq_conv'; mauto 2.
-      eapply exp_eq_compose_typ_twice; mauto 2.
-      transitivity {{{ Wk∘(σ,,M) }}}; mauto 2.
-      econstructor; mauto 2.
-    }
-    etransitivity; [eapply wf_sub_eq_extend_compose; mauto 3 |].
-    - eapply wf_conv'; [|symmetry; eapply glu_rel_eq_eqrec_synprop_gen_A]; mauto 3.
-    - econstructor; mauto 3.
-      + etransitivity; [eapply wf_sub_eq_extend_compose; mauto 3 |].
-        econstructor; eauto.
-      + assert {{ Γ ⊢s (Id,,#0)∘(σ,,M) ≈ (σ,,M,,M) : Δ, A, A[Wk] }}.
-        {
-          transitivity {{{ (Id∘(σ,,M),,#0[σ,,M])}}}; mauto 3.
-          econstructor; mauto 3.
-        }
-        gen_presups.
-        eapply glu_rel_eq_eqrec_synprop_gen_M1M2 in HN0; mauto 3. destruct_conjs.
-        eapply wf_exp_eq_conv' with (i:=i) (A:={{{ Eq A[σ] M M }}}); mauto 2.
-        * transitivity {{{refl A[Wk][σ,,M] #0[σ,,M] }}}.
-          -- eapply wf_exp_eq_conv'; mauto 3.
-          -- symmetry.
-             eapply wf_exp_eq_refl_cong; mauto 2.
-             eapply exp_eq_compose_typ_twice; mauto 2.
-        * transitivity {{{ (Eq A[Wk∘Wk] #1 #0)[σ,,M,,M] }}}; mauto 2.
-          eapply wf_exp_eq_conv'; [eapply wf_exp_eq_sub_cong|]; mauto 3.
+  intros.
+  gen_presups.
+  assert {{ ⊢ Δ, A }} by mauto 2.
+  assert {{ Δ, A ⊢s Wk : Δ }} by mauto 2.
+  assert {{ Δ, A ⊢ A[Wk] : Type@i }} by mauto 2.
+  assert {{ Γ ⊢s Id∘(σ,,M) : Δ, A }} by (econstructor; mauto 2).
+  assert {{ Γ ⊢s Id∘(σ,,M) ≈ (σ,,M) : Δ, A }} by mauto 3.
+  assert {{ Γ ⊢ #0[σ,,M] ≈ M : A[σ] }} by mauto 2.
+  assert {{ Γ ⊢s Wk∘(σ,,M) ≈ σ : Δ }} by mauto 2.
+  assert {{ Δ, A ⊢ #0 : A[Wk][Id] }} by (eapply wf_conv'; mauto 3).
+  assert {{ Δ, A ⊢s Id,,#0 : Δ, A, A[Wk] }} by mauto 3.
+  assert {{ Γ ⊢ #0[σ,,M] ≈ M : A[Wk][Id∘(σ,,M)] }}.
+  {
+    eapply wf_exp_eq_conv'; [mautosolve 2 |].
+    eapply exp_eq_compose_typ_twice; mauto 2.
+    transitivity {{{ Wk∘(σ,,M) }}}; [mautosolve 2 |].
+    econstructor; mauto 2.
+  }
+  etransitivity; [eapply wf_sub_eq_extend_compose; mauto 2 |].
+  - eapply wf_conv'; [| symmetry; eapply glu_rel_eq_eqrec_synprop_gen_A]; mauto 3.
+  - econstructor; [| mautosolve 3 |].
+    + etransitivity; [eapply wf_sub_eq_extend_compose; mauto 3 | mauto 2].
+    + assert {{ Γ ⊢s (Id,,#0)∘(σ,,M) ≈ (σ,,M,,M) : Δ, A, A[Wk] }} by (transitivity {{{ (Id∘(σ,,M),,#0[σ,,M])}}}; mauto 2; econstructor; mauto 2).
+      gen_presups.
+      eapply glu_rel_eq_eqrec_synprop_gen_M1M2 in HN0; mauto 2.
+      destruct_conjs.
+      eapply wf_exp_eq_conv' with (i:=i) (A:={{{ Eq A[σ] M M }}}); mauto 2.
+      * transitivity {{{refl A[Wk][σ,,M] #0[σ,,M] }}}.
+        -- eapply wf_exp_eq_conv'; mauto 3.
+        -- symmetry.
+           eapply wf_exp_eq_refl_cong; mauto 2.
+           eapply exp_eq_compose_typ_twice; mauto 2.
+      * transitivity {{{ (Eq A[Wk∘Wk] #1 #0)[σ,,M,,M] }}}; mauto 2.
+        eapply wf_exp_eq_conv'; [eapply wf_exp_eq_sub_cong |]; mauto 3.
 Qed.
 
 Lemma wf_exp_eq_σM1M2N : forall {Γ Δ i σ A M1 M2 N},
@@ -575,27 +554,30 @@ Lemma wf_exp_eq_σM1M2N : forall {Γ Δ i σ A M1 M2 N},
 Proof.
   intros.
   gen_presups.
-  assert {{ Δ, A ⊢s Wk : Δ }} by mauto 3.
+  assert {{ ⊢ Δ, A }} by mauto 2.
+  assert {{ Δ, A ⊢s Wk : Δ }} by mauto 2.
   assert {{ Δ, A ⊢ A[Wk] : Type@i }} by mauto 2.
-  assert {{ ⊢ Δ, A, A[Wk] }} by mauto 3.
+  assert {{ ⊢ Δ, A, A[Wk] }} by mauto 2.
   assert {{ Γ ⊢s σ,,M1[σ] ≈ (Id,,M1)∘σ : Δ, A }}.
   {
-    etransitivity;[|symmetry; eapply wf_sub_eq_extend_compose]; mauto 3.
+    etransitivity; [| symmetry; eapply wf_sub_eq_extend_compose]; mauto 2.
     eapply wf_sub_eq_extend_cong; mauto 3.
   }
   assert {{ Γ ⊢s σ,,M1[σ],,M2[σ] ≈ (Id,,M1,,M2)∘σ : Δ, A, A[Wk] }}.
   {
-    etransitivity;[|symmetry; eapply wf_sub_eq_extend_compose]; mauto 3.
-    eapply wf_sub_eq_extend_cong; mauto 3.
-    eapply wf_exp_eq_conv'; [eapply wf_exp_eq_sub_cong|]; mauto 3.
-    eapply exp_eq_compose_typ_twice; mauto 3.
-    symmetry. eapply wf_sub_eq_p_extend with (A:=A); mauto 3.
-    eapply wf_conv'; mauto 3.
+    etransitivity.
+    - eapply wf_sub_eq_extend_cong; [mautosolve 2 | mautosolve 2 |].
+      eapply wf_exp_eq_conv'; [mautosolve 3 |].
+      eapply exp_eq_compose_typ_twice; mauto 3.
+      symmetry. mauto 3.
+    - symmetry; eapply wf_sub_eq_extend_compose; mauto 2.
+      eapply wf_conv'; mauto 3.
   }
-  etransitivity;[|symmetry; eapply wf_sub_eq_extend_compose]; mauto 3.
-  eapply wf_sub_eq_extend_cong; mauto 3.
-  eapply wf_exp_eq_conv'; [eapply wf_exp_eq_sub_cong|]; mauto 3.
-  eapply wf_conv'; mauto 3.
+  etransitivity.
+  - eapply wf_sub_eq_extend_cong; [mautosolve 2 | mautosolve 2 |].
+    eapply wf_exp_eq_conv'; mauto 3.
+  - symmetry; eapply wf_sub_eq_extend_compose; mauto 2.
+    eapply wf_conv'; mauto 3.
 Qed.
 
 Lemma wf_exp_eq_eqrec_cong_sub : forall {Γ σ Δ i j A A' M1 M1' M2 M2' N N' B B' BR BR'},
@@ -616,28 +598,24 @@ Lemma wf_exp_eq_eqrec_cong_sub : forall {Γ σ Δ i j A A' M1 M1' M2 M2' N N' B 
            eqrec N' as Eq A' M1' M2' return B' | refl -> BR' end : B[Id,,M1,,M2,,N][σ] }}.
 Proof.
   intros.
-  assert {{ Γ ⊢ B[σ,,M1[σ],,M2[σ],,N[σ]] ≈ B[Id,,M1,,M2,,N][σ] : Type@j }}.
-  {
-    eapply exp_eq_compose_typ_twice; mauto 3.
-    eapply wf_exp_eq_σM1M2N; mauto 3.
-  }
+  assert {{ Γ ⊢ B[σ,,M1[σ],,M2[σ],,N[σ]] ≈ B[Id,,M1,,M2,,N][σ] : Type@j }}
+    by (eapply exp_eq_compose_typ_twice; mauto 2 using wf_exp_eq_σM1M2N).
   assert {{ Γ ⊢ B[Id,,M1,,M2,,N][σ] ≈ B[σ,,M1[σ],,M2[σ],,N[σ]] : Type@j }} by mauto 2.
   gen_presups.
   transitivity {{{ eqrec N[σ] as Eq A[σ] M1[σ] M2[σ] return B[q (q (q σ))] | refl -> BR[q σ] end }}}.
   - mauto 3.
-  - eapply wf_exp_eq_conv with (A:={{{(B[q (q (q σ))])[(Id,,M1[σ],,M2[σ],,N[σ])]}}}); mauto 3.
-    + eapply wf_exp_eq_eqrec_cong with (j:=j); mauto 3.
+  - eapply wf_exp_eq_conv' with (A:={{{(B[q (q (q σ))])[(Id,,M1[σ],,M2[σ],,N[σ])]}}}).
+    + eapply wf_exp_eq_eqrec_cong with (j:=j); mauto 2.
       * eapply ctxeq_exp_eq; mauto 2.
         eapply wf_ctx_eq_extend''; eapply glu_rel_eq_eqrec_synprop_gen_A; mauto 2.
       * eapply wf_exp_eq_conv'; mauto 2.
         eapply @wf_eq_typ_exp_sub_cong_twice with (Δ':={{{ Γ, A[σ], A[σ][Wk], Eq A[σ][Wk∘Wk] #1 #0 }}}); mauto 2;
           try (eapply glu_rel_eq_eqrec_synprop_gen_A; mautosolve 2).
         symmetry.
-        eapply glu_rel_eq_eqrec_synprop_gen_A; mautosolve 2.
+        eapply glu_rel_eq_eqrec_synprop_gen_A; mauto 2.
     + eapply wf_eq_typ_exp_sub_cong_twice; mauto 2.
-      * eapply glu_rel_eq_eqrec_synprop_gen_A; mautosolve 2.
-      * erewrite glu_rel_eq_eqrec_synprop_gen_N; mauto 2.
-        mauto 2 using wf_exp_eq_σM1M2N.
+      * eapply glu_rel_eq_eqrec_synprop_gen_A; mauto 2.
+      * erewrite glu_rel_eq_eqrec_synprop_gen_N; mauto 2 using wf_exp_eq_σM1M2N.
 Qed.
 
 Lemma glu_rel_eq_eqrec : forall Γ A i M1 M2 B j BR N,
@@ -650,22 +628,22 @@ Lemma glu_rel_eq_eqrec : forall Γ A i M1 M2 B j BR N,
     {{ Γ ⊩ eqrec N as Eq A M1 M2 return B | refl -> BR end : B[Id,,M1,,M2,,N] }}.
 Proof.
   intros * HA HM1 HM2 HB HBR HN.
-  assert {{ ⊩ Γ }} by mauto.
-  assert {{ ⊩ Γ }} as [SbΓ] by mauto.
+  assert {{ ⊩ Γ }} by mauto 2.
+  assert {{ ⊩ Γ }} as [SbΓ] by mauto 2.
   pose (SbΓA := cons_glu_sub_pred i Γ {{{ A }}} SbΓ).
   saturate_syn_judge.
-  assert {{ EG Γ, A ∈ glu_ctx_env ↘ SbΓA }} by (invert_glu_rel_exp HA; econstructor; mauto 3; try reflexivity).
+  assert {{ EG Γ, A ∈ glu_ctx_env ↘ SbΓA }} by (invert_glu_rel_exp HA; econstructor; mauto 3; reflexivity).
   assert {{ Γ ⊩s Id,,M1 : Γ, A }} by (eapply glu_rel_sub_extend; mauto 3; bulky_rewrite).
   assert {{ ⊩ Γ, A }} by mauto.
   assert {{ Γ ⊩s Id,,M1,,M2 : Γ, A, A[Wk] }} by (eapply glu_rel_sub_extend; mauto 4).
-  assert {{ ⊩ Γ, A, A[Wk] }} by (unshelve mauto; eauto).
-  assert {{ Γ, A ⊩ A[Wk] : Type@i }} by (unshelve mauto; eauto).
+  assert {{ ⊩ Γ, A, A[Wk] }} by (unshelve mauto 2; eauto).
+  assert {{ Γ, A ⊩ A[Wk] : Type@i }} by (unshelve mauto 3; eauto).
   saturate_syn_judge.
   pose (SbΓAA := cons_glu_sub_pred i {{{ Γ , A }}} {{{ A[Wk] }}} SbΓA).
-  assert {{ EG Γ, A , A[Wk] ∈ glu_ctx_env ↘ SbΓAA }} by (invert_glu_rel_exp H13; econstructor; mauto 3; try reflexivity).
+  assert {{ EG Γ, A , A[Wk] ∈ glu_ctx_env ↘ SbΓAA }} by (invert_glu_rel_exp H13; econstructor; mauto 3; reflexivity).
   assert {{ Γ ⊩s Id,,M1,,M2,,N : Γ, A, A[Wk], Eq A[Wk ∘ Wk] #1 #0 }}.
   {
-    eapply glu_rel_sub_extend; mauto 4.
+    eapply glu_rel_sub_extend; [mautosolve 2 | | mautosolve 4].
     eapply glu_rel_eq.
     - mauto.
     - rewrite <- @exp_eq_sub_compose_typ with (i := i); mauto 3.
@@ -673,8 +651,7 @@ Proof.
   }
   assert {{ Γ, A ⊩s Id,,#0,,refl A[Wk] #0 : Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 }}.
   {
-    assert {{ Γ, A ⊩s Id,,#0 : Γ, A, A[Wk] }} by
-    (eapply glu_rel_sub_extend; mauto 2; bulky_rewrite).
+    assert {{ Γ, A ⊩s Id,,#0 : Γ, A, A[Wk] }} by (eapply glu_rel_sub_extend; mauto 2; bulky_rewrite).
     assert {{ ⊩ Γ, A, A[Wk], Eq A[Wk ∘ Wk] #1 #0 }} by mauto 2.
     assert {{ Γ, A ⊢ (Eq A[Wk∘Wk] #1 #0)[Id,,#0] ≈ Eq A[Wk] #0 #0 : Type@i }} by (eapply glu_rel_eq_eqrec_synprop_gen_A; mauto 2).
     eapply glu_rel_sub_extend; mauto 3.
@@ -698,7 +675,7 @@ Proof.
     mauto 3.
   }
   pose (SbΓAAEq := cons_glu_sub_pred i {{{ Γ, A, A[Wk] }}} {{{ Eq A[Wk∘Wk] #1 #0 }}} SbΓAA).
-  assert {{ EG Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ∈ glu_ctx_env ↘ SbΓAAEq }} by (invert_glu_rel_exp H22; econstructor; mauto 3; try reflexivity).
+  assert {{ EG Γ, A, A[Wk], Eq A[Wk∘Wk] #1 #0 ∈ glu_ctx_env ↘ SbΓAAEq }} by (invert_glu_rel_exp H22; econstructor; mauto 3; reflexivity).
 
   saturate_syn_judge.
   (* TODO *)
@@ -706,7 +683,7 @@ Proof.
   invert_sem_judge.
   eexists; split; eauto.
   exists j; intros.
-  assert {{ Δ ⊢s σ : Γ }} by mauto 4.
+  assert {{ Δ ⊢s σ : Γ }} by mauto 2.
   clear H29.
   apply_glu_rel_judge.
   (* slow *)
