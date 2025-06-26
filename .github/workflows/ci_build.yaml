@@ -62,8 +62,11 @@ jobs:
               sudo chown -R coq:coq .
             endGroup
           script: |
+            startGroup "Insert Checks"
+              python ./scripts/insert_assumption_checks.py ./theories/
+            endGroup
             startGroup "Build binary"
-              make pretty-timed
+              make pretty-timed-with-check
             endGroup
             startGroup "Build HTMLs for GitHub pages"
               if [[ "${{ env.DOC_DEPLOY }}" == 'true' ]]; then
