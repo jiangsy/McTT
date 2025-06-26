@@ -63,7 +63,7 @@ jobs:
             endGroup
           script: |
             startGroup "Insert Checks"
-              python ./scripts/insert_assumption_checks.py ./theories/
+              python3 ./scripts/insert_assumption_checks.py ./theories/
             endGroup
             startGroup "Build binary"
               make pretty-timed-with-check
