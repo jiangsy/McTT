@@ -1,4 +1,3 @@
-# python insert_assumption_checks.py ../
 import re
 import sys
 from pathlib import Path
@@ -36,7 +35,7 @@ def find_all_v_files(directory: Path) -> list:
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python track_eq_rect_make.py <directory>")
+        print("Usage: python insert_assumption_checks.py <directory>")
         sys.exit(1)
 
     root_dir = Path(sys.argv[1]).resolve()
