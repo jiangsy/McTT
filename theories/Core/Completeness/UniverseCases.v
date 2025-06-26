@@ -19,7 +19,7 @@ Proof.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   eassumption.
 Qed.
 

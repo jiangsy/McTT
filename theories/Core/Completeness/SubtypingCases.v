@@ -16,7 +16,7 @@ Proof.
   saturate_refl.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   destruct_conjs.
   handle_per_univ_elem_irrel.
@@ -88,7 +88,7 @@ Proof.
   saturate_refl.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   destruct_conjs.
   handle_per_univ_elem_irrel.

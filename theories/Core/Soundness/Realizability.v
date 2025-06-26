@@ -129,7 +129,7 @@ Proof.
     progressive_inversion.
     transitivity {{{ Type@j[σ] }}}; mauto 4.
   - handle_functional_glu_univ_elem.
-    match_by_head glu_univ_elem invert_glu_univ_elem.
+    match_by_head glu_univ_elem invert_glu_univ_elem_nouip.
     clear_dups.
     apply_equiv_left.
     repeat split; eauto.
@@ -160,7 +160,7 @@ Proof.
     progressive_inversion.
     transitivity {{{ ℕ[σ] }}}; mauto 3.
   - handle_functional_glu_univ_elem.
-    match_by_head glu_univ_elem invert_glu_univ_elem.
+    match_by_head glu_univ_elem invert_glu_univ_elem_nouip.
     apply_equiv_left.
     repeat split; eauto.
     econstructor; trivial.
