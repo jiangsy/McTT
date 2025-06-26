@@ -1212,7 +1212,7 @@ Proof.
   destruct_conjs.
   eexists; intros.
   handle_functional_glu_ctx_env.
-  mauto.
+  intuition.
 Qed.
 
 Lemma glu_rel_exp_clean_inversion2 : forall {i Γ Sb M A},

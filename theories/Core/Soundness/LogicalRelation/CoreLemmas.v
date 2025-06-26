@@ -395,13 +395,20 @@ Qed.
 #[export]
 Hint Resolve glu_univ_elem_univ_simple_constructor : mctt.
 
+Ltac clear_predicate_equivalence :=
+  repeat match goal with
+    | H : ?R1 <∙> ?R2 |- _ =>
+        (unify R1 R2; clear H) + (is_var R1; clear R1 H) + (is_var R2; clear R2 H)
+    end.
+
 Ltac rewrite_predicate_equivalence_left :=
   repeat match goal with
     | H : ?R1 <∙> ?R2 |- _ =>
         try setoid_rewrite H;
         (on_all_hyp: fun H' => assert_fails (unify H H'); unmark H; setoid_rewrite H in H');
         let T := type of H in
-        fold (id T) in H
+        fold (id T) in H;
+        clear_predicate_equivalence
     end; unfold id in *.
 
 Ltac rewrite_predicate_equivalence_right :=
@@ -410,14 +417,9 @@ Ltac rewrite_predicate_equivalence_right :=
         try setoid_rewrite <- H;
         (on_all_hyp: fun H' => assert_fails (unify H H'); unmark H; setoid_rewrite <- H in H');
         let T := type of H in
-        fold (id T) in H
+        fold (id T) in H;
+        clear_predicate_equivalence
     end; unfold id in *.
-
-Ltac clear_predicate_equivalence :=
-  repeat match goal with
-    | H : ?R1 <∙> ?R2 |- _ =>
-        (unify R1 R2; clear H) + (is_var R1; clear R1 H) + (is_var R2; clear R2 H)
-    end.
 
 Ltac apply_predicate_equivalence :=
   clear_predicate_equivalence;

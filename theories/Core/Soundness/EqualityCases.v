@@ -33,7 +33,7 @@ Proof.
   apply_glu_rel_judge.
   handle_functional_glu_univ_elem.
   deepexec glu_univ_elem_per_univ ltac:(fun H => pose proof H).
-  destruct_by_head per_univ.
+  match_by_head1 per_univ ltac:(fun H => simpl in H; deex_once_in H).
   do 2 deepexec glu_univ_elem_per_elem ltac:(fun H => pose proof H; fail_at_if_dup ltac:(4)).
 
   eexists; repeat split; mauto.
@@ -46,9 +46,9 @@ Proof.
       intros Ψ τ **;
       assert {{ Ψ ⊢s τ : Δ }} by mauto 2;
       assert {{ Ψ ⊢s σ ∘ τ ® ρ ∈ SbΓ }} by (eapply glu_ctx_env_sub_monotone; eassumption);
-      assert {{ Ψ ⊢s σ ∘ τ : Γ }} by mauto 2;
-      apply_glu_rel_judge;
-      handle_functional_glu_univ_elem.
+        assert {{ Ψ ⊢s σ ∘ τ : Γ }} by mauto 2;
+        apply_glu_rel_judge;
+        handle_functional_glu_univ_elem.
     + bulky_rewrite.
     + assert {{ Ψ ⊢ M[σ][τ] ≈ M[σ ∘ τ] : A[σ ∘ τ] }} by mauto 3.
       bulky_rewrite.
