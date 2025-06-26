@@ -603,6 +603,11 @@ Ltac invert_per_univ_elem H :=
   (unshelve eapply (per_univ_elem_pi_clean_inversion _) in H; shelve_unifiable; [eassumption |]; destruct H as [? []])
   + basic_invert_per_univ_elem H.
 
+(* TODO: unify with the uip version above *)
+Ltac invert_per_univ_elem_nouip H :=
+  (unshelve eapply (per_univ_elem_pi_clean_inversion _) in H; shelve_unifiable; [eassumption |]; destruct H as [? []])
+  + basic_invert_per_univ_elem_nouip H.
+
 Lemma per_univ_elem_cumu : forall i a0 a1 R,
     {{ DF a0 ≈ a1 ∈ per_univ_elem i ↘ R }} ->
     {{ DF a0 ≈ a1 ∈ per_univ_elem (S i) ↘ R }}.
@@ -657,7 +662,6 @@ Proof.
   lia.
 Qed.
 
-
 Lemma per_elem_subtyping : forall A B i,
     {{ Sub A <: B at i }} ->
     forall R R' a b,
@@ -669,16 +673,16 @@ Proof.
   induction 1; intros;
     handle_per_univ_elem_irrel;
     saturate_refl;
-    (on_all_hyp: fun H => directed invert_per_univ_elem H);
+    (on_all_hyp: fun H => directed invert_per_univ_elem_nouip H);
     handle_per_univ_elem_irrel;
     clear_refl_eqs;
     trivial.
   - firstorder mauto.
   - intros.
     handle_per_univ_elem_irrel.
-    destruct_rel_mod_eval.
+    destruct_rel_mod_eval_nouip.
     saturate_refl_for per_univ_elem.
-    destruct_rel_mod_app.
+    destruct_rel_mod_app_nouip.
     simplify_evals.
     econstructor; eauto.
     intuition.
@@ -737,14 +741,14 @@ Proof.
   induction 1; intros ? Hsub; simpl in *.
   1-3: progressive_inversion; mauto.
   - econstructor; lia.
-  - dependent destruction Hsub.
+  - inversion Hsub; subst.
     handle_per_univ_elem_irrel.
     econstructor; eauto.
     + etransitivity; eassumption.
     + intros.
       saturate_refl.
-      (on_all_hyp: fun H => directed invert_per_univ_elem H).
-      destruct_rel_mod_eval.
+      (on_all_hyp: fun H => directed invert_per_univ_elem_nouip H).
+      destruct_rel_mod_eval_nouip.
       handle_per_univ_elem_irrel.
       intuition.
 Qed.

@@ -15,6 +15,7 @@ Proof.
   functional_nbe_rewrite_clear.
   reflexivity.
 Qed.
+
 #[export]
 Hint Resolve idempotent_nbe_ty : mctt.
 
@@ -71,6 +72,7 @@ Proof.
   dir_inversion_clear_by_head read_nf.
   do 2 eexists; mauto 4.
 Qed.
+
 #[export]
 Hint Resolve nf_of_pi : mctt.
 
@@ -78,6 +80,7 @@ Theorem canonical_form_of_pi : forall {M A B},
     {{ ⋅ ⊢ M : Π A B }} ->
     exists W1 W2, nbe {{{ ⋅ }}} M {{{ Π A B }}} n{{{ λ W1 W2 }}}.
 Proof. mauto 3. Qed.
+
 #[export]
 Hint Resolve canonical_form_of_pi : mctt.
 
@@ -85,6 +88,7 @@ Inductive canonical_nat : nf -> Prop :=
 | canonical_nat_zero : canonical_nat n{{{ zero }}}
 | canonical_nat_succ : forall W, canonical_nat W -> canonical_nat n{{{ succ W }}}
 .
+
 #[export]
 Hint Constructors canonical_nat : mctt.
 
@@ -104,6 +108,7 @@ Proof with mautosolve 4.
   - eassert ({{ ⋅ ⊢ ^_ : ℕ }} /\ {{ ⋅ ⊢ ℕ ⊆ ℕ }}) as [? _]...
   - match_by_head1 (wf_exp {{{ ⋅ }}} {{{ ℕ }}}) ltac:(fun H => contradict H)...
 Qed.
+
 #[export]
 Hint Resolve canonical_form_of_nat : mctt.
 
@@ -123,6 +128,7 @@ Proof with mautosolve 4.
     gen_presups;
     match_by_head1 (wf_exp {{{ ⋅ }}} {{{ Type@i }}}) ltac:(fun H => contradict H)...
 Qed.
+
 #[export]
 Hint Resolve canonical_form_of_typ : mctt.
 

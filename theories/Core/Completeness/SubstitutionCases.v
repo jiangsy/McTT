@@ -70,7 +70,7 @@ Proof with mautosolve.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   (on_all_hyp: destruct_rel_by_assumption env_relΔ).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp...
 Qed.
 
@@ -140,7 +140,6 @@ Proof with mautosolve.
   pose env_relΓ''.
   handle_per_ctx_env_irrel.
   assert {{ ⊨ Γ'', A }} as [env_relΓ''A] by (eapply rel_ctx_extend; eauto; eexists; eassumption).
-  destruct_conjs.
   eexists_rel_sub.
   match_by_head (per_ctx_env env_relΓ''A) invert_per_ctx_env.
   handle_per_ctx_env_irrel.
@@ -149,7 +148,7 @@ Proof with mautosolve.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ').
   (on_all_hyp: destruct_rel_by_assumption env_relΓ'').
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   econstructor...
 Qed.
@@ -170,7 +169,7 @@ Proof with mautosolve.
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ').
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   econstructor...
 Qed.

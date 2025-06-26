@@ -270,14 +270,14 @@ Lemma glu_univ_elem_per_elem : forall i P El a,
 Proof.
   simpl.
   induction 1 using glu_univ_elem_ind; intros;
-    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H);
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem_nouip H);
     simpl_glu_rel;
     try fold (per_univ j m m);
     mauto 4.
 
   intros.
-  destruct_rel_mod_app.
-  destruct_rel_mod_eval.
+  destruct_rel_mod_app_nouip.
+  destruct_rel_mod_eval_nouip.
   functional_eval_rewrite_clear.
   do_per_univ_elem_irrel_assert.
 
@@ -635,6 +635,14 @@ Ltac invert_glu_univ_elem H :=
   + (unshelve eapply (glu_univ_elem_pi_clean_inversion1 _) in H; shelve_unifiable; [eassumption |];
    destruct H as [? [? [? [? [? [? [? [? []]]]]]]]])
   + basic_invert_glu_univ_elem H.
+
+(* TODO: unify with the uip version above *)
+Ltac invert_glu_univ_elem_nouip H :=
+  (unshelve eapply (glu_univ_elem_pi_clean_inversion2 _ _) in H; shelve_unifiable; [eassumption | eassumption |];
+   destruct H as [? [? [? [? [? []]]]]])
+  + (unshelve eapply (glu_univ_elem_pi_clean_inversion1 _) in H; shelve_unifiable; [eassumption |];
+   destruct H as [? [? [? [? [? [? [? [? []]]]]]]]])
+  + basic_invert_glu_univ_elem_nouip H.
 
 Lemma glu_univ_elem_resp_per_univ : forall i a a' P El,
     {{ Dom a ≈ a' ∈ per_univ i }} ->

@@ -34,7 +34,7 @@ Proof.
   split; mauto 4.
   eexists; repeat split; mauto.
   intros.
-  match_by_head1 glu_univ_elem invert_glu_univ_elem.
+  match_by_head1 glu_univ_elem invert_glu_univ_elem_nouip.
   apply_predicate_equivalence.
   cbn.
   mauto 4.

@@ -114,7 +114,7 @@ Proof.
     destruct_glu_rel_sub_with_sub.
     destruct_glu_rel_exp_with_sub.
     simplify_evals.
-    match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+    match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
     apply_predicate_equivalence.
     unfold univ_glu_exp_pred' in *.
     destruct_conjs.

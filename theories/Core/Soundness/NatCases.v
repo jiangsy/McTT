@@ -24,7 +24,7 @@ Proof.
   eexists; repeat split; mauto 3.
   - eexists; per_univ_elem_econstructor; reflexivity.
   - intros.
-    match_by_head1 glu_univ_elem invert_glu_univ_elem.
+    match_by_head1 glu_univ_elem invert_glu_univ_elem_nouip.
     apply_predicate_equivalence.
     unfold nat_glu_typ_pred.
     mauto 3.
@@ -109,7 +109,7 @@ Proof.
   intros.
   destruct_glu_rel_exp_with_sub.
   simplify_evals.
-  match_by_head1 glu_univ_elem invert_glu_univ_elem.
+  match_by_head1 glu_univ_elem invert_glu_univ_elem_nouip.
   apply_predicate_equivalence.
   inversion_clear_by_head nat_glu_exp_pred.
   eexists; split; mauto 3.
@@ -240,7 +240,7 @@ Proof.
   assert {{ Δ ⊢s σ,,M' ® ρ ↦ m' ∈ SbΓℕ }} by (unfold SbΓℕ; mauto 3).
   destruct_glu_rel_exp_with_sub.
   simplify_evals.
-  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
   apply_predicate_equivalence.
   unfold univ_glu_exp_pred' in *.
   destruct_conjs.
@@ -276,7 +276,7 @@ Proof.
   assert {{ Δ ⊢s σ,,M',,R ® ρ ↦ m' ↦ r' ∈ SbΓℕA }} by (unfold SbΓℕA; mauto 3).
   destruct_glu_rel_exp_with_sub.
   simplify_evals.
-  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
   apply_predicate_equivalence.
   clear_dups.
   unfold univ_glu_exp_pred' in *.
@@ -313,7 +313,7 @@ Proof.
   invert_glu_rel_exp HA.
   destruct_glu_rel_exp_with_sub.
   simplify_evals.
-  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
   apply_predicate_equivalence.
   unfold univ_glu_exp_pred' in *.
   destruct_conjs.
@@ -385,7 +385,7 @@ Proof.
   invert_glu_rel_exp HMS.
   destruct_glu_rel_exp_with_sub.
   simplify_evals.
-  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
   apply_predicate_equivalence.
   unfold univ_glu_exp_pred' in *.
   destruct_conjs.
@@ -433,12 +433,12 @@ Proof.
     enough (exists r, {{ Rne rec m under ρ return A | zero -> mz | succ -> MS end in s ↘ r }}) as [] by (eexists; split; eassumption).
     assert {{ Dom ρ ≈ ρ ∈ env_relΓ }} by (eapply glu_ctx_env_per_env; revgoals; eassumption).
     destruct_rel_typ.
-    invert_rel_typ_body.
+    invert_rel_typ_body_nouip.
     assert {{ Dom ! s ≈ ! s ∈ per_bot }} by mauto 3.
     assert {{ Dom ρ ↦ ⇑! ℕ s ≈ ρ ↦ ⇑! ℕ s ∈ env_relΓℕ }} by (apply_relation_equivalence; unshelve eexists; simpl; intuition).
     assert {{ Dom ρ ↦ succ ⇑! ℕ s ≈ ρ ↦ succ ⇑! ℕ s ∈ env_relΓℕ }} by (apply_relation_equivalence; unshelve eexists; simpl; intuition).
     destruct_rel_typ.
-    invert_rel_typ_body.
+    invert_rel_typ_body_nouip.
     match goal with
     | _: {{ ⟦ A ⟧ ρ ↦ ⇑! ℕ s ↘ ^?a }}, _: {{ ⟦ A ⟧ ρ ↦ (succ ⇑! ℕ s) ↘ ^?a' }} |- _ =>
         rename a into as'; (** We cannot use [as] as a name *)
@@ -450,7 +450,7 @@ Proof.
     (on_all_hyp_rev: fun H => destruct (H _ _ HΓℕA)).
     destruct_conjs.
     destruct_by_head rel_typ.
-    invert_rel_typ_body.
+    invert_rel_typ_body_nouip.
     destruct_by_head rel_exp.
     functional_eval_rewrite_clear.
     match goal with
@@ -472,7 +472,7 @@ Proof.
     assert {{ Δ', ℕ ⊢s q (σ∘τ) ® ρ ↦ ⇑! ℕ (length Δ') ∈ SbΓℕ }} by (unfold SbΓℕ; mauto 3).
     destruct_glu_rel_exp_with_sub.
     simplify_evals.
-    match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+    match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
     apply_predicate_equivalence.
     unfold univ_glu_exp_pred' in *.
     destruct_conjs.
@@ -488,7 +488,7 @@ Proof.
       by (unfold SbΓℕA; mauto 3).
     destruct_glu_rel_exp_with_sub.
     simplify_evals.
-    match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+    match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
     apply_predicate_equivalence.
     unfold univ_glu_exp_pred' in *.
     destruct_conjs.
@@ -641,14 +641,14 @@ Proof.
   intros.
   destruct_glu_rel_exp_with_sub.
   simplify_evals.
-  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
   apply_predicate_equivalence.
   clear_dups.
   inversion_clear_by_head nat_glu_exp_pred.
   assert {{ Δ ⊢s σ,,M[σ] ® ρ ↦ m ∈ SbΓℕ }} by (unfold SbΓℕ; mauto 2).
   destruct_glu_rel_exp_with_sub.
   simplify_evals.
-  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem H).
+  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H).
   apply_predicate_equivalence.
   inversion_clear_by_head nat_glu_exp_pred.
   unfold univ_glu_exp_pred' in *.
