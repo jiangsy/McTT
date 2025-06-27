@@ -13,7 +13,7 @@ def check_assumptions(log_file: Path):
 
     expecteds = []
     unexpecteds = []
-    current_name = None
+    lemma_name = None
 
     for line in lines:
         stripped = line.strip()
@@ -22,17 +22,16 @@ def check_assumptions(log_file: Path):
         marker_match = re.match(r'^<<<(.+?) - (.*)>>>$', stripped)
         if marker_match:
             path = marker_match.group(1)
-            lemma = marker_match.group(2)
-            current_name = f"{lemma}"
+            lemma_name = marker_match.group(2)
             continue
 
         axiom_name_match = re.match(r'^(.*) :$', stripped)
         if axiom_name_match:
             axiom_name = axiom_name_match.group(1)
-            if axiom_name in expected_axiom and current_name is not None:
-                expecteds.append((current_name, axiom_name))
-            if axiom_name not in expected_axiom and current_name is not None:
-                unexpecteds.append((current_name, axiom_name))
+            if axiom_name in expected_axiom and lemma_name is not None:
+                expecteds.append((lemma_name, axiom_name))
+            elif axiom_name not in expected_axiom and lemma_name is not None:
+                unexpecteds.append((lemma_name, axiom_name))
             continue
 
     return expecteds, unexpecteds
