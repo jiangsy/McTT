@@ -2,7 +2,10 @@ import re
 import sys
 from pathlib import Path
 
-COQ_ID = r"[A-Za-z_][A-Za-z0-9_']*"
+# TODO: checking the name only may not be suffient,
+# as one could redefine `Axiom functional_extensionality_dep : False`
+# to prove anything and bypass the check
+# but let us just use this for CI now
 expected_axiom = ["functional_extensionality_dep"]
 
 def check_assumptions(log_file: Path):
@@ -16,7 +19,7 @@ def check_assumptions(log_file: Path):
         stripped = line.strip()
 
         # Match: <<<./path/to/file.v - lemma_name>>>
-        marker_match = re.match(r'^<<<(.+?) - (' + COQ_ID + r')>>>$', stripped)
+        marker_match = re.match(r'^<<<(.+?) - (.*)>>>$', stripped)
         if marker_match:
             path = marker_match.group(1)
             lemma = marker_match.group(2)
