@@ -42,13 +42,13 @@ def main():
     log_path = Path(sys.argv[1]).resolve()
 
     expecteds, unexpecteds = check_assumptions(log_path)
-    print("Axioms usage (due to asynchronous processing, the names may not match up correctly):")
+    print("Axioms usage:\n(due to coq's asynchronous checking, the usage may match up to the wrong theorem. However, the existence of the usage is 100% accurate)\n---------------------------------------------------------------------------------------")
     print("Expected:")
-    for expected in expecteds:
-        print(expected)
-    print("Unexpected:")
-    for unexpected in unexpecteds:
-        print(unexpected)
+    for (thm_name, axiom_name) in expecteds:
+        print(f"({thm_name}, {axiom_name})")
+    print("\nUnexpected:")
+    for (thm_name, axiom_name) in unexpecteds:
+        print(f"({thm_name}, {axiom_name})")
 
     if unexpecteds:
         sys.exit(1)

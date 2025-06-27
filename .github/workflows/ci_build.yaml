@@ -62,7 +62,7 @@ jobs:
               sudo chown -R coq:coq .
             endGroup
           script: |
-            startGroup "Insert Checks"
+            startGroup "Insert checks"
               python3 ./scripts/insert_assumption_checks.py ./theories/
             endGroup
             startGroup "Build binary"
@@ -80,7 +80,7 @@ jobs:
                 pandoc README.md -H assets/include.html --no-highlight --metadata pagetitle='McTT: Building A Correct-By-Construction Proof Checkers For Type Theories' -t html --css styling.css -o html/index.html
               fi
             endGroup
-            startGroup "Print axiom dependencies:"
+            startGroup "Check axiom dependencies"
               python3 ./scripts/check_assumptions.py ./theories.log
             endGroup
             startGroup "Run inline tests"
