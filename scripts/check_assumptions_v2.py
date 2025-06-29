@@ -20,7 +20,7 @@ def gather_lemmas(file_path: Path, project_dir: Path):
 
     for local_match in local_matches:
         local_lemma_name = local_match.group(2)
-        print(f"Warning: local lemma <<<{rel_path} : {local_lemma_name}>>> is skipped.")
+        print(f"Warning: theorem {local_lemma_name} in {rel_path} marked with #[local] is skipped.")
         local_lemma_names.append(local_lemma_name)
 
     for match in matches:
@@ -28,7 +28,7 @@ def gather_lemmas(file_path: Path, project_dir: Path):
         if lemma_name not in local_lemma_names:
             lemma_names.append(lemma_name)
 
-    return rel_path, lemma_names
+    return rel_path, lemma_names, local_lemma_names
 
 def create_assumption_file(all_files_lemma_names: List[Tuple[str, List[str]]], project_dir: Path):
     check_file_dir = Path.joinpath(project_dir, "Temp_" + str(uuid.uuid4().hex) + ".v").resolve()
@@ -131,7 +131,8 @@ def main():
     v_files = find_all_v_files(project_dir)
     all_lemma_names = []
     for f in v_files:
-        all_lemma_names.append(gather_lemmas(f, project_dir))
+        rel_path, lemma_names, _ = gather_lemmas(f, project_dir)
+        all_lemma_names.append((rel_path, lemma_names))
 
     # print(all_lemma_names)
     check_file_dir = create_assumption_file(all_lemma_names, project_dir)
@@ -144,6 +145,9 @@ def main():
 
         print("\nDetailed usage:")
         print(unexpected_assumptions)
+    else:
+        print(f"Allowed Axioms are {expected_axioms}.")
+        print("No unexpected axiom usage.")
 
 if __name__ == "__main__":
     main()
