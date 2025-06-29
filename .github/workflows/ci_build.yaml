@@ -62,11 +62,8 @@ jobs:
               sudo chown -R coq:coq .
             endGroup
           script: |
-            startGroup "Insert checks"
-              python3 ./scripts/insert_assumption_checks.py ./theories/
-            endGroup
             startGroup "Build binary"
-              make pretty-timed-with-check
+              make pretty-timed
             endGroup
             startGroup "Build HTMLs for GitHub pages"
               if [[ "${{ env.DOC_DEPLOY }}" == 'true' ]]; then
@@ -81,7 +78,7 @@ jobs:
               fi
             endGroup
             startGroup "Check axiom dependencies"
-              python3 ./scripts/check_assumptions.py ./theories.log
+              python3 ./scripts/check_assumptions_v2.py
             endGroup
             startGroup "Run inline tests"
               dune runtest
