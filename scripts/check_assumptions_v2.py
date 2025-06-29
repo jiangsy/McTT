@@ -31,7 +31,7 @@ def gather_lemmas(file_path: Path, project_dir: Path):
     return rel_path, lemma_names
 
 def create_assumption_file(all_files_lemma_names: List[Tuple[str, List[str]]], project_dir: Path):
-    check_file_dir = Path.joinpath(project_dir, "Temp_" + str(uuid.uuid4().hex) + ".v")
+    check_file_dir = Path.joinpath(project_dir, "Temp_" + str(uuid.uuid4().hex) + ".v").resolve()
     section_id = 0
 
     with open(check_file_dir, "w+", encoding="utf-8") as check_file:
@@ -127,7 +127,7 @@ def find_all_v_files(directory: Path) -> list:
     return sorted(list(directory.rglob('*.v')))
 
 def main():
-    project_dir = Path("../theories").resolve()
+    project_dir = Path.joinpath(Path(os.path.dirname(os.path.abspath(__file__))).parent, "./theories")
     v_files = find_all_v_files(project_dir)
     all_lemma_names = []
     for f in v_files:
