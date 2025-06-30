@@ -1,17 +1,19 @@
-import re
+import argparse
 import os
-import sys
+import re
 import subprocess
-from pathlib import Path
+import sys
 import uuid
-from typing import List, Tuple
+from pathlib import Path
+from typing import List, Tuple, Optional
 
-expected_axioms = ['FunctionalExtensionality.functional_extensionality_dep']
+expected_axioms = ["FunctionalExtensionality.functional_extensionality_dep"]
+
 
 def gather_lemmas(file_path: Path, project_dir: Path):
-    content = file_path.read_text(encoding='utf-8')
-    local_decl_pattern = re.compile(r'\[local\]\s*\n\s*(Lemma|Theorem|Corollary)\s+(.+?)(\s|:)', re.MULTILINE)
-    decl_pattern = re.compile(r'^([ \t]*)(Lemma|Theorem|Corollary)\s+(.+?)(\s|:)', re.MULTILINE)
+    content = file_path.read_text(encoding="utf-8")
+    local_decl_pattern = re.compile(r"\[local\]\s*\n\s*(Lemma|Theorem|Corollary)\s+(.+?)(\s|:)", re.MULTILINE)
+    decl_pattern = re.compile(r"^([ \t]*)(Lemma|Theorem|Corollary)\s+(.+?)(\s|:)", re.MULTILINE)
     local_matches = list(local_decl_pattern.finditer(content))
     matches = list(decl_pattern.finditer(content))
     lemma_names = []
@@ -30,39 +32,44 @@ def gather_lemmas(file_path: Path, project_dir: Path):
 
     return rel_path, lemma_names, local_lemma_names
 
+
 def create_assumption_file(all_files_lemma_names: List[Tuple[str, List[str]]], project_dir: Path):
     check_file_dir = Path.joinpath(project_dir, "Temp_" + str(uuid.uuid4().hex) + ".v").resolve()
     section_id = 0
 
     with open(check_file_dir, "w+", encoding="utf-8") as check_file:
         for path, _ in all_files_lemma_names:
-          check_file.write(f"From Mctt Require {path.replace('/','.')[:-2]}."+"\n")
+            check_file.write(f"From Mctt Require {path.replace('/','.')[:-2]}." + "\n")
 
         check_file.write("\n")
         for path, file_lemma_names in all_files_lemma_names:
             if file_lemma_names == []:
                 continue
-            check_file.write(f"Section Section_{section_id}."+"\n")
+            check_file.write(f"Section Section_{section_id}." + "\n")
             check_file.write(f"Import {path.replace('/','.')[:-2]}.")
             for lemma_name in file_lemma_names:
                 marker = f"{path} : {lemma_name}"
-                snippet = (
-                    f'\nGoal True. idtac "<<<{marker}>>>". Abort.\n'
-                    f'Print Assumptions {lemma_name}.'
-                )
+                snippet = f'\nGoal True. idtac "<<<{marker}>>>". Abort.\n' f"Print Assumptions {lemma_name}."
                 check_file.write(snippet)
-            
+
             check_file.write("\n")
-            check_file.write(f"End Section_{section_id}."+"\n\n")
+            check_file.write(f"End Section_{section_id}." + "\n\n")
             section_id += 1
     return check_file_dir
+
 
 def get_assumptions(check_file_dir: Path, project_dir: Path):
     outputs = []
     try:
-        with subprocess.Popen(["coqc", "-R", ".", "Mctt", f"{check_file_dir}"], cwd=project_dir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) as process:
+        with subprocess.Popen(
+            ["coqc", "-R", ".", "Mctt", f"{check_file_dir}"],
+            cwd=project_dir,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        ) as process:
+            assert process.stdout is not None
             for line in process.stdout:
-                output = line.decode('utf8')
+                output = line.decode("utf8")
                 outputs.append(output)
                 # print(output, end='')
     except Exception as e:
@@ -72,14 +79,15 @@ def get_assumptions(check_file_dir: Path, project_dir: Path):
         os.remove(check_file_dir)
     return outputs
 
-def extract_assumptions(assumption_outputs:List[str]) -> Tuple[List, set, List]:
-    marker_pattern = re.compile(r'^<<<(.+?) : (.+?)>>>$')
-    axiom_name_pattern = re.compile(r'^(\S+) :$')
+
+def extract_assumptions(assumption_outputs: List[str]) -> Tuple[List, set, List]:
+    marker_pattern = re.compile(r"^<<<(.+?) : (.+?)>>>$")
+    axiom_name_pattern = re.compile(r"^(\S+) :$")
 
     current_name = None
     expected_assumptions = []
-    current_expected_assumptions: List[Tuple[str, List[str]]] = []
-    current_unexpected_assumptions: List[Tuple[str, List[str]]] = []
+    current_expected_assumptions: List[str] = []
+    current_unexpected_assumptions: List[str] = []
     in_assumption_block = False
     unexpected_assumptions = []
     unexpected_axioms = set()
@@ -104,12 +112,12 @@ def extract_assumptions(assumption_outputs:List[str]) -> Tuple[List, set, List]:
 
         if stripped.startswith("Axioms:"):
             in_assumption_block = True
-            assert current_expected_assumptions == [] and current_unexpected_assumptions == []
+            assert (not current_expected_assumptions) and (not current_unexpected_assumptions)
             continue
 
         if stripped.startswith("Closed under the global context"):
             in_assumption_block = False
-            assert current_expected_assumptions == [] and current_unexpected_assumptions == []
+            assert (not current_expected_assumptions) and (not current_unexpected_assumptions)
             continue
 
         axiom_name_match = axiom_name_pattern.match(assumption_output)
@@ -123,20 +131,21 @@ def extract_assumptions(assumption_outputs:List[str]) -> Tuple[List, set, List]:
 
     return expected_assumptions, unexpected_axioms, unexpected_assumptions
 
-def find_all_v_files(directory: Path) -> list:
-    return sorted(list(directory.rglob('*.v')))
 
-def main():
-    project_dir = Path.joinpath(Path(os.path.dirname(os.path.abspath(__file__))).parent, "./theories")
-    v_files = find_all_v_files(project_dir)
+def find_all_v_files(directory: Path) -> list:
+    return sorted(list(directory.rglob("*.v")))
+
+
+def main(project_dir: str, output_dir: Optional[str] = None):
+    project_path = Path(project_dir)
+    v_files = find_all_v_files(project_path)
     all_lemma_names = []
     for f in v_files:
-        rel_path, lemma_names, _ = gather_lemmas(f, project_dir)
+        rel_path, lemma_names, _ = gather_lemmas(f, project_path)
         all_lemma_names.append((rel_path, lemma_names))
 
-    # print(all_lemma_names)
-    check_file_dir = create_assumption_file(all_lemma_names, project_dir)
-    assumption_outputs = get_assumptions(check_file_dir, project_dir)
+    check_file_dir = create_assumption_file(all_lemma_names, project_path)
+    assumption_outputs = get_assumptions(check_file_dir, project_path)
     _, unexpected_axioms, unexpected_assumptions = extract_assumptions(assumption_outputs)
 
     if unexpected_axioms:
@@ -146,8 +155,24 @@ def main():
         print("\nDetailed usage:")
         print(unexpected_assumptions)
     else:
-        print(f"Allowed Axioms are {expected_axioms}.")
+        print(f"Allowed axioms are {expected_axioms}.")
         print("No unexpected axiom usage.")
 
+    if output_dir is not None:
+        assert os.access(os.path.dirname(output_dir), os.W_OK)
+        with open(output_dir, "w+", encoding="utf-8") as f:
+            for unexpected_assumption in unexpected_assumptions:
+                f.write(str(unexpected_assumption))
+
+
 if __name__ == "__main__":
-    main()
+    DEFAULT_DIR = str(Path.joinpath(Path(os.path.dirname(os.path.abspath(__file__))).parent, "./theories"))
+    print(DEFAULT_DIR)
+    parser = argparse.ArgumentParser(
+        prog='Check the axiom usage of every lemma/theorem/corollaries in a given directory (default "../theories/")'
+    )
+    parser.add_argument("--project_dir", default=DEFAULT_DIR)
+    parser.add_argument("--output_dir", default=None)
+    args = parser.parse_args()
+    print(args)
+    main(args.project_dir, args.output_dir)
