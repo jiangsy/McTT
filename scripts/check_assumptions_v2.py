@@ -98,9 +98,9 @@ def extract_assumptions(assumption_outputs: List[str]) -> Tuple[List, set, List]
         marker_match = marker_pattern.match(assumption_output)
         if marker_match:
             if current_name:
-                if current_expected_assumptions != []:
+                if current_expected_assumptions:
                     expected_assumptions.append((current_name, current_expected_assumptions))
-                if current_unexpected_assumptions != []:
+                if current_unexpected_assumptions:
                     unexpected_assumptions.append((current_name, current_expected_assumptions))
             path = marker_match.group(1)
             lemma = marker_match.group(2)
