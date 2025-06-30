@@ -1,3 +1,6 @@
+""" Check the axiom usage of every lemma/theorem/corollaries in all *.v files in a 
+    given directory (default "../theories/") 
+"""
 import argparse
 import os
 import re
@@ -101,7 +104,7 @@ def extract_assumptions(assumption_outputs: List[str]) -> Tuple[List, set, List]
                 if current_expected_assumptions:
                     expected_assumptions.append((current_name, current_expected_assumptions))
                 if current_unexpected_assumptions:
-                    unexpected_assumptions.append((current_name, current_expected_assumptions))
+                    unexpected_assumptions.append((current_name, current_unexpected_assumptions))
             path = marker_match.group(1)
             lemma = marker_match.group(2)
             current_name = f"{path} - {lemma}"
@@ -153,7 +156,8 @@ def main(project_dir: str, output_dir: Optional[str] = None):
         print(unexpected_axioms)
 
         print("\nDetailed usage:")
-        print(unexpected_assumptions)
+        for unexpected_assumption in unexpected_assumptions:
+            print(unexpected_assumption)
     else:
         print(f"Allowed axioms are {expected_axioms}.")
         print("No unexpected axiom usage.")
