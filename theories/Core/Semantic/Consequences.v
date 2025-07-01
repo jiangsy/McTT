@@ -34,7 +34,7 @@ Proof.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: fun H => directed (pose proof (H _ _ ltac:(eassumption)); destruct_all)).
   destruct_by_head rel_typ.
-  invert_rel_typ_body.
+  invert_rel_typ_body_nouip.
   destruct_by_head rel_exp.
   destruct_all.
   functional_eval_rewrite_clear.

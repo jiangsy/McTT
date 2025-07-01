@@ -1177,6 +1177,16 @@ Ltac destruct_glu_rel_exp_with_sub :=
     end;
   unmark_all.
 
+Ltac destruct_glu_rel_exp_with_sub_nouip :=
+  repeat
+    match goal with
+    | H : (forall Δ σ ρ, {{ Δ ⊢s σ ® ρ ∈ ?sub_glu_rel }} -> glu_rel_exp_with_sub _ _ _ _ _ _) |- _ =>
+        destruct_glu_rel_by_assumption sub_glu_rel H; fail_if_dup; mark H
+    | H : glu_rel_exp_with_sub _ _ _ _ _ _ |- _ =>
+        dependent inversion_clear H
+    end;
+  unmark_all.
+
 Ltac destruct_glu_rel_sub_with_sub :=
   repeat
     match goal with
@@ -1187,6 +1197,16 @@ Ltac destruct_glu_rel_sub_with_sub :=
     end;
   unmark_all.
 
+Ltac destruct_glu_rel_sub_with_sub_nouip :=
+  repeat
+    match goal with
+    | H : (forall Δ σ ρ, {{ Δ ⊢s σ ® ρ ∈ ?sub_glu_rel }} -> glu_rel_sub_with_sub _ _ _ _ _) |- _ =>
+        destruct_glu_rel_by_assumption sub_glu_rel H; fail_if_dup; mark H
+    | H : glu_rel_exp_with_sub _ _ _ _ _ _ |- _ =>
+        dependent inversion_clear H
+    end;
+  unmark_all.
+
 Ltac destruct_glu_rel_typ_with_sub :=
   repeat
     match goal with
@@ -1194,6 +1214,16 @@ Ltac destruct_glu_rel_typ_with_sub :=
         destruct_glu_rel_by_assumption sub_glu_rel H; fail_if_dup; mark H
     | H : glu_rel_exp_with_sub _ _ _ _ _ _ |- _ =>
         dependent destruction H
+    end;
+  unmark_all.
+
+Ltac destruct_glu_rel_typ_with_sub_nouip :=
+  repeat
+    match goal with
+    | H : (forall Δ σ ρ, {{ Δ ⊢s σ ® ρ ∈ ?sub_glu_rel }} -> glu_rel_typ_with_sub _ _ _ _ _) |- _ =>
+        destruct_glu_rel_by_assumption sub_glu_rel H; fail_if_dup; mark H
+    | H : glu_rel_exp_with_sub _ _ _ _ _ _ |- _ =>
+        dependent inversion_clear H
     end;
   unmark_all.
 
@@ -1436,7 +1466,6 @@ Ltac apply_glu_rel_judge :=
   destruct_all;
   clear_dups.
 
-
 Ltac apply_glu_rel_exp_judge :=
   destruct_glu_rel_exp_with_sub;
   simplify_evals;
@@ -1447,6 +1476,28 @@ Ltac apply_glu_rel_exp_judge :=
   destruct_all;
   clear_dups.
 
+
+Ltac apply_glu_rel_judge_nouip :=
+  destruct_glu_rel_typ_with_sub_nouip;
+  destruct_glu_rel_exp_with_sub_nouip;
+  destruct_glu_rel_sub_with_sub_nouip;
+  simplify_evals;
+  handle_functional_glu_univ_elem;
+  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H);
+  handle_functional_glu_univ_elem;
+  unfold univ_glu_exp_pred' in *;
+  destruct_all;
+  clear_dups.
+
+Ltac apply_glu_rel_exp_judge_nouip :=
+  destruct_glu_rel_exp_with_sub_nouip;
+  simplify_evals;
+  handle_functional_glu_univ_elem;
+  match_by_head glu_univ_elem ltac:(fun H => directed invert_glu_univ_elem_nouip H);
+  handle_functional_glu_univ_elem;
+  unfold univ_glu_exp_pred' in *;
+  destruct_all;
+  clear_dups.
 
 Lemma glu_rel_exp_preserves_lvl : forall Γ Sb M A i,
     {{ EG Γ ∈ glu_ctx_env ↘ Sb }} ->

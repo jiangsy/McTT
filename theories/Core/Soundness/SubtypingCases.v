@@ -71,10 +71,10 @@ Proof.
   assert {{ Dom ρ ≈ ρ ∈ env_relΓ }} by (eapply glu_ctx_env_per_env; mauto).
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
-  match_by_head eval_exp ltac:(fun H => directed dependent destruction H).
+  simplify_evals.
   destruct_by_head rel_exp.
   saturate_refl.
-  invert_per_univ_elems.
+  match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem_nouip H).
   apply_equiv_left.
   destruct_all.
   handle_per_univ_elem_irrel.

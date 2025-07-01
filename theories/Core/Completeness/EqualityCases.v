@@ -516,7 +516,7 @@ Proof.
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
   invert_rel_typ_body_nouip.
-  match_by_head per_eq ltac:(fun H => inversion H; subst).
+  match_by_head per_eq ltac:(fun H => inversion H; subst; clear H).
   - (* m1', m2', n' for M1, M2, N evaluated under ρ'*)
     (* m1'', m2'', n'' for M1', M2', N' evaluated under ρ'*)
     match goal with
