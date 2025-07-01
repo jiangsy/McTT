@@ -1177,6 +1177,7 @@ Ltac destruct_glu_rel_exp_with_sub :=
     end;
   unmark_all.
 
+(* TODO: unify with the uip version above *)
 Ltac destruct_glu_rel_exp_with_sub_nouip :=
   repeat
     match goal with
@@ -1197,6 +1198,7 @@ Ltac destruct_glu_rel_sub_with_sub :=
     end;
   unmark_all.
 
+(* TODO: unify with the uip version above *)
 Ltac destruct_glu_rel_sub_with_sub_nouip :=
   repeat
     match goal with
@@ -1217,6 +1219,7 @@ Ltac destruct_glu_rel_typ_with_sub :=
     end;
   unmark_all.
 
+(* TODO: unify with the uip version above *)
 Ltac destruct_glu_rel_typ_with_sub_nouip :=
   repeat
     match goal with
@@ -1476,7 +1479,7 @@ Ltac apply_glu_rel_exp_judge :=
   destruct_all;
   clear_dups.
 
-
+(* TODO: unify with the uip version above *)
 Ltac apply_glu_rel_judge_nouip :=
   destruct_glu_rel_typ_with_sub_nouip;
   destruct_glu_rel_exp_with_sub_nouip;
@@ -1489,6 +1492,7 @@ Ltac apply_glu_rel_judge_nouip :=
   destruct_all;
   clear_dups.
 
+(* TODO: unify with the uip version above *)
 Ltac apply_glu_rel_exp_judge_nouip :=
   destruct_glu_rel_exp_with_sub_nouip;
   simplify_evals;
