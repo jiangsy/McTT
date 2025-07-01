@@ -62,7 +62,3 @@ Qed.
 Ltac invert_rel_exp H :=
   (unshelve (epose proof (rel_exp_clean_inversion _ H); deex); shelve_unifiable; [eassumption |]; clear H)
   + dependent destruction H.
-
-(* Ltac invert_rel_exp_nouip H :=
-  (unshelve (epose proof (rel_exp_clean_inversion _ H); deex); shelve_unifiable; [eassumption |]; clear H)
-  + inversion H; subst. *)
