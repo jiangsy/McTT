@@ -515,8 +515,8 @@ Proof.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
-  invert_rel_typ_body.
-  match_by_head per_eq ltac:(fun H => dependent destruction H).
+  invert_rel_typ_body_nouip.
+  match_by_head per_eq ltac:(fun H => inversion H; subst).
   - (* m1', m2', n' for M1, M2, N evaluated under ρ'*)
     (* m1'', m2'', n'' for M1', M2', N' evaluated under ρ'*)
     match goal with
@@ -543,7 +543,7 @@ Proof.
     handle_per_ctx_env_irrel.
     (on_all_hyp: destruct_rel_by_assumption env_relΓA).
     simplify_evals.
-    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem_nouip H).
     handle_per_univ_elem_irrel.
     assert {{ Dom ρ ↦ m1 ↦ m2 ↦ refl n ≈ ρ' ↦ m1' ↦ m2' ↦ refl n' ∈ env_relΓAAEq }} by mauto 3.
     assert {{ Dom ρ ↦ n ↦ n ↦ refl n ≈ ρ ↦ m1 ↦ m2 ↦ refl n ∈ env_relΓAAEq }}.
@@ -552,10 +552,8 @@ Proof.
       - etransitivity; [|symmetry]; eassumption.
       - symmetry; assumption.
       - do 3 (etransitivity; [|symmetry]; eauto).
-        etransitivity; [symmetry|]; eassumption.
       - econstructor; mauto 3; try (etransitivity; [|symmetry]; eassumption).
         do 3 (etransitivity; [|symmetry]; eauto).
-        etransitivity; [symmetry|]; eassumption.
     }
     (on_all_hyp: destruct_rel_by_assumption env_relΓAAEq).
     destruct_conjs.
@@ -565,7 +563,7 @@ Proof.
     simplify_evals.
     simpl in *.
     handle_per_ctx_env_irrel.
-    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem_nouip H).
     handle_per_univ_elem_irrel.
     deex. eexists; split.
     handle_per_univ_elem_irrel.
@@ -606,7 +604,7 @@ Proof.
     (on_all_hyp: destruct_rel_by_assumption env_relΓA).
     simplify_evals.
     handle_per_univ_elem_irrel.
-    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem_nouip H).
     assert {{ Dom ρ ↦ m1 ↦ m2 ↦ ⇑ an n ≈ ρ' ↦ m1' ↦ m2' ↦ ⇑ an' n' ∈ env_relΓAAEq }} by mauto 3.
     assert {{ Dom ρ ↦ m1 ↦ m2 ↦ ⇑ an n ≈ ρ' ↦ m1'' ↦ m2'' ↦ ⇑ an'' n'' ∈ env_relΓAAEq }} by mauto 3.
     (on_all_hyp: destruct_rel_by_assumption env_relΓAAEq).
@@ -615,7 +613,7 @@ Proof.
     destruct_by_head rel_exp.
     handle_per_univ_elem_irrel.
     simplify_evals.
-    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem_nouip H).
     handle_per_ctx_env_irrel.
     handle_per_univ_elem_irrel.
     deex. eexists; split.
