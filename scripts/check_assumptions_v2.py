@@ -172,12 +172,10 @@ def main(project_dir: str, output_dir: Optional[str] = None):
 
 if __name__ == "__main__":
     DEFAULT_DIR = str(Path.joinpath(Path(os.path.dirname(os.path.abspath(__file__))).parent, "./theories"))
-    print(DEFAULT_DIR)
     parser = argparse.ArgumentParser(
         prog='Check the axiom usage of every lemma/theorem/corollaries in a given directory (default "../theories/")'
     )
     parser.add_argument("--project_dir", default=DEFAULT_DIR)
     parser.add_argument("--output_dir", default=None)
     args = parser.parse_args()
-    print(args)
     main(args.project_dir, args.output_dir)
