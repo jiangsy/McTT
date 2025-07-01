@@ -93,6 +93,7 @@ def extract_assumptions(assumption_outputs: List[str]) -> Tuple[List, set, List]
     current_unexpected_assumptions: List[str] = []
     in_assumption_block = False
     unexpected_assumptions = []
+    # TODO: record the signature of each unexpected axiom beside its name
     unexpected_axioms = set()
 
     for assumption_output in assumption_outputs:
