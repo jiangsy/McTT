@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - ext/**
+      - icfp25
   pull_request:
     branches:
       - main
@@ -32,8 +33,8 @@ jobs:
       REGISTRY: "ghcr.io"
       IMAGE_TAG: "beluga-lang/mctt:main"
       # Only deploy if the build follows from pushing to one of main branches
-      DOC_DEPLOY: ${{ (github.ref_name == 'main' || startsWith(github.ref_name, 'ext/')) && 'true' || 'false' }}
-      DOC_DEPLOY_DEST: ${{ startsWith(github.ref_name, 'ext/') && github.ref_name || '' }}
+      DOC_DEPLOY: ${{ (github.ref_name == 'main' || github.ref_name == 'icfp25' || startsWith(github.ref_name, 'ext/')) && 'true' || 'false' }}
+      DOC_DEPLOY_DEST: ${{ (startsWith(github.ref_name, 'ext/') && github.ref_name) || (github.ref_name == 'icfp25' && github.ref_name) || '' }}
     steps:
       - name: Get number of CPU cores
         uses: SimenB/github-actions-cpu-cores@v2
@@ -102,4 +103,6 @@ jobs:
         with:
           folder: html
           target-folder: ${{ env.DOC_DEPLOY_DEST }}
-          clean-exclude: ext
+          clean-exclude: |
+            ext
+            icfp25
