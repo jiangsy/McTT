@@ -341,7 +341,7 @@ with wf_subtyp : ctx -> typ -> typ -> Prop :=
 | wf_subtyp_pi :
   `( {{ Γ ⊢ A : Type@i }} ->
      {{ Γ ⊢ A' : Type@i }} ->
-     {{ Γ ⊢ A ≈ A' : Type@i }} ->
+     {{ Γ ⊢ A' ⊆ A }} ->
      {{ Γ , A ⊢ B : Type@i }} ->
      {{ Γ , A' ⊢ B' : Type@i }} ->
      {{ Γ , A' ⊢ B ⊆ B' }} ->
