@@ -592,7 +592,7 @@ Proof.
     handle_per_univ_elem_irrel.
     intuition.
   - split; intros;
-      [assert (in_rel0 c c') by intuition; (on_all_hyp: destruct_rel_by_assumption in_rel0)
+      [ assert (in_rel0 c c') by intuition; (on_all_hyp: destruct_rel_by_assumption in_rel0)
       | assert (in_rel c c') by intuition; (on_all_hyp: destruct_rel_by_assumption in_rel)];
       econstructor; intuition.
     destruct_by_head rel_typ.
@@ -764,26 +764,74 @@ Qed.
 #[export]
 Hint Resolve per_subtyp_refl2 : mctt.
 
-Lemma per_subtyp_trans : forall a1 a2 i,
-    {{ Sub a1 <: a2 at i }} ->
-    forall a3,
-      {{ Sub a2 <: a3 at i }} ->
-      {{ Sub a1 <: a3 at i }}.
+
+Inductive sub_trans_measure : domain -> Prop :=
+| stm_neut : forall a b,
+    sub_trans_measure d{{{ ⇑ a b }}}
+| stm_nat :
+  sub_trans_measure d{{{ ℕ }}}
+| stm_univ : forall i,
+    sub_trans_measure d{{{ 𝕌 @ i }}}
+| stm_pi : forall a ρ B i in_rel,
+    sub_trans_measure a ->
+    {{ DF a ≈ a ∈ per_univ_elem i ↘ in_rel }} ->
+    (forall c b : domain,
+        {{ Dom c ≈ c ∈ in_rel }} ->
+        {{ ⟦ B ⟧ ρ ↦ c ↘ b }} ->
+        sub_trans_measure b) ->
+    sub_trans_measure d{{{ Π a ρ B }}}.
+
+#[local]
+  Hint Constructors sub_trans_measure : mctt.
+
+Lemma sub_trans_measure_exists : forall A1 A2 i R,
+    {{ DF A1 ≈ A2 ∈ per_univ_elem i ↘ R }} ->
+    sub_trans_measure A1.
 Proof.
-  induction 1; intros ? Hsub; simpl in *.
-  1-3: progressive_inversion; mauto.
+  simpl. induction 1 using per_univ_elem_ind; mauto.
+  saturate_refl.
+  econstructor; mauto; intros.
+  destruct_rel_mod_eval.
+  functional_eval_rewrite_clear.
+  trivial.
+Qed.
+
+Lemma per_subtyp_trans' : forall A2,
+    sub_trans_measure A2 ->
+    forall A1 A3 i,
+      {{ Sub A1 <: A2 at i }} ->
+      {{ Sub A2 <: A3 at i }} ->
+      {{ Sub A1 <: A3 at i }}.
+Proof.
+  induction 1; intros ? ? ? Hsub1 Hsub2; simpl in *.
+  1-3:progressive_inversion;
+  mauto.
   - econstructor; lia.
-  - inversion Hsub; subst.
+  - dependent destruction Hsub1.
+    dependent destruction Hsub2.
     handle_per_univ_elem_irrel.
     econstructor; eauto.
-    + admit.
-    + intros.
-      saturate_refl.
-      (on_all_hyp: fun H => directed invert_per_univ_elem_nouip H).
-      destruct_rel_mod_eval_nouip.
-      handle_per_univ_elem_irrel.
-      admit.
-Admitted.
+    intros.
+    deepexec per_elem_subtyping ltac:(fun H => pose proof H).
+    saturate_refl.
+    directed invert_per_univ_elem H9.
+    directed invert_per_univ_elem H10.
+    destruct_rel_mod_eval.
+    functional_eval_rewrite_clear.
+    deepexec (H4 c c') ltac:(fun H => pose proof H).
+    deepexec (H8 c' c') ltac:(fun H => pose proof H).
+    eapply H2; apply_equiv_left; eauto.
+Qed.
+
+Lemma per_subtyp_trans : forall A1 A2 A3 i,
+    {{ Sub A1 <: A2 at i }} ->
+    {{ Sub A2 <: A3 at i }} ->
+    {{ Sub A1 <: A3 at i }}.
+Proof.
+  intros.
+  destruct (per_subtyp_to_univ_elem _ _ _ H0) as [? [? []]].
+  eauto using per_subtyp_trans', sub_trans_measure_exists.
+Qed.
 
 #[export]
 Hint Resolve per_subtyp_trans : mctt.
