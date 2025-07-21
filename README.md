@@ -173,7 +173,7 @@ The Github repo includes the following special branches:
 
 1. `main`: the main branch that is used to generate this homepage and Coqdoc;
 1. `ext/*`: branches in this pattern are variations of `main` that implements various extensions. They are often used to implement extensions that require non-trivial workload and are aimed to be merged to `main` eventually;
-1. `icfp25`: the branch containing artifact for ICFP'25 publication[^1];
+1. `icfp25`: the branch containing artifact for the ICFP'25 publication[^1];
 1. `gh-pages`: the branch to host the homepage.
 
 [^1]: Junyoung Jang, Antoine Gaulin, Jason Z.S. Hu, and Brigitte Pientka. 2025. McTT: A Verified Kernel for a Proof Assistant. _Proc. ACM Program. Lang._, ICFP (2025), https://doi.org/10.1145/3747511
