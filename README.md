@@ -110,7 +110,7 @@ term = 'forall' , {parameter} , '->' , term
      (* successor of a natural number *)
      | 'succ' , term
      (* natural number eliminator *)
-     | 'rec' , term , 'return' , nat motive , zero branch , succ branch;
+     | 'rec' , term , 'return' , nat motive , zero branch , succ branch , 'end';
 
             (* universe of level n *)
 atomic term = 'Type', '@' , nat
