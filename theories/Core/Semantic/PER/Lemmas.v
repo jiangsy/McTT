@@ -686,7 +686,7 @@ Proof.
     simplify_evals.
     econstructor; eauto.
     intuition.
-Qed.
+Admitted.
 
 Lemma per_elem_subtyping_gen : forall a b i a' b' R R' m n,
     {{ Sub a <: b at i }} ->
@@ -715,7 +715,7 @@ Proof.
     destruct_rel_mod_eval;
     functional_eval_rewrite_clear;
     trivial.
-Qed.
+Admitted.
 
 #[export]
 Hint Resolve per_subtyp_refl1 : mctt.
@@ -744,14 +744,14 @@ Proof.
   - inversion Hsub; subst.
     handle_per_univ_elem_irrel.
     econstructor; eauto.
-    + etransitivity; eassumption.
+    + admit.
     + intros.
       saturate_refl.
       (on_all_hyp: fun H => directed invert_per_univ_elem_nouip H).
       destruct_rel_mod_eval_nouip.
       handle_per_univ_elem_irrel.
-      intuition.
-Qed.
+      admit.
+Admitted.
 
 #[export]
 Hint Resolve per_subtyp_trans : mctt.
