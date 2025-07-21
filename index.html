@@ -127,6 +127,79 @@ parallel as much as possible.</p>
 <code>theories</code> directory:</p>
 <pre><code>cd theories
 make</code></pre>
+<h2 id="external-syntax">External Syntax</h2>
+<p>Our interpreter accepts a <code>prog</code>, defined in the following
+grammar (written in <a
+href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a>):</p>
+<pre class="ebnf"><code>prog = term , &#39;:&#39; , type;
+
+type = term;
+     (* function type *)
+term = &#39;forall&#39; , {parameter} , &#39;-&gt;&#39; , term
+     (* function *)
+     | &#39;fun&#39; , {parameter} , &#39;-&gt;&#39; , term
+     (* application *)
+     | application term
+     (* let expression *)
+     | &#39;let&#39; , {let definition} , &#39;in&#39; , term
+     (* successor of a natural number *)
+     | &#39;succ&#39; , term
+     (* natural number eliminator *)
+     | &#39;rec&#39; , term , nat scrutinee type? , &#39;return&#39; , nat motive , zero branch , succ branch , &#39;end&#39;;
+     (* propositional equality type *)
+     | application term , &#39;=&#39; , &#39;&lt;&#39; , type , &#39;&gt;&#39; , application term
+     (* reflexivity for propositional equality *)
+     | &#39;refl&#39; , atomic type , atomic term
+     (* propositional equality eliminator *)
+     | &#39;rec&#39; , term , equality scrutinee type , &#39;return&#39; , equality motive , refl branch , &#39;end&#39;;
+
+application term = {atomic term};
+
+atomic type = atomic term;
+            (* universe of level n *)
+atomic term = &#39;Type&#39;, &#39;@&#39; , nat
+            (* natural number type *)
+            | &#39;Nat&#39;
+            (* natural number zero *)
+            | &#39;zero&#39;
+            (* a shorthand for succ (succ (... (succ zero))) *)
+            | nat
+            (* variable *)
+            | id
+            (* parenthesized term *)
+            | &#39;(&#39; , term , &#39;)&#39;;
+
+parameter = &#39;(&#39; , id , &#39;:&#39; , type , &#39;)&#39;;
+
+let definition = &#39;(&#39; , parameter , &#39;:=&#39; , term , &#39;)&#39;;
+
+nat scrutinee type = &#39;as&#39; , &#39;nat&#39;;
+
+(* This describes the return type of the nat eliminator
+   when id is bound to the scrutinee *)
+nat motive = id , &#39;.&#39; , type;
+
+zero branch = &#39;|&#39;, &#39;zero&#39; , &#39;=&gt;&#39; , term;
+
+(* the first id is predecessor
+   and the second id is the result of the recursive call *)
+succ branch = &#39;|&#39;, &#39;succ&#39; , id , id , &#39;=&gt;&#39; , term;
+
+equality scrutinee type = &#39;as&#39; , &#39;(&#39; , application term , &#39;=&#39; , &#39;&lt;&#39; , type , &#39;&gt;&#39; , application term , &#39;)&#39;;
+
+(* This describes the return type of the equality eliminator
+   when the first id is bound to the LHS of the type of the scrutinee;
+   the second id is bound to the RHS of the type of the scrutinee;
+   and the third id is bound to the scrutinee *)
+equality motive = id , id , id , &#39;.&#39; , type;
+
+(* the id is bound to the LHS, which is identical to RHS *)
+refl branch = &#39;|&#39;, &#39;refl&#39; , id , &#39;=&gt;&#39; , term;
+
+id = ? sequence of upper- or lower-case ASCII alphabet characters ?;
+nat = ? natural number ?;</code></pre>
+<p>Here, we omit spaces between tokens. Note that the current let
+expression does not support delta reduction.</p>
 <h2 id="branches">Branches</h2>
 <p>The Github repo includes the following special branches:</p>
 <ol type="1">
