@@ -88,6 +88,84 @@ To build Coq proof only, you can go into and only build the `theories` directory
 cd theories
 make
 ```
+## External Syntax
+
+Our interpreter accepts a `prog`, defined in the following grammar
+(written in
+[EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form)):
+
+```EBNF
+prog = term , ':' , type;
+
+type = term;
+     (* function type *)
+term = 'forall' , {parameter} , '->' , term
+     (* function *)
+     | 'fun' , {parameter} , '->' , term
+     (* application *)
+     | application term
+     (* let expression *)
+     | 'let' , {let definition} , 'in' , term
+     (* successor of a natural number *)
+     | 'succ' , term
+     (* natural number eliminator *)
+     | 'rec' , term , nat scrutinee type? , 'return' , nat motive , zero branch , succ branch , 'end';
+     (* propositional equality type *)
+     | application term , '=' , '<' , type , '>' , application term
+     (* reflexivity for propositional equality *)
+     | 'refl' , atomic type , atomic term
+     (* propositional equality eliminator *)
+     | 'rec' , term , equality scrutinee type , 'return' , equality motive , refl branch , 'end';
+
+application term = {atomic term};
+
+atomic type = atomic term;
+            (* universe of level n *)
+atomic term = 'Type', '@' , nat
+            (* natural number type *)
+            | 'Nat'
+            (* natural number zero *)
+            | 'zero'
+            (* a shorthand for succ (succ (... (succ zero))) *)
+            | nat
+            (* variable *)
+            | id
+            (* parenthesized term *)
+            | '(' , term , ')';
+
+parameter = '(' , id , ':' , type , ')';
+
+let definition = '(' , parameter , ':=' , term , ')';
+
+nat scrutinee type = 'as' , 'nat';
+
+(* This describes the return type of the nat eliminator
+   when id is bound to the scrutinee *)
+nat motive = id , '.' , type;
+
+zero branch = '|', 'zero' , '=>' , term;
+
+(* the first id is predecessor
+   and the second id is the result of the recursive call *)
+succ branch = '|', 'succ' , id , id , '=>' , term;
+
+equality scrutinee type = 'as' , '(' , application term , '=' , '<' , type , '>' , application term , ')';
+
+(* This describes the return type of the equality eliminator
+   when the first id is bound to the LHS of the type of the scrutinee;
+   the second id is bound to the RHS of the type of the scrutinee;
+   and the third id is bound to the scrutinee *)
+equality motive = id , id , id , '.' , type;
+
+(* the id is bound to the LHS, which is identical to RHS *)
+refl branch = '|', 'refl' , id , '=>' , term;
+
+id = ? sequence of upper- or lower-case ASCII alphabet characters ?;
+nat = ? natural number ?;
+```
+
+Here, we omit spaces between tokens. Note that the current let
+expression does not support delta reduction.
 
 ## Branches
 
