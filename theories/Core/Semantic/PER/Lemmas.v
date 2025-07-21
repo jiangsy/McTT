@@ -696,7 +696,7 @@ Proof.
            end.
     deepexec H2 ltac:(fun H => pose proof H).
     trivial.
-Admitted.
+Qed.
 
 Lemma per_elem_subtyping_gen : forall a b i a' b' R R' m n,
     {{ Sub a <: b at i }} ->
@@ -709,23 +709,45 @@ Proof.
   eapply per_elem_subtyping; saturate_refl; try eassumption.
 Qed.
 
-Lemma per_subtyp_refl1 : forall a b i R,
+Lemma per_subtyp_refl : forall a b i R,
     {{ DF a ≈ b ∈ per_univ_elem i ↘ R }} ->
-    {{ Sub a <: b at i }}.
+    {{ Sub a <: b at i }} /\ {{ Sub b <: a at i }}.
 Proof.
   simpl; induction 1 using per_univ_elem_ind;
     subst;
     mauto;
     destruct_all.
+
   assert ({{ DF Π a ρ B ≈ Π a' ρ' B' ∈ per_univ_elem i ↘ elem_rel }})
-    by (eapply per_univ_elem_pi'; eauto; intros; destruct_rel_mod_eval; mauto).
-  saturate_refl.
-  econstructor; eauto.
-  intros;
-    destruct_rel_mod_eval;
-    functional_eval_rewrite_clear;
-    trivial.
-Admitted.
+           by (eapply per_univ_elem_pi'; eauto; intros; destruct_rel_mod_eval; mauto).
+  repeat match goal with
+         | H : ?R ?a ?b |- _ =>
+             tryif unify a b
+             then fail
+             else
+               directed pose proof (PER_refl1 _ _ _ _ _ H);
+             directed pose proof (PER_refl2 _ _ _ _ _ H);
+             fail_if_dup
+         end.
+  split; econstructor; eauto.
+  - intros;
+      destruct_rel_mod_eval;
+      functional_eval_rewrite_clear;
+      trivial.
+  - intros. symmetry in H12.
+      destruct_rel_mod_eval;
+      functional_eval_rewrite_clear;
+      trivial.
+Qed.
+
+Lemma per_subtyp_refl1 : forall a b i R,
+    {{ DF a ≈ b ∈ per_univ_elem i ↘ R }} ->
+    {{ Sub a <: b at i }}.
+Proof.
+  intros.
+  apply per_subtyp_refl in H.
+  firstorder.
+Qed.
 
 #[export]
 Hint Resolve per_subtyp_refl1 : mctt.
