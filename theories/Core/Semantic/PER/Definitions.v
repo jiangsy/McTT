@@ -246,7 +246,8 @@ Inductive per_subtyp : nat -> domain -> domain -> Prop :=
      {{ Sub 𝕌@i <: 𝕌@j at k }} )
 | per_subtyp_pi :
   `( forall (in_rel : relation domain) elem_rel elem_rel',
-        {{ DF a ≈ a' ∈ per_univ_elem i ↘ in_rel }} ->
+        {{ Sub a' <: a at i }} ->
+        {{ DF a' ≈ a' ∈ per_univ_elem i ↘ in_rel }} ->
         (forall c c' b b',
             {{ Dom c ≈ c' ∈ in_rel }} ->
             {{ ⟦ B ⟧ ρ ↦ c ↘ b }} ->
