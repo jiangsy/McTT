@@ -670,22 +670,31 @@ Lemma per_elem_subtyping : forall A B i,
       R a b ->
       R' a b.
 Proof.
-  induction 1; intros;
-    handle_per_univ_elem_irrel;
-    saturate_refl;
-    (on_all_hyp: fun H => directed invert_per_univ_elem_nouip H);
-    handle_per_univ_elem_irrel;
-    clear_refl_eqs;
+  induction 1; intros.
+  4:clear H3 H4.
+  all:(on_all_hyp: fun H => directed invert_per_univ_elem H);
+    apply_equiv_left;
     trivial.
   - firstorder mauto.
   - intros.
-    handle_per_univ_elem_irrel.
-    destruct_rel_mod_eval_nouip.
-    saturate_refl_for per_univ_elem.
-    destruct_rel_mod_app_nouip.
-    simplify_evals.
+    deepexec IHper_subtyp ltac:(fun H => pose proof H).
+    destruct_rel_mod_eval.
+    destruct_rel_mod_app.
+    deepexec H1 ltac:(fun H => pose proof H).
     econstructor; eauto.
-    intuition.
+    repeat match goal with
+           | H : per_univ_elem i _ ?a ?b |- _ =>
+               tryif unify a b
+               then fail
+               else
+                 assert (per_univ_elem i _ a a) by
+                   eauto using per_univ_sym, per_univ_trans;
+               assert (per_univ_elem i _ b b) by
+                 eauto using per_univ_sym, per_univ_trans;
+               fail_if_dup
+           end.
+    deepexec H2 ltac:(fun H => pose proof H).
+    trivial.
 Admitted.
 
 Lemma per_elem_subtyping_gen : forall a b i a' b' R R' m n,
