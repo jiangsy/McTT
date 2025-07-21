@@ -89,6 +89,63 @@ cd theories
 make
 ```
 
+## External Syntax
+
+Our interpreter accepts a `prog`, defined in the following grammar
+(written in
+[EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form)):
+
+```EBNF
+prog = term , ':' , type;
+
+type = term;
+     (* function type *)
+term = 'forall' , {parameter} , '->' , term
+     (* function *)
+     | 'fun' , {parameter} , '->' , term
+     (* application *)
+     | {atomic term}
+     (* let expression *)
+     | 'let' , {let definition} , 'in' , term
+     (* successor of a natural number *)
+     | 'succ' , term
+     (* natural number eliminator *)
+     | 'rec' , term , 'return' , nat motive , zero branch , succ branch;
+
+            (* universe of level n *)
+atomic term = 'Type', '@' , nat
+            (* natural number type *)
+            | 'Nat'
+            (* natural number zero *)
+            | 'zero'
+            (* a shorthand for succ (succ (... (succ zero))) *)
+            | nat
+            (* variable *)
+            | id
+            (* parenthesized term *)
+            | '(' , term , ')';
+
+parameter = '(' , id , ':' , type , ')';
+
+let definition = '(' , parameter , ':=' , term , ')';
+
+(* This describes the return type of the eliminator
+   when id is bound to the scrutinee *)
+nat motive = id , '.' , type;
+
+zero branch = '|', 'zero' , '=>' , term;
+
+(* the first id is predecessor
+   and the second id is the result of the recursive call *)
+succ branch = '|', 'succ' , id , id , '=>' , term;
+
+id = ? sequence of upper- or lower-case ASCII alphabet characters ?;
+nat = ? natural number ?;
+```
+
+Here, we omit spaces between tokens. Note that the current let
+expression does not support delta reduction.
+
 ## Branches
 
 The Github repo includes the following special branches:
