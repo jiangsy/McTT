@@ -100,15 +100,20 @@ Proof.
       by (intros; apply_relation_equivalence; unshelve eexists; eassumption).
 
   (** The proofs for the next two assertions are basically the same *)
-  (* exvar (relation domain)
-    ltac:(fun R => assert ({{ DF Π m0 ρ B ≈ Π m1 ρ' B ∈ per_univ_elem (Nat.max i k) ↘ R }})).
+  exvar (relation domain)
+    ltac:(fun R => assert ({{ DF Π a4 ρ B ≈ Π a6 ρ' B ∈ per_univ_elem (Nat.max i k) ↘ R }})).
   {
     intros.
     per_univ_elem_econstructor; [| | solve_refl].
     - etransitivity; [| symmetry]; mauto using per_univ_elem_cumu_max_left.
     - eapply rel_exp_pi_core; [| reflexivity].
       intros.
-      assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c' by (apply HΓA'; intuition).
+      assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c'. {
+        apply HΓA'; intuition.
+        (* due to contra-variance, need a inverse version? but per_elem_subtyping_inv is not true *)
+        eapply per_elem_subtyping_inv; mauto 3.
+        rewrite_relation_equivalence_left. mauto.
+      }
       apply_relation_equivalence.
       (on_all_hyp: fun H => destruct (H _ _ equiv_ρc_ρ'c')).
       destruct_conjs.
@@ -132,7 +137,7 @@ Proof.
   }
 
   do 2 eexists.
-  repeat split; econstructor; mauto 2.
+  repeat split; econstructor; mauto 2. admit.
   econstructor; only 3-4: try (saturate_refl; mautosolve 2).
   - eauto using per_univ_elem_cumu_max_left.
     admit.
@@ -144,7 +149,9 @@ Proof.
     destruct_conjs.
     destruct_by_head rel_exp.
     simplify_evals.
-    mauto 2 using per_subtyp_cumu_right. *)
+    mauto 2 using per_subtyp_cumu_right.
+  - admit.
+  - admit.
 Admitted.
 
 #[export]

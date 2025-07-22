@@ -663,6 +663,43 @@ Proof.
   lia.
 Qed.
 
+(* not true, extra requirements on a and b? *)
+Lemma per_elem_subtyping_inv : forall A B i,
+    {{ Sub A <: B at i }} ->
+    forall R R' a b,
+      {{ DF A ≈ A ∈ per_univ_elem i ↘ R }} ->
+      {{ DF B ≈ B ∈ per_univ_elem i ↘ R' }} ->
+      R' a b ->
+      R a b.
+Proof.
+  induction 1; intros.
+  4:clear H3 H4.
+  all:(on_all_hyp: fun H => directed invert_per_univ_elem H);
+    apply_equiv_left;
+    trivial.
+  (* not true *)
+  - firstorder mauto. admit.
+  - intros.
+    deepexec IHper_subtyp ltac:(fun H => pose proof H).
+    destruct_rel_mod_eval.
+    destruct_rel_mod_app.
+    deepexec H1 ltac:(fun H => pose proof H).
+    econstructor; eauto.
+    repeat match goal with
+           | H : per_univ_elem i _ ?a ?b |- _ =>
+               tryif unify a b
+               then fail
+               else
+                 assert (per_univ_elem i _ a a) by
+                   eauto using per_univ_sym, per_univ_trans;
+               assert (per_univ_elem i _ b b) by
+                 eauto using per_univ_sym, per_univ_trans;
+               fail_if_dup
+           end.
+    deepexec H2 ltac:(fun H => pose proof H).
+    trivial.
+Admitted.
+
 Lemma per_elem_subtyping : forall A B i,
     {{ Sub A <: B at i }} ->
     forall R R' a b,
