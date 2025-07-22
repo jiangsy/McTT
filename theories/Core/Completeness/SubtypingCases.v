@@ -2,7 +2,7 @@ From Coq Require Import Morphisms_Relations RelationClasses.
 
 From Mctt Require Import LibTactics.
 From Mctt.Core Require Import Base.
-From Mctt.Core.Completeness Require Import LogicalRelation FunctionCases.
+From Mctt.Core.Completeness Require Import LogicalRelation FunctionCases UniverseCases.
 Import Domain_Notations.
 
 Lemma subtyp_refl : forall Γ M M' i,
@@ -70,16 +70,19 @@ Proof.
   econstructor; lia.
 Qed.
 
-Lemma subtyp_pi : forall Γ A A' B B',
+Lemma subtyp_pi : forall Γ A A' B B' i,
   {{ Γ ⊨ A' ⊆ A }} ->
-  {{ Γ, A' ⊨ B ⊆ B' }} ->
+  {{ Γ , A ⊨ B : Type@i }} ->
+  {{ Γ , A' ⊨ B ⊆ B' }} ->
   {{ Γ ⊨ Π A B ⊆ Π A' B' }}.
 Proof.
-  intros * [env_relΓ [HΓ [i]]] [env_relΓA' [HΓA' [k]]].
+  intros * [env_relΓ [HΓ [i]]] [env_relΓA]%rel_exp_of_typ_inversion [env_relΓA' [HΓA' [k]]].
   destruct_conjs.
   pose env_relΓ.
+  pose env_relΓA.
   pose env_relΓA'.
   match_by_head (per_ctx_env env_relΓA') invert_per_ctx_env.
+  match_by_head (per_ctx_env env_relΓA) invert_per_ctx_env.
   handle_per_ctx_env_irrel.
   eexists_subtyp.
   intros.
@@ -103,14 +106,14 @@ Proof.
       because B is now re-evaluated at a sub-environment *)
   (** this case is particularly hard *)
   exvar (relation domain)
-    ltac:(fun R => assert ({{ DF Π a4 ρ B ≈ Π a6 ρ' B ∈ per_univ_elem (Nat.max i k) ↘ R }})).
+    ltac:(fun R => assert ({{ DF Π a0 ρ B ≈ Π a ρ' B ∈ per_univ_elem (Nat.max i k) ↘ R }})).
   {
     intros.
     per_univ_elem_econstructor; [| | solve_refl].
     - etransitivity; [| symmetry]; mauto using per_univ_elem_cumu_max_left.
     - eapply rel_exp_pi_core; [| reflexivity].
       intros.
-      assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c'. {
+      assert (env_relΓA d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c'. {
         admit.
       }
       apply_relation_equivalence.
@@ -118,16 +121,17 @@ Proof.
       destruct_conjs.
       destruct_by_head rel_typ.
       econstructor; mauto using per_univ_elem_cumu_max_right.
+      admit.
   }
   exvar (relation domain)
-    ltac:(fun R => assert ({{ DF Π a0 ρ B' ≈ Π a ρ' B' ∈ per_univ_elem (Nat.max i k) ↘ R }})).
+    ltac:(fun R => assert ({{ DF Π a3 ρ B' ≈ Π a2 ρ' B' ∈ per_univ_elem (Nat.max i k) ↘ R }})).
   {
     intros.
     per_univ_elem_econstructor; [| | solve_refl].
     - etransitivity; [symmetry |]; mauto using per_univ_elem_cumu_max_left.
     - eapply rel_exp_pi_core; [| reflexivity].
       intros.
-      assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c' by (apply HΓA'; intuition).
+      assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c' by (eapply HΓA'; intuition).
       apply_relation_equivalence.
       (on_all_hyp: fun H => destruct (H _ _ equiv_ρc_ρ'c')).
       destruct_conjs.
@@ -136,11 +140,11 @@ Proof.
   }
 
   do 2 eexists.
-  repeat split; econstructor; mauto 2. admit.
-  econstructor; only 3-4: try (saturate_refl; mautosolve 2).
+  repeat split; econstructor; mauto 2. 
+  econstructor; only 3-4: try (saturate_refl; mautosolve 3).
   - eauto using per_univ_elem_cumu_max_left.
     admit.
-  - admit.
+  - eauto using per_univ_elem_cumu_max_left.
   - intros.
     assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c' by (apply HΓA'; intuition).
     apply_relation_equivalence.
@@ -149,8 +153,7 @@ Proof.
     destruct_by_head rel_exp.
     simplify_evals.
     mauto 2 using per_subtyp_cumu_right.
-  - admit.
-  - admit.
+  - etransitivity; [symmetry|]; mauto 3.
 Admitted.
 
 #[export]
