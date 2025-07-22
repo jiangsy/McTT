@@ -10,11 +10,19 @@ Create HintDb mctt discriminated.
 Typeclasses Transparent arrows.
 
 (** Destruct existential quantification but keeps the name *)
-Ltac deex_once :=
-  match goal with
-    | [ H: exists (name:_), _ |- _ ] =>
+Ltac deex_once_in H :=
+  match type of H with
+    | exists (name:_), _ =>
       let name' := fresh name in
       destruct H as [name' H]
+    end.
+
+Ltac deex_in H :=
+  repeat deex_once_in H.
+
+Ltac deex_once :=
+  match goal with
+    | [ H: exists (name:_), _ |- _ ] => deex_once_in H
     end.
 
 Ltac deex := repeat deex_once.

@@ -36,7 +36,6 @@ Proof.
   eexists; split; mauto.
   econstructor; mauto.
   per_univ_elem_econstructor; mauto.
-  reflexivity.
 Qed.
 
 #[export]

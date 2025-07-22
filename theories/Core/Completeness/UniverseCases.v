@@ -34,9 +34,6 @@ Proof.
   intros.
   eexists; split; eauto.
   econstructor; mauto.
-  per_univ_elem_econstructor; eauto.
-  unfold per_univ.
-  reflexivity.
 Qed.
 
 #[export]

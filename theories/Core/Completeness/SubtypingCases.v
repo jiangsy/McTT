@@ -72,10 +72,10 @@ Qed.
 
 Lemma subtyp_pi : forall Γ A A' B B',
   {{ Γ ⊨ A' ⊆ A }} ->
-  {{ Γ , A' ⊨ B ⊆ B' }} ->
+  {{ Γ, A' ⊨ B ⊆ B' }} ->
   {{ Γ ⊨ Π A B ⊆ Π A' B' }}.
 Proof.
-  intros * [env_relΓ] [env_relΓA' [? [k]]].
+  intros * [env_relΓ [HΓ [i]]] [env_relΓA' [HΓA' [k]]].
   destruct_conjs.
   pose env_relΓ.
   pose env_relΓA'.
@@ -95,7 +95,6 @@ Proof.
       assert_fails (unify ρ ρ0);
       rename ρ0 into ρ'
   end.
-  rename x0 into head_rel.
 
   assert (forall c c', head_rel ρ ρ' equiv_ρ_ρ' c c' -> env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as HΓA'
       by (intros; apply_relation_equivalence; unshelve eexists; eassumption).

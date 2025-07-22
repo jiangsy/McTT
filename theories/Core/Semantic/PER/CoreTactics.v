@@ -6,9 +6,16 @@ From Mctt.Core Require Import Base.
 From Mctt.Core.Semantic Require Import PER.Definitions.
 Import Domain_Notations.
 
-Ltac lazy_destruct H H' :=
+Hint Extern 1 (?R <~> ?R) => reflexivity : mctt.
+Hint Extern 1 (?R <∙> ?R) => reflexivity : mctt.
+
+(* this is specific for destruct_rel_by_assumption, 
+   so H must have shape forall c c' (c ≈ c' ∈ rel ), P *)
+Ltac deex_destruct_rel H H' :=
   match type of H with
-  | forall _ _ _, exists _, _ => pose proof (H _ _ H'); deex_once
+  | forall _ _ _, exists _, _ => 
+      let H'' := fresh "H" in
+        pose proof (H _ _ H') as H''; deex_once_in H''
   | _ => destruct (H _ _ H') as []
   end.
 
@@ -17,7 +24,7 @@ Ltac destruct_rel_by_assumption in_rel H :=
     match goal with
     | H' : {{ Dom ^?c ≈ ^?c' ∈ ?in_rel0 }} |- _ =>
         unify in_rel0 in_rel;
-        lazy_destruct H H';
+        deex_destruct_rel H H';
         destruct_all;
         mark_with H' 1
     end;
