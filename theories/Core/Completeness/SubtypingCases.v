@@ -107,7 +107,7 @@ Proof.
 
   (** with contra-variant subtyping, the following two cases are no longer similar *)
   exvar (relation domain)
-    ltac:(fun R => assert ({{ DF Π a0 ρ B ≈ Π a ρ' B ∈ per_univ_elem (Nat.max i k) ↘ R }})).
+    ltac:(fun R => assert ({{ DF Π a0 ρ B ≈ Π a ρ' B ∈ per_univ_elem (Nat.max i (Nat.max i0 k)) ↘ R }})).
   {
     intros.
     per_univ_elem_econstructor; [| | solve_refl].
@@ -121,12 +121,14 @@ Proof.
       (on_all_hyp: fun H => destruct (H _ _ equiv_ρc_ρ'c')).
       destruct_conjs.
       destruct_by_head rel_typ.
-      econstructor; mauto using per_univ_elem_cumu_max_right.
-      (* seems ok by further lifting universe levels *)
-      admit.
+      econstructor; mauto using per_univ_elem_cumu_max_right, per_univ_elem_cumu_max_left.
+      destruct H13 as [].
+      eexists.
+      eapply per_univ_elem_cumu_max_right.
+      eapply per_univ_elem_cumu_max_left. mauto.
   }
   exvar (relation domain)
-    ltac:(fun R => assert ({{ DF Π a3 ρ B' ≈ Π a2 ρ' B' ∈ per_univ_elem (Nat.max i k) ↘ R }})).
+    ltac:(fun R => assert ({{ DF Π a3 ρ B' ≈ Π a2 ρ' B' ∈ per_univ_elem (Nat.max i (Nat.max i0 k)) ↘ R }})).
   {
     intros.
     per_univ_elem_econstructor; [| | solve_refl].
@@ -145,8 +147,10 @@ Proof.
   repeat split; econstructor; mauto 2. 
   econstructor; only 3-4: try (saturate_refl; mautosolve 3).
   - eauto using per_univ_elem_cumu_max_left.
-    (* seems OK *)
-    admit.
+    eapply per_subtyp_trans with (A2:=a).
+    eapply per_subtyp_cumu_left; mauto 3.
+    eapply per_subtyp_cumu_left.
+    eapply per_subtyp_refl2; mauto 3.
   - eauto using per_univ_elem_cumu_max_left.
   - intros.
     assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c' by (apply HΓA'; intuition).
@@ -155,9 +159,9 @@ Proof.
     destruct_conjs.
     destruct_by_head rel_exp.
     simplify_evals.
-    mauto 2 using per_subtyp_cumu_right.
+    mauto 3 using per_subtyp_cumu_right.
   - etransitivity; [symmetry|]; mauto 3.
-Admitted.
+Qed.
 
 #[export]
 Hint Resolve subtyp_refl subtyp_trans subtyp_univ subtyp_pi : mctt.
