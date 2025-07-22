@@ -99,7 +99,9 @@ Proof.
   assert (forall c c', head_rel ρ ρ' equiv_ρ_ρ' c c' -> env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as HΓA'
       by (intros; apply_relation_equivalence; unshelve eexists; eassumption).
 
-  (** The proofs for the next two assertions are basically the same *)
+  (** with contra-variant subtyping, the following two cases are no longer similar, 
+      because B is now re-evaluated at a sub-environment *)
+  (** this case is particularly hard *)
   exvar (relation domain)
     ltac:(fun R => assert ({{ DF Π a4 ρ B ≈ Π a6 ρ' B ∈ per_univ_elem (Nat.max i k) ↘ R }})).
   {
@@ -109,10 +111,7 @@ Proof.
     - eapply rel_exp_pi_core; [| reflexivity].
       intros.
       assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c'. {
-        apply HΓA'; intuition.
-        (* due to contra-variance, need a inverse version? but per_elem_subtyping_inv is not true *)
-        eapply per_elem_subtyping_inv; mauto 3.
-        rewrite_relation_equivalence_left. mauto.
+        admit.
       }
       apply_relation_equivalence.
       (on_all_hyp: fun H => destruct (H _ _ equiv_ρc_ρ'c')).
