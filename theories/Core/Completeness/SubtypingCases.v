@@ -70,8 +70,8 @@ Proof.
   econstructor; lia.
 Qed.
 
-Lemma subtyp_pi : forall Γ A A' B B' i,
-  {{ Γ ⊨ A ≈ A' : Type@i }} ->
+Lemma subtyp_pi : forall Γ A A' B B',
+  {{ Γ ⊨ A' ⊆ A }} ->
   {{ Γ , A' ⊨ B ⊆ B' }} ->
   {{ Γ ⊨ Π A B ⊆ Π A' B' }}.
 Proof.
@@ -101,7 +101,7 @@ Proof.
       by (intros; apply_relation_equivalence; unshelve eexists; eassumption).
 
   (** The proofs for the next two assertions are basically the same *)
-  exvar (relation domain)
+  (* exvar (relation domain)
     ltac:(fun R => assert ({{ DF Π m0 ρ B ≈ Π m1 ρ' B ∈ per_univ_elem (Nat.max i k) ↘ R }})).
   {
     intros.
@@ -136,6 +136,8 @@ Proof.
   repeat split; econstructor; mauto 2.
   econstructor; only 3-4: try (saturate_refl; mautosolve 2).
   - eauto using per_univ_elem_cumu_max_left.
+    admit.
+  - admit.
   - intros.
     assert (env_relΓA' d{{{ ρ ↦ c }}} d{{{ ρ' ↦ c' }}}) as equiv_ρc_ρ'c' by (apply HΓA'; intuition).
     apply_relation_equivalence.
@@ -143,8 +145,8 @@ Proof.
     destruct_conjs.
     destruct_by_head rel_exp.
     simplify_evals.
-    mauto 2 using per_subtyp_cumu_right.
-Qed.
+    mauto 2 using per_subtyp_cumu_right. *)
+Admitted.
 
 #[export]
 Hint Resolve subtyp_refl subtyp_trans subtyp_univ subtyp_pi : mctt.

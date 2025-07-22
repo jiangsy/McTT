@@ -40,7 +40,6 @@ Proof.
   eexists_rel_exp_with (max i j).
   intros.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
-  rename x0 into in_rel.
   destruct_by_head rel_typ.
   destruct_by_head rel_exp.
   eexists; split; econstructor; mauto.

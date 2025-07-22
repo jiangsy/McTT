@@ -52,7 +52,7 @@ Inductive alg_subtyping_nf : nf -> nf -> Prop :=
     {{ ⊢anf Π A B ⊆ Π A' B' }}
 where "⊢anf M ⊆ N" := (alg_subtyping_nf M N) (in custom judg) : type_scope.
 
-From Mcltt.Core.Syntactic Require Export CtxSub.
+From Mctt.Core.Syntactic Require Export CtxSub.
 
 Lemma completeness_subtyp : forall {Γ A A'},
     {{ Γ ⊢ A ⊆ A' }} ->
@@ -72,8 +72,8 @@ Proof.
   assert {{ Dom p ≈ p ∈ env_relΓ }} by (eapply per_ctx_env_subtyping; mauto 2).
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   (on_all_hyp: destruct_rel_by_assumption env_relΓ').
-  rename x into elem_rel.
-  rename x0 into elem_rel'.
+  (* rename x into elem_rel. *)
+  (* rename x0 into elem_rel'. *)
   destruct_by_head rel_typ.
   functional_eval_rewrite_clear.
   destruct_by_head rel_exp.
