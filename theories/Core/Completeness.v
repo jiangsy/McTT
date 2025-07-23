@@ -3,7 +3,7 @@ From Mctt.Core Require Import Base.
 From Mctt.Core.Completeness Require Export FundamentalTheorem.
 From Mctt.Core.Semantic Require Import Realizability.
 From Mctt.Core.Semantic Require Export NbE.
-From Mctt.Core.Syntactic Require Export SystemOpt.
+From Mctt.Core.Syntactic Require Export SystemOpt Corollaries.
 Import Domain_Notations.
 
 Theorem completeness : forall {Γ M M' A},
@@ -12,7 +12,7 @@ Theorem completeness : forall {Γ M M' A},
 Proof with mautosolve.
   intros * [env_relΓ]%completeness_fundamental_exp_eq.
   destruct_conjs.
-  assert (exists p p', initial_env Γ p /\ initial_env Γ p' /\ {{ Dom p ≈ p' ∈ env_relΓ }}) as [p] by (eauto using per_ctx_then_per_env_initial_env).
+  assert (exists ρ ρ', initial_env Γ ρ /\ initial_env Γ ρ' /\ {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
   destruct_conjs.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
@@ -47,12 +47,33 @@ Inductive alg_subtyping_nf : nf -> nf -> Prop :=
     i <= j ->
     {{ ⊢anf Type@i ⊆ Type@j }}
 | asnf_pi : forall A B A' B',
-    A = A' ->
+    {{ ⊢anf A' ⊆ A }} ->
     {{ ⊢anf B ⊆ B' }} ->
     {{ ⊢anf Π A B ⊆ Π A' B' }}
 where "⊢anf M ⊆ N" := (alg_subtyping_nf M N) (in custom judg) : type_scope.
 
 From Mctt.Core.Syntactic Require Export CtxSub.
+
+Lemma read_typ_per_subtyp_nf_subtyp : forall {A A' W W' i n},
+  {{ Sub A <: A' at i }} ->
+  {{ Rtyp A in n ↘ W }} ->
+  {{ Rtyp A' in n ↘ W' }} ->
+  {{ ⊢anf W ⊆ W' }}.
+Proof.
+  intros * Hsub Htyp Htyp'.
+  gen n W W'. induction Hsub; intros;   
+    dir_inversion_by_head read_typ; subst.
+  - admit.
+  - admit.
+  - eapply asnf_univ; eauto.
+  - eapply asnf_pi; eauto.
+    eapply H1; mauto 3.
+    eapply per_bot_then_per_elem; mauto 3.
+    (**·this is problematic because a and a' may not be related. 
+    to apply IH, our per_subtyp needs adjustments.
+    Dom c ≈ c' ∈ in_rel needs to be relaxed to sub_values *)
+    admit.
+Abort.
 
 Lemma completeness_subtyp : forall {Γ A A'},
     {{ Γ ⊢ A ⊆ A' }} ->
@@ -66,22 +87,22 @@ Proof.
   eapply completeness_fundamental_subtyp in HA' as [env_relΓ'].
   destruct_conjs.
   eapply completeness_fundamental_ctx_subtyp in HG.
-  assert (exists p p', initial_env Γ' p /\ initial_env Γ' p' /\ {{ Dom p ≈ p' ∈ env_relΓ' }}) as [p] by (eauto using per_ctx_then_per_env_initial_env).
+  assert (exists ρ ρ', initial_env Γ' ρ /\ initial_env Γ' ρ' /\ {{ Dom ρ ≈ ρ' ∈ env_relΓ' }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
   destruct_conjs.
   functional_initial_env_rewrite_clear.
-  assert {{ Dom p ≈ p ∈ env_relΓ }} by (eapply per_ctx_env_subtyping; mauto 2).
+  assert {{ Dom ρ ≈ ρ ∈ env_relΓ }} by (eapply per_ctx_env_subtyping; mauto 2).
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
   (on_all_hyp: destruct_rel_by_assumption env_relΓ').
-  (* rename x into elem_rel. *)
-  (* rename x0 into elem_rel'. *)
   destruct_by_head rel_typ.
   functional_eval_rewrite_clear.
   destruct_by_head rel_exp.
   functional_eval_rewrite_clear.
+  handle_per_univ_elem_irrel.
+  (on_all_hyp: fun H => epose proof (per_univ_then_per_top_typ H (length Γ')); destruct_all).
+  functional_read_rewrite_clear. clear_dups.
   do 2 eexists.
   repeat split; only 1-2: econstructor; try eassumption.
-  - admit. (* {{ Rtyp a2 in length Γ' ↘ ~ ?W }} *) (* We need "realizability" of subtyping *)
   - admit. (* initial_env Γ p *) (* We need a relation between initial environments of super/sub-context pair *)
-  - admit. (* {{ Rtyp a1 in length Γ ↘ ~ ?W' }} *) (* We need "realizability" of subtyping *)
+  - erewrite <- per_ctx_subtyp_respects_length; mautosolve.
   - admit. (* {{ ⊢anf ~ ?W ⊆ ~ ?W' }} *) (* We need "realizability" of subtyping *)
 Abort.

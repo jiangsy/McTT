@@ -1156,6 +1156,14 @@ Proof.
   induction H; simpl; congruence.
 Qed.
 
+Lemma per_ctx_subtyp_respects_length : forall {Γ Δ},
+    {{ SubE Γ <: Δ }} ->
+    length Γ = length Δ.
+Proof.
+  intros * H.
+  induction H; simpl; congruence.
+Qed.
+
 Lemma per_ctx_subtyp_to_env : forall Γ Δ,
     {{ SubE Γ <: Δ }} ->
     exists R R',
