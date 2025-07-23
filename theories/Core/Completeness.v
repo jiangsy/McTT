@@ -54,6 +54,11 @@ where "⊢anf M ⊆ N" := (alg_subtyping_nf M N) (in custom judg) : type_scope.
 
 From Mctt.Core.Syntactic Require Export CtxSub.
 
+
+(** we expect this property and it should be provable directly.
+    however, our current per_subtyp is not general enough and 
+    causes problems when we try to apply IH.
+*)
 Lemma read_typ_per_subtyp_nf_subtyp : forall {A A' W W' i n},
   {{ Sub A <: A' at i }} ->
   {{ Rtyp A in n ↘ W }} ->
@@ -69,9 +74,10 @@ Proof.
   - eapply asnf_pi; eauto.
     eapply H1; mauto 3.
     eapply per_bot_then_per_elem; mauto 3.
-    (**·this is problematic because a and a' may not be related. 
-    to apply IH, our per_subtyp needs adjustments.
-    Dom c ≈ c' ∈ in_rel needs to be relaxed to sub_values *)
+    (**·this is problematic because a' and a may not be related. 
+        we only have a' <: a, while our IH requires a' ≈ a.
+        so the Π case of per_subtyp needs adjustments.
+        Dom c ≈ c' ∈ in_rel needs to be relaxed to sub_values *)
     admit.
 Abort.
 
