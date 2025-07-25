@@ -3,7 +3,7 @@ From Mctt.Core Require Import Base.
 From Mctt.Core.Completeness Require Export FundamentalTheorem.
 From Mctt.Core.Semantic Require Import Realizability.
 From Mctt.Core.Semantic Require Export NbE.
-From Mctt.Core.Syntactic Require Export SystemOpt Corollaries.
+From Mctt.Core.Syntactic Require Export SystemOpt Corollaries CtxSub.
 Import Domain_Notations.
 
 Theorem completeness : forall {Γ M M' A},
@@ -52,13 +52,6 @@ Inductive alg_subtyping_nf : nf -> nf -> Prop :=
     {{ ⊢anf Π A B ⊆ Π A' B' }}
 where "⊢anf M ⊆ N" := (alg_subtyping_nf M N) (in custom judg) : type_scope.
 
-From Mctt.Core.Syntactic Require Export CtxSub.
-
-
-(** we expect this property and it should be provable directly.
-    however, our current per_subtyp is not general enough and 
-    causes problems when we try to apply IH.
-*)
 Lemma read_typ_per_subtyp_nf_subtyp : forall {A A' W W' i n},
   {{ Sub A <: A' at i }} ->
   {{ Rtyp A in n ↘ W }} ->
@@ -73,11 +66,8 @@ Proof.
   - eapply asnf_univ; eauto.
   - eapply asnf_pi; eauto.
     eapply H1; mauto 3.
+    (* We need "realizability" of subtyping, instead of the following realization of equivalence *)
     eapply per_bot_then_per_elem; mauto 3.
-    (**·this is problematic because a' and a may not be related. 
-        we only have a' <: a, while our IH requires a' ≈ a.
-        so the Π case of per_subtyp needs adjustments.
-        Dom c ≈ c' ∈ in_rel needs to be relaxed to sub_values *)
     admit.
 Abort.
 
@@ -110,5 +100,5 @@ Proof.
   repeat split; only 1-2: econstructor; try eassumption.
   - admit. (* initial_env Γ p *) (* We need a relation between initial environments of super/sub-context pair *)
   - erewrite <- per_ctx_subtyp_respects_length; mautosolve.
-  - admit. (* {{ ⊢anf ~ ?W ⊆ ~ ?W' }} *) (* We need "realizability" of subtyping *)
+  - admit. (* {{ ⊢anf ~ ?W ⊆ ~ ?W' }} *)
 Abort.
