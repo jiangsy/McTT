@@ -80,4 +80,5 @@
 ./Extraction/TypeCheck.v
 ./Frontend/Elaborator.v
 ./Frontend/Parser.v
+./Frontend/Syntax.v
 ./LibTactics.v
