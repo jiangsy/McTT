@@ -1,5 +1,6 @@
 open McttExtracted.Entrypoint
 open McttExtracted.Syntax
+open McttExtracted.Cst
 module Parser = McttExtracted.Parser
 module ParserMessages = McttExtracted.ParserMessages
 
@@ -17,35 +18,35 @@ let pp_print_paren_if
   if cond then Format.pp_print_char f ')'
 
 (************************************************************)
-(* Formatting Cst.obj *)
+(* Formatting obj *)
 (************************************************************)
-let rec get_nat_of_obj : Cst.obj -> int option = function
-  | Cst.Coq_zero -> Some 0
-  | Cst.Coq_succ e -> Option.map (( + ) 1) (get_nat_of_obj e)
+let rec get_nat_of_obj : obj -> int option = function
+  | Coq_cst_zero -> Some 0
+  | Coq_cst_succ e -> Option.map (( + ) 1) (get_nat_of_obj e)
   | _ -> None
 
-let rec get_fn_params_of_obj : Cst.obj -> (string * Cst.obj) list * Cst.obj =
+let rec get_fn_params_of_obj : obj -> (string * obj) list * obj =
   function
-  | Cst.Coq_fn (px, ep, ebody) ->
+  | Coq_cst_fn (px, ep, ebody) ->
      let params, ebody' = get_fn_params_of_obj ebody in
      ((px, ep) :: params, ebody')
   | ebody -> ([], ebody)
 
-let rec get_pi_params_of_obj : Cst.obj -> (string * Cst.obj) list * Cst.obj =
+let rec get_pi_params_of_obj : obj -> (string * obj) list * obj =
   function
-  | Cst.Coq_pi (px, ep, eret) ->
+  | Coq_cst_pi (px, ep, eret) ->
      let params, eret' = get_pi_params_of_obj eret in
      ((px, ep) :: params, eret')
   | eret -> ([], eret)
 
-let rec format_obj_prec (p : int) (f : Format.formatter) : Cst.obj -> unit =
+let rec format_obj_prec (p : int) (f : Format.formatter) : obj -> unit =
   let open Format in
   function
-  | Cst.Coq_var x -> pp_print_string f x
-  | Cst.Coq_typ i -> fprintf f "Type@%d" i
-  | Cst.Coq_nat -> fprintf f "Nat"
-  | Cst.Coq_zero -> fprintf f "0"
-  | Cst.Coq_succ e -> begin
+  | Coq_cst_var x -> pp_print_string f x
+  | Coq_cst_typ i -> fprintf f "Type@%d" i
+  | Coq_cst_nat -> fprintf f "Nat"
+  | Coq_cst_zero -> fprintf f "0"
+  | Coq_cst_succ e -> begin
      match get_nat_of_obj e with
      | Some n -> fprintf f "%d" (1 + n)
      | None ->
@@ -54,7 +55,7 @@ let rec format_obj_prec (p : int) (f : Format.formatter) : Cst.obj -> unit =
         pp_print_paren_if (p >= 2) impl f ();
         pp_close_box f ()
    end
-  | Cst.Coq_natrec (escr, mx, em, ez, sx, sr, es) ->
+  | Coq_cst_natrec (escr, mx, em, ez, sx, sr, es) ->
      let impl f () =
        fprintf f
          "@[<hv 0>@[<hov 2>rec %a@ return %s . %a@]@ @[<hov 2>| zero =>@ \
@@ -62,7 +63,7 @@ let rec format_obj_prec (p : int) (f : Format.formatter) : Cst.obj -> unit =
          format_obj escr mx format_obj em format_obj ez sx sr format_obj es
      in
      pp_print_paren_if (p >= 1) impl f ()
-  | Cst.Coq_pi (px, ep, eret) ->
+  | Coq_cst_pi (px, ep, eret) ->
      let params, eret' = get_pi_params_of_obj eret in
      let impl f () =
        pp_print_string f "forall ";
@@ -80,7 +81,7 @@ let rec format_obj_prec (p : int) (f : Format.formatter) : Cst.obj -> unit =
      pp_open_hvbox f 2;
      pp_print_paren_if (p >= 1) impl f ();
      pp_close_box f ()
-  | Cst.Coq_fn (px, ep, ebody) ->
+  | Coq_cst_fn (px, ep, ebody) ->
      let params, ebody' = get_fn_params_of_obj ebody in
      let impl f () =
        pp_print_string f "fun ";
@@ -98,28 +99,28 @@ let rec format_obj_prec (p : int) (f : Format.formatter) : Cst.obj -> unit =
      pp_open_hvbox f 2;
      pp_print_paren_if (p >= 1) impl f ();
      pp_close_box f ()
-  | Cst.Coq_app (ef, ea) ->
+  | Coq_cst_app (ef, ea) ->
      let impl f () =
        fprintf f "%a@ %a" (format_obj_prec 1) ef (format_obj_prec 2) ea
      in
      pp_open_hvbox f 2;
      pp_print_paren_if (p >= 2) impl f ();
      pp_close_box f ()
-  | Cst.Coq_prop_eq (e1, et, e2) ->
+  | Coq_cst_prop_eq (e1, et, e2) ->
      let impl f () =
        fprintf f "%a@ =<%a>@ %a" (format_obj_prec 1) e1 (format_obj_prec 0) et (format_obj_prec 1) e2
      in
      pp_open_hvbox f 2;
      pp_print_paren_if (p >= 1) impl f ();
      pp_close_box f ()
-  | Cst.Coq_refl (et, ex) ->
+  | Coq_cst_refl (et, ex) ->
      let impl f () =
        fprintf f "refl@ %a@ %a" (format_obj_prec 2) et (format_obj_prec 2) ex
      in
      pp_open_hvbox f 2;
      pp_print_paren_if (p >= 1) impl f ();
      pp_close_box f ()
-  | Cst.Coq_eqrec (escr, mx, my, mz, em, rx, er, e1, ea, e2) ->
+  | Coq_cst_eqrec (escr, mx, my, mz, em, rx, er, e1, ea, e2) ->
      let impl f () =
        fprintf f
          "@[<hv 0>@[<hov 2>rec %a@ as %a =<%a> %a@ return %s %s %s . %a@]@ @[<hov 2>| refl %s =>@ \
@@ -158,12 +159,12 @@ let exp_to_obj =
         "A" ^ string_of_int !suffix),
       fun () -> suffix := 0 )
   in
-  let rec impl (ctx : string list) : exp -> Cst.obj = function
-    | Coq_a_var x -> Cst.Coq_var (List.nth ctx x)
-    | Coq_a_typ i -> Cst.Coq_typ i
-    | Coq_a_nat -> Cst.Coq_nat
-    | Coq_a_zero -> Cst.Coq_zero
-    | Coq_a_succ e -> Cst.Coq_succ (impl ctx e)
+  let rec impl (ctx : string list) : exp -> obj = function
+    | Coq_a_var x -> Coq_cst_var (List.nth ctx x)
+    | Coq_a_typ i -> Coq_cst_typ i
+    | Coq_a_nat -> Coq_cst_nat
+    | Coq_a_zero -> Coq_cst_zero
+    | Coq_a_succ e -> Coq_cst_succ (impl ctx e)
     | Coq_a_natrec (em, ez, es, escr) ->
        let mx = new_var () in
        let sx = new_var () in
@@ -172,30 +173,30 @@ let exp_to_obj =
        let em' = impl (mx :: ctx) em in
        let ez' = impl ctx ez in
        let es' = impl (sr :: sx :: ctx) es in
-       Cst.Coq_natrec (escr', mx, em', ez', sx, sr, es')
+       Coq_cst_natrec (escr', mx, em', ez', sx, sr, es')
     | Coq_a_pi (ep, eret) ->
        let px = match ep with Coq_a_typ _ -> new_tyvar () | _ -> new_var () in
        let ep' = impl ctx ep in
        let eret' = impl (px :: ctx) eret in
-       Cst.Coq_pi (px, ep', eret')
+       Coq_cst_pi (px, ep', eret')
     | Coq_a_fn (ep, ebody) ->
        let px = match ep with Coq_a_typ _ -> new_tyvar () | _ -> new_var () in
        let ep' = impl ctx ep in
        let ebody' = impl (px :: ctx) ebody in
-       Cst.Coq_fn (px, ep', ebody')
+       Coq_cst_fn (px, ep', ebody')
     | Coq_a_app (ef, ea) ->
        let ef' = impl ctx ef in
        let ea' = impl ctx ea in
-       Cst.Coq_app (ef', ea')
+       Coq_cst_app (ef', ea')
     | Coq_a_eq (et, e1, e2) ->
        let et' = impl ctx et in
        let e1' = impl ctx e1 in
        let e2' = impl ctx e2 in
-       Cst.Coq_prop_eq (e1', et', e2')
+       Coq_cst_prop_eq (e1', et', e2')
     | Coq_a_refl (et, ex) ->
        let et' = impl ctx et in
        let ex' = impl ctx ex in
-       Cst.Coq_refl (et', ex')
+       Coq_cst_refl (et', ex')
     | Coq_a_eqrec (ea, em, er, e1, e2, escr) ->
        let ea' = impl ctx ea in
        let mx = match ea with Coq_a_typ _ -> new_tyvar () | _ -> new_var () in
@@ -207,7 +208,7 @@ let exp_to_obj =
        let e1' = impl ctx e1 in
        let e2' = impl ctx e2 in
        let escr' = impl ctx escr in
-       Cst.Coq_eqrec (escr', mx, my, mz, em', rx, er', e1', ea', e2')
+       Coq_cst_eqrec (escr', mx, my, mz, em', rx, er', e1', ea', e2')
     | Coq_a_sub _ -> failwith "Invalid internal language construct"
   in
   fun exp ->
@@ -230,9 +231,9 @@ let format_nf f nf = format_exp f (nf_to_exp nf)
 let format_main_result (f : Format.formatter) : main_result -> unit =
   let open Format in
   function
-  | AllGood (cst_typ, cst_exp, typ, exp, nf) ->
-     fprintf f "@[<v 2>Parsed:@ @[<hv 0>%a@ : %a@]@]" format_obj cst_exp
-       format_obj cst_typ;
+  | AllGood (ctyp, cexp, typ, exp, nf) ->
+     fprintf f "@[<v 2>Parsed:@ @[<hv 0>%a@ : %a@]@]" format_obj cexp
+       format_obj ctyp;
      pp_force_newline f ();
      fprintf f "@[<v 2>Elaborated:@ @[<hv 0>%a@ : %a@]@]" format_exp exp
        format_exp typ;
@@ -242,9 +243,9 @@ let format_main_result (f : Format.formatter) : main_result -> unit =
   | TypeCheckingFailure (typ, exp) ->
      printf "@[<v 2>Type Checking Failure:@ %a@;<1 -2>is not of@ %a@]"
        format_exp exp format_exp typ
-  | ElaborationFailure cst_exp ->
+  | ElaborationFailure cexp ->
      printf "@[<v 2>Elaboration Failure:@ %a@;<1 -2>cannot be elaborated@]"
-       format_obj cst_exp
+       format_obj cexp
   | ParserFailure (s, t) ->
      printf "@[<v 2>Parser Failure:@ on %a:@ @ @[<hov 0>%a@]@]"
        Lexer.format_token t pp_print_text

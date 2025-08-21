@@ -78,7 +78,7 @@
 ./Extraction/Readback.v
 ./Extraction/Subtyping.v
 ./Extraction/TypeCheck.v
+./Frontend/Cst.v
 ./Frontend/Elaborator.v
 ./Frontend/Parser.v
-./Frontend/Syntax.v
 ./LibTactics.v

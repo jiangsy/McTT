@@ -12,9 +12,9 @@ Import MenhirLibParser.Inter.
 Import Syntax_Notations.
 
 Variant main_result :=
-  | AllGood : forall cst_typ cst_exp A M W,
-      elaborate cst_typ nil = Some A ->
-      elaborate cst_exp nil = Some M ->
+  | AllGood : forall ctyp cexp A M W,
+      elaborate ctyp nil = Some A ->
+      elaborate cexp nil = Some M ->
       {{ ⋅ ⊢ M : A }} ->
       nbe {{{ ⋅ }}} M A W ->
       main_result
@@ -32,17 +32,17 @@ Ltac impl_obl_tac := try eassumption.
 #[tactic="impl_obl_tac"]
 Equations main (log_fuel : nat) (buf : buffer) : main_result :=
 | log_fuel, buf with Parser.prog log_fuel buf => {
-  | Parsed_pr (cst_exp, cst_typ) _ with inspect (elaborate cst_typ nil) => {
-    | exist _ (Some A) _ with inspect (elaborate cst_exp nil) => {
+  | Parsed_pr (cexp, ctyp) _ with inspect (elaborate ctyp nil) => {
+    | exist _ (Some A) _ with inspect (elaborate cexp nil) => {
       | exist _ (Some M) _ with type_check_closed A _ M _ => {
         | left  _ with nbe_impl {{{ ⋅ }}} M A _ => {
-          | exist _ W _ => AllGood cst_typ cst_exp A M W _ _ _ _
+          | exist _ W _ => AllGood ctyp cexp A M W _ _ _ _
           }
         | right _ => TypeCheckingFailure A M _
         }
-      | exist _ None     _ => ElaborationFailure cst_exp _
+      | exist _ None     _ => ElaborationFailure cexp _
       }
-    | exist _ None     _ => ElaborationFailure cst_typ _
+    | exist _ None     _ => ElaborationFailure ctyp _
     }
   | Fail_pr_full s t               => ParserFailure s t
   | Timeout_pr                     => ParserTimeout log_fuel

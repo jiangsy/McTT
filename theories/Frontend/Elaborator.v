@@ -3,7 +3,7 @@ From Coq Require Import Lia List MSets PeanoNat String FunInd.
 From Mctt Require Import LibTactics.
 From Mctt.Core Require Import Base.
 From Mctt.Core.Syntactic Require Export Syntax.
-From Mctt.Frontend Require Export Syntax.
+From Mctt.Frontend Require Export Cst.
 
 Open Scope string_scope.
 
@@ -30,53 +30,53 @@ Fixpoint lookup (s : string) (ctx : list string) : option nat :=
   end
 .
 
-Fixpoint elaborate (cst : Cst.obj) (ctx : list string) : option exp :=
+Fixpoint elaborate (cst : obj) (ctx : list string) : option exp :=
   match cst with
-  | Cst.var s =>
+  | cst_var s =>
       match lookup s ctx with
       | Some n => Some (a_var n)
       | None => None
       end
-  | Cst.typ n => Some (a_typ n)
-  | Cst.nat => Some a_nat
-  | Cst.zero => Some a_zero
-  | Cst.succ c =>
+  | cst_typ n => Some (a_typ n)
+  | cst_nat => Some a_nat
+  | cst_zero => Some a_zero
+  | cst_succ c =>
       match elaborate c ctx with
       | Some a => Some (a_succ a)
       | None => None
       end
-  | Cst.natrec n mx m z sx sr s =>
+  | cst_natrec n mx m z sx sr s =>
       match elaborate m (mx :: ctx), elaborate z ctx, elaborate s (sr :: sx :: ctx), elaborate n ctx with
       | Some m, Some z, Some s, Some n => Some (a_natrec m z s n)
       | _, _, _, _ => None
       end
-  | Cst.pi s t c =>
+  | cst_pi s t c =>
       match elaborate c (s :: ctx), elaborate t ctx with
       | Some a, Some t => Some (a_pi t a)
       | _, _ => None
       end
-  | Cst.fn s t c =>
+  | cst_fn s t c =>
       match elaborate c (s :: ctx), elaborate t ctx with
       | Some a, Some t => Some (a_fn t a)
       | _, _ => None
       end
-  | Cst.app c1 c2 =>
+  | cst_app c1 c2 =>
       match elaborate c1 ctx, elaborate c2 ctx with
       | None, _ => None
       | _, None => None
       | Some a1, Some a2 => Some (a_app a1 a2)
       end
-  | Cst.prop_eq c1 t c2 =>
+  | cst_prop_eq c1 t c2 =>
       match elaborate c1 ctx, elaborate t ctx, elaborate c2 ctx with
       | Some a1, Some t, Some a2 => Some (a_eq t a1 a2)
       | _, _, _ => None
       end
-  | Cst.refl t c =>
+  | cst_refl t c =>
       match elaborate t ctx, elaborate c ctx with
       | Some t, Some a => Some (a_refl t a)
       | _, _ => None
       end
-  | Cst.eqrec n mx my mz m rx r c1 t c2 =>
+  | cst_eqrec n mx my mz m rx r c1 t c2 =>
       match elaborate n ctx, elaborate m (mz :: my :: mx :: ctx), elaborate r (rx :: ctx), elaborate c1 ctx, elaborate t ctx, elaborate c2 ctx with
       | Some n, Some m, Some r, Some a1, Some t, Some a2 => Some (a_eqrec t m r a1 a2 n)
       | _, _, _, _, _, _ => None
@@ -159,20 +159,20 @@ Proof.
   - econstructor; mauto 3.
 Qed.
 
-Fixpoint cst_variables (cst : Cst.obj) : StrSet.t :=
+Fixpoint cst_variables (cst : obj) : StrSet.t :=
  match cst with
-  | Cst.var s => StrSet.singleton s
-  | Cst.typ n => StrSet.empty
-  | Cst.nat => StrSet.empty
-  | Cst.zero => StrSet.empty
-  | Cst.succ c => cst_variables c
-  | Cst.natrec n mx m z sx sy s => StrSet.union (StrSet.union (cst_variables n) (StrSet.remove mx (cst_variables m))) (StrSet.union (cst_variables z) (StrSet.remove sx (StrSet.remove sy (cst_variables s))))
-  | Cst.pi s t c => StrSet.union (cst_variables t) (StrSet.remove s (cst_variables c))
-  | Cst.fn s t c => StrSet.union (cst_variables t) (StrSet.remove s (cst_variables c))
-  | Cst.app c1 c2 => StrSet.union (cst_variables c1) (cst_variables c2)
-  | Cst.prop_eq c1 t c2 => StrSet.union (cst_variables c1) (StrSet.union (cst_variables t) (cst_variables c2))
-  | Cst.refl t c => StrSet.union (cst_variables t) (cst_variables c)
-  | Cst.eqrec n mx my mz m rx r c1 t c2 => StrSet.union (cst_variables n) (StrSet.union (StrSet.remove mx (StrSet.remove my (StrSet.remove mz (cst_variables m)))) (StrSet.union (StrSet.remove rx (cst_variables r)) (StrSet.union (cst_variables c1) (StrSet.union (cst_variables t) (cst_variables c2)))))
+  | cst_var s => StrSet.singleton s
+  | cst_typ n => StrSet.empty
+  | cst_nat => StrSet.empty
+  | cst_zero => StrSet.empty
+  | cst_succ c => cst_variables c
+  | cst_natrec n mx m z sx sy s => StrSet.union (StrSet.union (cst_variables n) (StrSet.remove mx (cst_variables m))) (StrSet.union (cst_variables z) (StrSet.remove sx (StrSet.remove sy (cst_variables s))))
+  | cst_pi s t c => StrSet.union (cst_variables t) (StrSet.remove s (cst_variables c))
+  | cst_fn s t c => StrSet.union (cst_variables t) (StrSet.remove s (cst_variables c))
+  | cst_app c1 c2 => StrSet.union (cst_variables c1) (cst_variables c2)
+  | cst_prop_eq c1 t c2 => StrSet.union (cst_variables c1) (StrSet.union (cst_variables t) (cst_variables c2))
+  | cst_refl t c => StrSet.union (cst_variables t) (cst_variables c)
+  | cst_eqrec n mx my mz m rx r c1 t c2 => StrSet.union (cst_variables n) (StrSet.union (StrSet.remove mx (StrSet.remove my (StrSet.remove mz (cst_variables m)))) (StrSet.union (StrSet.remove rx (cst_variables r)) (StrSet.union (cst_variables c1) (StrSet.union (cst_variables t) (cst_variables c2)))))
  end
 .
 
@@ -254,7 +254,7 @@ Qed.
 
 (** If the set of free variables in a cst are contained in a context
     then elaboration succeeds with that context, and the result is a closed term *)
-Lemma well_scoped (cst : Cst.obj) : forall ctx,  cst_variables cst [<=] StrSProp.of_list ctx  ->
+Lemma well_scoped (cst : obj) : forall ctx,  cst_variables cst [<=] StrSProp.of_list ctx  ->
 exists a : exp, (elaborate cst ctx = Some a) /\ (closed_at a (List.length ctx)).
 Proof.
   induction cst; intros; simpl in *; mauto.
@@ -316,8 +316,8 @@ Proof.
     mauto.
 Qed.
 
-Example test_elab : elaborate Cst.nat nil = Some a_nat.
+Example test_elab : elaborate cst_nat nil = Some a_nat.
 Proof. reflexivity. Qed.
 
-Example test_elab2 : elaborate (Cst.fn "s" Cst.nat (Cst.fn "x" Cst.nat (Cst.fn "s" Cst.nat (Cst.var "q")))) nil = None.
+Example test_elab2 : elaborate (cst_fn "s" cst_nat (cst_fn "x" cst_nat (cst_fn "s" cst_nat (cst_var "q")))) nil = None.
 Proof. reflexivity. Qed.

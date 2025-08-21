@@ -1,4 +1,4 @@
-val format_obj : Format.formatter -> McttExtracted.Syntax.Cst.obj -> unit
+val format_obj : Format.formatter -> McttExtracted.Cst.obj -> unit
 val format_exp : Format.formatter -> McttExtracted.Syntax.exp -> unit
 val format_nf : Format.formatter -> McttExtracted.Syntax.nf -> unit
 
