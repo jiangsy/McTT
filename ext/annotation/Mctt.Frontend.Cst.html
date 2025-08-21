@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="resources/coqdoc.css" rel="stylesheet" type="text/css" />
+<link href="resources/coqdocjs.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="resources/config.js"></script>
+<script type="text/javascript" src="resources/coqdocjs.js"></script>
+</head>
+
+<body onload="document.getElementById('content').focus()">
+  <div id="header">
+    <span class="left">
+      <span class="modulename"> <script> document.write(document.title) </script> </span>
+    </span>
+
+    <span class="button" id="toggle-proofs"></span>
+
+    <span class="right">
+      <a href="./">Project Page</a>
+      <a href="./indexpage.html"> Index </a>
+      <a href="./dep.html"> Table of Contents </a>
+    </span>
+</div>
+    <div id="content" tabindex="-1" onblur="document.getElementById('content').focus()">
+    <div id="main">
+<h1 class="libtitle">Mctt.Frontend.Cst</h1>
+
+<div class="code">
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab34"></a><h1 class="section">Concrete Syntax Tree</h1>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Inductive</span> <a id="obj" class="idref" href="#obj"><span class="id" title="definition, inductive"><span id="obj_rect" class="id"><span id="obj_ind" class="id"><span id="obj_rec" class="id"><span id="obj_sind" class="id">obj</span></span></span></span></span></a> : <span class="id" title="keyword">Set</span> :=<br/>
+| <a id="cst_typ" class="idref" href="#cst_typ"><span class="id" title="constructor">cst_typ</span></a> : <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_nat" class="idref" href="#cst_nat"><span class="id" title="constructor">cst_nat</span></a> : <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_zero" class="idref" href="#cst_zero"><span class="id" title="constructor">cst_zero</span></a> : <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_succ" class="idref" href="#cst_succ"><span class="id" title="constructor">cst_succ</span></a> : <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_natrec" class="idref" href="#cst_natrec"><span class="id" title="constructor">cst_natrec</span></a> : <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_pi" class="idref" href="#cst_pi"><span class="id" title="constructor">cst_pi</span></a> : <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_fn" class="idref" href="#cst_fn"><span class="id" title="constructor">cst_fn</span></a> : <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_app" class="idref" href="#cst_app"><span class="id" title="constructor">cst_app</span></a> : <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_prop_eq" class="idref" href="#cst_prop_eq"><span class="id" title="constructor">cst_prop_eq</span></a> : <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_refl" class="idref" href="#cst_refl"><span class="id" title="constructor">cst_refl</span></a> : <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_eqrec" class="idref" href="#cst_eqrec"><span class="id" title="constructor">cst_eqrec</span></a> : <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a>                            </div>
+
+<div class="doc">
+A : eq domain type 
+</div>
+<div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> </div>
+
+<div class="doc">
+x y (z : Eq A x y). M 
+</div>
+<div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a>                   </div>
+
+<div class="doc">
+x. Pf : M<span class="inlinecode"><span class="id" title="var">x</span>/<span class="id" title="var">x</span>,</span> <span class="inlinecode"><span class="id" title="var">x</span>/<span class="id" title="var">y</span>,</span> <span class="inlinecode"><span class="id" title="var">refl</span></span> <span class="inlinecode"><span class="id" title="var">A</span></span> <span class="inlinecode"><span class="id" title="var">x</span>/<span class="id" title="var">z</span></span> 
+</div>
+<div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a><br/>
+| <a id="cst_var" class="idref" href="#cst_var"><span class="id" title="constructor">cst_var</span></a> : <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a> <a class="idref" href="http://coq.inria.fr/doc/V8.20.0/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Mctt.Frontend.Cst.html#obj:1"><span class="id" title="inductive">obj</span></a>.<br/>
+</div>
+</div>
+<div id="footer">
+  Generated by <a href="http://coq.inria.fr/">coqdoc</a> and improved with <a href="https://github.com/coq-community/coqdocjs">CoqdocJS</a>
+</div>
+</div>
+</body>
+
+</html>
