@@ -52,6 +52,91 @@ Inductive alg_subtyping_nf : nf -> nf -> Prop :=
     {{ ⊢anf Π A B ⊆ Π A' B' }}
 where "⊢anf M ⊆ N" := (alg_subtyping_nf M N) (in custom judg) : type_scope.
 
+Generalizable All Variables.
+
+Reserved Notation "⊢ M w≈ M'" 
+  (in custom judg at level 80, M custom exp, M' custom exp, no associativity). 
+Reserved Notation "⊢s σ w≈ σ'" 
+  (in custom judg at level 80, σ custom exp, σ' custom exp, no associativity). 
+
+Inductive exp_weak_cong : exp -> exp -> Prop :=
+| exp_wcong_type :
+  `( {{ ⊢ Type@i w≈ Type@i }} )
+| exp_wcong_nat :
+  {{ ⊢ ℕ w≈ ℕ }}
+| exp_wcong_zero : 
+  {{ ⊢ zero w≈ zero }}
+| exp_wcong_succ :
+  `( {{ ⊢ M w≈ M' }} ->
+     {{ ⊢ succ M w≈ succ M'}} )
+| exp_wcong_rec : 
+  `( {{ ⊢ A w≈ A' }} ->
+     {{ ⊢ MZ w≈ MZ' }} ->
+     {{ ⊢ MS w≈ MS' }} ->
+     {{ ⊢ M w≈ M' }} ->
+     {{ ⊢ rec M return A | zero -> MZ | succ -> MS end w≈ rec M' return A' | zero -> MZ' | succ -> MS' end  }} )
+| exp_wcong_pi : 
+  `( {{ ⊢ A w≈ A' }} ->
+     {{ ⊢ B w≈ B' }} ->
+     {{ ⊢ Π A B w≈ Π A' B' }} )
+| exp_wcong_fn : 
+  `( {{ ⊢ M w≈ M' }} ->
+     {{ ⊢ λ A M w≈ λ A' M' }} )
+| exp_wcong_app : 
+  `( {{ ⊢ M w≈ M' }} ->
+     {{ ⊢ N w≈ N' }} ->
+     {{ ⊢ M N w≈ M' N' }} )
+| exp_wcong_var : 
+  `( {{ ⊢ #x w≈ #x }} )
+| exp_wcong_sub : 
+  `( {{ ⊢ M w≈ M' }} ->
+     {{ ⊢s σ w≈ σ' }} ->
+     {{ ⊢ M[σ] w≈ M'[σ'] }} )
+where "⊢ M w≈ M'" := (exp_weak_cong M M') (in custom judg) :  type_scope
+with subst_weak_cong : sub -> sub -> Prop :=
+| subst_wcong_id : 
+  {{ ⊢s Id w≈ Id }}
+| subst_wcong_weaken :
+  `( {{ ⊢s Wk w≈ Wk }} )
+| subst_wcong_compose :
+  `( {{ ⊢s τ w≈ τ' }} ->
+     {{ ⊢s σ w≈ σ' }} ->
+     {{ ⊢s σ ∘ τ w≈ σ' ∘ τ' }} )
+| subst_wcong_extend :
+  `( {{ ⊢s σ w≈ σ' }} ->
+     {{ ⊢ M w≈ M' }} ->
+     {{ ⊢s (σ ,, M) w≈ (σ' ,, M') }} )
+where "⊢s σ w≈ σ'" := (subst_weak_cong σ σ') (in custom judg) :  type_scope.
+
+Hint Constructors exp_weak_cong subst_weak_cong : mctt.
+
+Lemma completeness_subcontext : forall {Γ M A},
+    {{ Γ ⊢ M : A }} ->
+    forall Γ',
+      {{ ⊢ Γ' ⊆ Γ }} ->
+      exists W W', nbe_ty Γ' M W /\ nbe_ty Γ M W' /\ {{ ⊢ W w≈ W' }}.
+Proof.
+  intros. induction H; mauto 4.
+  - admit.
+  - admit.
+  - admit.
+  - apply IHwf_exp in H0. destruct_all.
+    exists (n{{{ succ W }}}), (n{{{ succ W' }}}). split; mauto 4.
+    admit. admit.
+  (* does not work *)
+  - admit.
+  - admit.
+  - admit.
+  - admit.
+Admitted.
+
+(* Lemma completeness_subtyp : forall {Γ A A'},
+    {{ Γ ⊢ A ⊆ A' }} ->
+    forall Γ',
+      {{ ⊢ Γ' ⊆ Γ }} ->
+      exists W W', nbe_ty Γ' A W /\ nbe_ty Γ A' W' /\ {{ ⊢anf W ⊆ W' }}.
+Proof. *)
+
 Lemma read_typ_per_subtyp_nf_subtyp : forall {A A' W W' i n},
   {{ Sub A <: A' at i }} ->
   {{ Rtyp A in n ↘ W }} ->
