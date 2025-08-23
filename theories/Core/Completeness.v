@@ -110,6 +110,34 @@ where "⊢s σ w≈ σ'" := (subst_weak_cong σ σ') (in custom judg) :  type_sc
 
 Hint Constructors exp_weak_cong subst_weak_cong : mctt.
 
+Lemma weak_cong_to_cong : forall {Γ M M' A A' B},
+    {{ ⊢ M w≈ M' }} ->
+    {{ Γ ⊢ M : A }} ->
+    {{ Γ ⊢ M' : A' }} ->
+    {{ Γ ⊢ A ⊆ B }} ->
+    {{ Γ ⊢ A' ⊆ B }} ->
+    {{ Γ ⊢ M ≈ M' : B }}.
+Proof.
+  intros * H. gen Γ A A' B. induction H; intros; mauto 4.
+  - apply wf_succ_inversion in H0.
+    apply wf_succ_inversion in H1. destruct_all.
+    gen_presups.
+    econstructor; [eapply wf_exp_eq_succ_cong | |]; mauto 3.
+    eapply IHexp_weak_cong; mauto 3.
+  - apply wf_natrec_inversion in H3.
+    apply wf_natrec_inversion in H4.
+    admit.
+  - apply wf_pi_inversion in H1.
+    apply wf_pi_inversion in H2. destruct_all.
+    admit.
+    (* gen_presups.
+    eapply IHexp_weak_cong1 with (B:={{{ Type@(max i i0) }}}) in H1; mauto 3.
+    eapply IHexp_weak_cong2 with (B:={{{ Type@(max i i0) }}}) in H7; mauto 3.
+    eapply wf_exp_eq_conv.
+    econstructor; [ eapply wf_exp_eq_pi_cong | | ]; mauto 3 *)
+  - admit.
+Admitted.
+
 Lemma completeness_subcontext : forall {Γ M A},
     {{ Γ ⊢ M : A }} ->
     forall Γ',
@@ -151,12 +179,36 @@ Proof.
   - eapply asnf_univ; eauto.
   - eapply asnf_pi; eauto.
     eapply H1; mauto 3.
+    (* a' <: a -> a' ~== a *)
     (* We need "realizability" of subtyping, instead of the following realization of equivalence *)
     eapply per_bot_then_per_elem; mauto 3.
     admit.
 Abort.
 
 Lemma completeness_subtyp : forall {Γ A A'},
+    {{ Γ ⊢ A ⊆ A' }} ->
+      exists W W', nbe_ty Γ A W /\ nbe_ty Γ A' W' /\ {{ ⊢anf W ⊆ W' }}.
+Proof.
+  intros * HA.
+  eapply completeness_fundamental_subtyp in HA as [env_relΓ].
+  destruct_conjs.
+  assert (exists ρ ρ', initial_env Γ ρ /\  initial_env Γ ρ' /\ {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
+  destruct_conjs.
+  functional_initial_env_rewrite_clear.
+  (on_all_hyp: destruct_rel_by_assumption env_relΓ).
+  destruct_by_head rel_typ.
+  functional_eval_rewrite_clear.
+  destruct_by_head rel_exp.
+  functional_eval_rewrite_clear.
+  handle_per_univ_elem_irrel.
+  (on_all_hyp: fun H => epose proof (per_univ_then_per_top_typ H (length Γ)); destruct_all).
+  functional_read_rewrite_clear. clear_dups.
+  do 2 eexists.
+  repeat split; only 1-2: econstructor; try eassumption.
+  - admit. (* {{ ⊢anf ~ ?W ⊆ ~ ?W' }} *)
+Abort.
+
+(* Lemma completeness_subtyp : forall {Γ A A'},
     {{ Γ ⊢ A ⊆ A' }} ->
     forall Γ',
       {{ ⊢ Γ' ⊆ Γ }} ->
@@ -183,7 +235,7 @@ Proof.
   functional_read_rewrite_clear. clear_dups.
   do 2 eexists.
   repeat split; only 1-2: econstructor; try eassumption.
-  - admit. (* initial_env Γ p *) (* We need a relation between initial environments of super/sub-context pair *)
+  - admit. (* initial_env Γ p, which is false *) (* We need a relation between initial environments of super/sub-context pair *)
   - erewrite <- per_ctx_subtyp_respects_length; mautosolve.
   - admit. (* {{ ⊢anf ~ ?W ⊆ ~ ?W' }} *)
-Abort.
+Abort. *)
