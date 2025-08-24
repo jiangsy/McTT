@@ -174,8 +174,10 @@ Proof.
   intros * Hsub Htyp Htyp'.
   gen n W W'. induction Hsub; intros;   
     dir_inversion_by_head read_typ; subst.
-  - admit.
-  - admit.
+  - (* TODO: does this hold? *) 
+    admit.
+  - eapply asnf_refl; mauto 3.  
+    constructor.
   - eapply asnf_univ; eauto.
   - eapply asnf_pi; eauto.
     eapply H1; mauto 3.
