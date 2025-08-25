@@ -68,6 +68,7 @@
 ./Core/Syntactic/System/Definitions.v
 ./Core/Syntactic/System/Lemmas.v
 ./Core/Syntactic/System/Tactics.v
+./Core/Syntactic/System/WeakCong.v
 ./Core/Syntactic/SystemOpt.v
 # ./Entrypoint.v
 # ./Extraction/Evaluation.v

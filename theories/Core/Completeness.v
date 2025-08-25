@@ -3,6 +3,7 @@ From Mctt.Core Require Import Base.
 From Mctt.Core.Completeness Require Export FundamentalTheorem.
 From Mctt.Core.Semantic Require Import Realizability.
 From Mctt.Core.Semantic Require Export NbE.
+From Mctt.Core.Syntactic Require Import WeakCong.
 From Mctt.Core.Syntactic Require Export SystemOpt Corollaries CtxSub.
 Import Domain_Notations.
 
@@ -54,64 +55,8 @@ where "⊢anf M ⊆ N" := (alg_subtyping_nf M N) (in custom judg) : type_scope.
 
 Generalizable All Variables.
 
-Reserved Notation "⊢ M w≈ M'" 
-  (in custom judg at level 80, M custom exp, M' custom exp, no associativity). 
-Reserved Notation "⊢s σ w≈ σ'" 
-  (in custom judg at level 80, σ custom exp, σ' custom exp, no associativity). 
-
-Inductive exp_weak_cong : exp -> exp -> Prop :=
-| exp_wcong_type :
-  `( {{ ⊢ Type@i w≈ Type@i }} )
-| exp_wcong_nat :
-  {{ ⊢ ℕ w≈ ℕ }}
-| exp_wcong_zero : 
-  {{ ⊢ zero w≈ zero }}
-| exp_wcong_succ :
-  `( {{ ⊢ M w≈ M' }} ->
-     {{ ⊢ succ M w≈ succ M'}} )
-| exp_wcong_rec : 
-  `( {{ ⊢ A w≈ A' }} ->
-     {{ ⊢ MZ w≈ MZ' }} ->
-     {{ ⊢ MS w≈ MS' }} ->
-     {{ ⊢ M w≈ M' }} ->
-     {{ ⊢ rec M return A | zero -> MZ | succ -> MS end w≈ rec M' return A' | zero -> MZ' | succ -> MS' end  }} )
-| exp_wcong_pi : 
-  `( {{ ⊢ A w≈ A' }} ->
-     {{ ⊢ B w≈ B' }} ->
-     {{ ⊢ Π A B w≈ Π A' B' }} )
-| exp_wcong_fn : 
-  `( {{ ⊢ M w≈ M' }} ->
-     {{ ⊢ λ A M w≈ λ A' M' }} )
-| exp_wcong_app : 
-  `( {{ ⊢ M w≈ M' }} ->
-     {{ ⊢ N w≈ N' }} ->
-     {{ ⊢ M N w≈ M' N' }} )
-| exp_wcong_var : 
-  `( {{ ⊢ #x w≈ #x }} )
-| exp_wcong_sub : 
-  `( {{ ⊢ M w≈ M' }} ->
-     {{ ⊢s σ w≈ σ' }} ->
-     {{ ⊢ M[σ] w≈ M'[σ'] }} )
-where "⊢ M w≈ M'" := (exp_weak_cong M M') (in custom judg) :  type_scope
-with subst_weak_cong : sub -> sub -> Prop :=
-| subst_wcong_id : 
-  {{ ⊢s Id w≈ Id }}
-| subst_wcong_weaken :
-  `( {{ ⊢s Wk w≈ Wk }} )
-| subst_wcong_compose :
-  `( {{ ⊢s τ w≈ τ' }} ->
-     {{ ⊢s σ w≈ σ' }} ->
-     {{ ⊢s σ ∘ τ w≈ σ' ∘ τ' }} )
-| subst_wcong_extend :
-  `( {{ ⊢s σ w≈ σ' }} ->
-     {{ ⊢ M w≈ M' }} ->
-     {{ ⊢s (σ ,, M) w≈ (σ' ,, M') }} )
-where "⊢s σ w≈ σ'" := (subst_weak_cong σ σ') (in custom judg) :  type_scope.
-
-Hint Constructors exp_weak_cong subst_weak_cong : mctt.
-
 Lemma weak_cong_to_cong : forall {Γ M M' A A' B},
-    {{ ⊢ M w≈ M' }} ->
+    {{ ⊢ M ≈≈ M' }} ->
     {{ Γ ⊢ M : A }} ->
     {{ Γ ⊢ M' : A' }} ->
     {{ Γ ⊢ A ⊆ B }} ->
@@ -138,11 +83,11 @@ Proof.
   - admit.
 Admitted.
 
-Lemma completeness_subcontext : forall {Γ M A},
+(* Lemma completeness_subcontext : forall {Γ M A},
     {{ Γ ⊢ M : A }} ->
     forall Γ',
       {{ ⊢ Γ' ⊆ Γ }} ->
-      exists W W', nbe_ty Γ' M W /\ nbe_ty Γ M W' /\ {{ ⊢ W w≈ W' }}.
+      exists W W', nbe_ty Γ' M W /\ nbe_ty Γ M W' /\ {{ ⊢ W ≈≈ W' }}.
 Proof.
   intros. induction H; mauto 4.
   - admit.
@@ -156,7 +101,7 @@ Proof.
   - admit.
   - admit.
   - admit.
-Admitted.
+Admitted. *)
 
 (* Lemma completeness_subtyp : forall {Γ A A'},
     {{ Γ ⊢ A ⊆ A' }} ->
