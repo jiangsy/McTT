@@ -36,6 +36,9 @@
 ./Core/Semantic/PER/CoreTactics.v
 ./Core/Semantic/PER/Definitions.v
 ./Core/Semantic/PER/Lemmas.v
+./Core/Semantic/WPER/CoreTactics.v
+./Core/Semantic/WPER/Definitions.v
+./Core/Semantic/WPER/Lemmas.v
 ./Core/Semantic/Readback.v
 ./Core/Semantic/Readback/Definitions.v
 ./Core/Semantic/Readback/Lemmas.v
@@ -68,7 +71,8 @@
 ./Core/Syntactic/System/Definitions.v
 ./Core/Syntactic/System/Lemmas.v
 ./Core/Syntactic/System/Tactics.v
-./Core/Syntactic/System/WeakCong.v
+./Core/Syntactic/WCong/Definitions.v
+./Core/Syntactic/WCong/Lemmas.v
 ./Core/Syntactic/SystemOpt.v
 # ./Entrypoint.v
 # ./Extraction/Evaluation.v

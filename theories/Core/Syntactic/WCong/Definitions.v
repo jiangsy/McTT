@@ -1,6 +1,6 @@
 From Mctt Require Import LibTactics.
 From Mctt.Core Require Import Base.
-From Mctt.Core.Syntactic Require Export SystemOpt Definitions Corollaries CtxSub.
+From Mctt.Core.Syntactic.System Require Export Definitions.
 Import Syntax_Notations.
 
 Reserved Notation "⊢ M ≈≈ M'" 
@@ -59,6 +59,15 @@ with subst_weak_cong : sub -> sub -> Prop :=
      {{ ⊢s (σ ,, M) ≈≈ (σ' ,, M') }} )
 where "⊢s σ ≈≈ σ'" := (subst_weak_cong σ σ') (in custom judg) : type_scope.
 
+#[export]
+Hint Constructors exp_weak_cong subst_weak_cong : mctt.
+
+Scheme exp_weak_cong_mut_ind := Induction for exp_weak_cong Sort Prop
+with subst_weak_cong_mut_ind := Induction for subst_weak_cong Sort Prop.
+Combined Scheme syntactic_wcong_mut_ind from
+  exp_weak_cong_mut_ind,
+  subst_weak_cong_mut_ind.
+
 Reserved Notation "⊢nf M ≈≈ M'" 
   (in custom judg at level 80, M custom nf, M' custom nf, no associativity). 
 Reserved Notation "⊢ne N ≈≈ N'" 
@@ -100,4 +109,11 @@ with ne_weak_cong : ne -> ne -> Prop :=
   `( {{ ⊢ne #x ≈≈ #x }} )
 where "⊢ne N ≈≈ N'" := (ne_weak_cong N N') (in custom judg) : type_scope.
 
-Hint Constructors nf_weak_cong nf_weak_cong : mctt.
+#[export]
+Hint Constructors nf_weak_cong ne_weak_cong : mctt.
+
+Scheme nf_weak_cong_mut_ind := Induction for nf_weak_cong Sort Prop
+with ne_weak_cong_mut_ind := Induction for ne_weak_cong Sort Prop.
+Combined Scheme normal_syntactic_wcong_mut_ind from
+  nf_weak_cong_mut_ind,
+  ne_weak_cong_mut_ind.

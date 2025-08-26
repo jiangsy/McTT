@@ -3,8 +3,12 @@ From Equations Require Import Equations.
 
 From Mctt Require Import LibTactics.
 From Mctt.Core Require Import Base.
-From Mctt.Core.Semantic Require Import PER.CoreTactics PER.Definitions.
+From Mctt.Core.Syntactic.WCong Require Import Definitions Lemmas.
+From Mctt.Core.Semantic Require Import WPER.CoreTactics WPER.Definitions.
+
 Import Domain_Notations.
+
+Locate ne_weak_cong.
 
 Add Parametric Morphism R0 `(R0_morphism : Proper _ ((@relation_equivalence domain) ==> (@relation_equivalence domain)) R0) A ρ A' ρ' : (rel_mod_eval R0 A ρ A' ρ')
     with signature (@relation_equivalence domain) ==> iff as rel_mod_eval_morphism.
@@ -22,26 +26,28 @@ Proof.
 Qed.
 
 Lemma per_bot_sym : forall m n,
-    {{ Dom m ≈ n ∈ per_bot }} ->
-    {{ Dom n ≈ m ∈ per_bot }}.
+    {{ Dom m ≈≈ n ∈ per_bot }} ->
+    {{ Dom n ≈≈ m ∈ per_bot }}.
 Proof with solve [eauto].
   intros * H s.
   pose proof H s.
-  destruct_conjs...
+  destruct_all.
+  do 2 eexists; mauto.
 Qed.
 
 #[export]
 Hint Resolve per_bot_sym : mctt.
 
 Lemma per_bot_trans : forall m n l,
-    {{ Dom m ≈ n ∈ per_bot }} ->
-    {{ Dom n ≈ l ∈ per_bot }} ->
-    {{ Dom m ≈ l ∈ per_bot }}.
+    {{ Dom m ≈≈ n ∈ per_bot }} ->
+    {{ Dom n ≈≈ l ∈ per_bot }} ->
+    {{ Dom m ≈≈ l ∈ per_bot }}.
 Proof with solve [eauto].
   intros * Hmn Hnl s.
   pose proof (Hmn s, Hnl s).
   destruct_conjs.
-  functional_read_rewrite_clear...
+  functional_read_rewrite_clear.
+  do 2 eexists; mauto.
 Qed.
 
 #[export]
@@ -56,7 +62,7 @@ Proof.
 Qed.
 
 Lemma var_per_bot : forall {n},
-    {{ Dom !n ≈ !n ∈ per_bot }}.
+    {{ Dom !n ≈≈ !n ∈ per_bot }}.
 Proof.
   intros ? ?. repeat econstructor.
 Qed.
@@ -65,26 +71,28 @@ Qed.
 Hint Resolve var_per_bot : mctt.
 
 Lemma per_top_sym : forall m n,
-    {{ Dom m ≈ n ∈ per_top }} ->
-    {{ Dom n ≈ m ∈ per_top }}.
+    {{ Dom m ≈≈ n ∈ per_top }} ->
+    {{ Dom n ≈≈ m ∈ per_top }}.
 Proof with solve [eauto].
   intros * H s.
   pose proof H s.
-  destruct_conjs...
+  destruct_conjs.
+  do 2 eexists; mauto.
 Qed.
 
 #[export]
 Hint Resolve per_top_sym : mctt.
 
 Lemma per_top_trans : forall m n l,
-    {{ Dom m ≈ n ∈ per_top }} ->
-    {{ Dom n ≈ l ∈ per_top }} ->
-    {{ Dom m ≈ l ∈ per_top }}.
+    {{ Dom m ≈≈ n ∈ per_top }} ->
+    {{ Dom n ≈≈ l ∈ per_top }} ->
+    {{ Dom m ≈≈ l ∈ per_top }}.
 Proof with solve [eauto].
   intros * Hmn Hnl s.
   pose proof (Hmn s, Hnl s).
   destruct_conjs.
-  functional_read_rewrite_clear...
+  functional_read_rewrite_clear.
+  do 2 eexists; mauto.
 Qed.
 
 #[export]
