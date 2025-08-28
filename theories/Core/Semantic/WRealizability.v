@@ -65,9 +65,12 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   - (* progress_inversion or destruct_by_head per_subtyp gives weird results *)
     dependent destruction H3.
     dependent destruction H7.
-    invert_per_univ_elem H10.
-    invert_per_univ_elem H13.
-    intros. admit.
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    intros. 
+    (* after switch the direction, this case is problemtic 
+       as we cannot lower relate c0 c'0 in lower universe
+    *)
+    admit.
   - dependent destruction H3.
     dependent destruction H7.
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
