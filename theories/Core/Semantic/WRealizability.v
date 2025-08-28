@@ -23,10 +23,10 @@ Lemma realize_per_univ_elem_gen : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     {{ Dom a ≈≈ b ∈ per_top_typ }}
     /\ (forall {a' b' c c'}, 
-         {{ Sub a' <: a at i }} -> {{ Sub b' <: b at i }} ->
+         {{ Sub a <: a' at i }} -> {{ Sub b <: b' at i }} ->
          {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b' c' ∈ R }})
     /\ (forall {a' b' d d'}, 
-          {{ Sub a <: a' at i }} -> {{ Sub b <: b' at i }} ->
+          {{ Sub a' <: a at i }} -> {{ Sub b' <: b at i }} ->
           {{ Dom d ≈≈ d' ∈ R }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b' d' ∈ per_top }}).
 Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   intros * Hunivelem. simpl in Hunivelem.
@@ -65,28 +65,39 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   - (* progress_inversion or destruct_by_head per_subtyp gives weird results *)
     dependent destruction H3.
     dependent destruction H7.
-    intros.
-    admit.
+    invert_per_univ_elem H10.
+    invert_per_univ_elem H13.
+    intros. admit.
   - dependent destruction H3.
     dependent destruction H7.
-    invert_per_univ_elem H5.
-    invert_per_univ_elem H8.
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     destruct_all.
     intros s.
-    assert {{ Dom ⇑! a'0 s ≈≈ ⇑! a'1 s ∈ in_rel }}. {
-      eapply H17; mauto 3; saturate_refl;
-      eapply per_subtyp_refl; eauto.
+    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a1 s ∈ in_rel }}. {
+      eapply H20; mauto 3; saturate_refl.
     }
-    (* we cannot construct related values that belong to
-       in_rel0 and in_rel2
-       one hope is to use per_elem_subtyping to argue that 
-       given ⇑! a'0 s ≈≈ ⇑! a'1 s ∈ in_rel, the following holds:
-       ⇑! a'0 s ≈≈ ⇑! a'1 s ∈ in_rel0 and 
-       ⇑! a'0 s ≈≈ ⇑! a'1 s ∈ in_rel2 
-       but it requires a reversed sub_value relation 
-       (a < a'0 and a < a'1)
-    *)
-    admit.
+    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a1 s ∈ in_rel0 }}. {
+      eapply per_elem_subtyping with (R:=in_rel); eauto.
+      saturate_refl. auto.
+      admit.
+    }
+    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a1 s ∈ in_rel1 }}. {
+      eapply per_elem_subtyping with (R:=in_rel); eauto.
+      saturate_refl. auto.
+      admit.
+    }
+    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a1 s ∈ in_rel2 }}. {
+      eapply per_elem_subtyping with (R:=in_rel); eauto.
+      saturate_refl. auto.
+      admit.
+    }
+    destruct_rel_mod_eval.
+    destruct_rel_mod_app.
+    simplify_evals.
+    do 2 eexists. repeat split.
+    eapply H40 with (a':=a4) in H43; mauto.
+
+    admit. admit. admit.
   - intro s. 
     (on_all_hyp: fun H => specialize (H s)). 
     destruct_all...
