@@ -28,7 +28,7 @@ Lemma realize_per_univ_elem_gen : forall {i a b R},
     /\ (forall {a' b' d d'}, 
           {{ Sub a <: a' at i }} -> {{ Sub b <: b' at i }} ->
           {{ Dom d ≈≈ d' ∈ R }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b' d' ∈ per_top }}).
-Proof with (solve [try (try (eexists; split); econstructor); mauto]).
+Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   intros * Hunivelem. simpl in Hunivelem.
   induction Hunivelem using per_univ_elem_ind; repeat split; intros;
     apply_relation_equivalence; mauto.
@@ -46,6 +46,53 @@ Proof with (solve [try (try (eexists; split); econstructor); mauto]).
     intro s.
     specialize (H2 s). destruct_all.
     exists C, C'. repeat split; mauto.
+  (* Nat *)
+  - mauto...
+  - progressive_inversion. intros.
+    admit.
+  (* Pi *)
+  - destruct_all.
+    intro s.
+    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
+      eapply H3; mauto 3; saturate_refl;
+      eapply per_subtyp_refl; eauto.
+    }
+    specialize (H1 _ _ H5). destruct_rel_mod_eval.
+    destruct_conjs.
+    specialize (H4 s) as [? []].
+    specialize (H8 (S s)) as [? []].
+    destruct_conjs...
+  - (* progress_inversion or destruct_by_head per_subtyp gives weird results *)
+    dependent destruction H3.
+    dependent destruction H7.
+    intros.
+    admit.
+  - dependent destruction H3.
+    dependent destruction H7.
+    invert_per_univ_elem H5.
+    invert_per_univ_elem H8.
+    destruct_all.
+    intros s.
+    assert {{ Dom ⇑! a'0 s ≈≈ ⇑! a'1 s ∈ in_rel }}. {
+      eapply H17; mauto 3; saturate_refl;
+      eapply per_subtyp_refl; eauto.
+    }
+    (* we cannot construct related values that belong to
+       in_rel0 and in_rel2
+       one hope is to use per_elem_subtyping to argue that 
+       given ⇑! a'0 s ≈≈ ⇑! a'1 s ∈ in_rel, the following holds:
+       ⇑! a'0 s ≈≈ ⇑! a'1 s ∈ in_rel0 and 
+       ⇑! a'0 s ≈≈ ⇑! a'1 s ∈ in_rel2 
+       but it requires a reversed sub_value relation 
+       (a < a'0 and a < a'1)
+    *)
+    admit.
+  - intro s. 
+    (on_all_hyp: fun H => specialize (H s)). 
+    destruct_all...
+  - intros s. progressive_inversion. subst.
+    (on_all_hyp: fun H => specialize (H s)). 
+    destruct_all...
   (* - destruct IHHunivelem as [? []].
     intro s.
     assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }} by eauto using var_per_bot.
