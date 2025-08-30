@@ -24,7 +24,7 @@ Lemma realize_per_univ_elem_gen_ver3 : forall {i a b R},
     ( {{ Dom a ≈≈ b ∈ per_top_typ }}
       /\ (forall {a'}, {{ Sub a <: a' at i }} ->
             {{ Dom a' ≈≈ a' ∈ per_top_typ }})
-      /\ (forall {a'}, {{ Sub a' <: a' at i }} ->
+      /\ (forall {a'}, {{ Sub a' <: a at i }} ->
             {{ Dom a' ≈≈ a' ∈ per_top_typ }} )
     )
     /\ (forall {a' c c' R'}, 
