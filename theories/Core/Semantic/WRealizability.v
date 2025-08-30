@@ -19,7 +19,26 @@ Qed.
 #[export]
 Hint Resolve per_nat_then_per_top : mctt.
 
-Lemma realize_per_univ_elem_gen'' : forall {i a b R},
+Lemma realize_per_univ_elem_gen_ver3 : forall {i a b R},
+    {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
+    ( {{ Dom a ≈≈ b ∈ per_top_typ }}
+      /\ (forall {a'}, {{ Sub a <: a' at i }} ->
+            {{ Dom a' ≈≈ a' ∈ per_top_typ }})
+      /\ (forall {a'}, {{ Sub a' <: a' at i }} ->
+            {{ Dom a' ≈≈ a' ∈ per_top_typ }} )
+    )
+    /\ (forall {a' c c' R'}, 
+         {{ Sub a <: a' at i }} ->
+         {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
+         {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b c' ∈ R' }})
+    /\ (forall {a' d d' R'}, 
+         {{ Sub a' <: a at i }} ->
+         {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
+         {{ Dom d ≈≈ d' ∈ R' }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b d' ∈ per_top }}).
+Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
+Admitted.
+
+Lemma realize_per_univ_elem_gen_ver2 : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     {{ Dom a ≈≈ b ∈ per_top_typ }}
     /\ (forall {a' c c' R'}, 
@@ -110,7 +129,19 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_rel_mod_eval.
     destruct_rel_mod_app.
     simplify_evals.
-    do 2 eexists; repeat split; econstructor; mauto 3; admit.
+    assert (exists WA WA', {{ Rtyp a0 in s ↘ WA }} /\ {{ Rtyp a' in s ↘ WA' }}) by admit.
+    destruct_all.
+    assert (per_top d{{{ ⇓ a2 fa0 }}} d{{{ ⇓ a'5 f'a' }}}). {
+      eapply H38; mauto 3.
+      transitivity a'0. eapply per_subtyp_refl; symmetry; mauto 3.
+      transitivity a'2; auto.
+      eapply H4 with (c:= d{{{ ⇑! a' s }}} ); mauto 3.
+      etransitivity; [symmetry|]; mauto 3.
+      eapply per_subtyp_refl; mauto 3.
+      etransitivity; [|symmetry]; mauto 3.
+    }
+    specialize (H28 (S s)). destruct_all.
+    do 2 eexists; repeat split; econstructor; mauto 3.
   - intro s. 
     (on_all_hyp: fun H => specialize (H s)). 
     destruct_all...
