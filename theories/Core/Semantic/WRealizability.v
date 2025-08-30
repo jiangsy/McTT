@@ -19,15 +19,17 @@ Qed.
 #[export]
 Hint Resolve per_nat_then_per_top : mctt.
 
-(* Lemma realize_per_univ_elem_gen' : forall {i a b R},
+Lemma realize_per_univ_elem_gen'' : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     {{ Dom a ≈≈ b ∈ per_top_typ }}
-    /\ (forall {a' b' c c'}, 
-         {{ WSub a :>≈<: a' at i }} -> {{ WSub b :>≈<: b' at i }} ->
-         {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b' c' ∈ R }})
-    /\ (forall {a' b' d d'}, 
-          {{ WSub a' :>≈<: a at i }} -> {{ WSub b' :>≈<: b at i }} ->
-          {{ Dom d ≈≈ d' ∈ R }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b' d' ∈ per_top }}).
+    /\ (forall {a' c c' R'}, 
+         {{ Sub a <: a' at i }} ->
+         {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
+         {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b c' ∈ R' }})
+    /\ (forall {a' d d' R'}, 
+         {{ Sub a' <: a at i }} ->
+         {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
+         {{ Dom d ≈≈ d' ∈ R' }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b d' ∈ per_top }}).
 Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   intros * Hunivelem. simpl in Hunivelem.
   induction Hunivelem using per_univ_elem_ind; repeat split; intros;
@@ -35,38 +37,93 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   - subst; repeat econstructor.
   - (* subtyp_lowering ? *)
     subst.
-    progressive_inversion. subst.
+    dependent destruction H3. subst. subst.
+    invert_per_univ_elem H4. rewrite H4.
     eexists.
     basic_per_univ_elem_econstructor; eauto. reflexivity.
-  - subst. 
-    progressive_inversion. subst.
+  - subst. dependent destruction H3.
+    invert_per_univ_elem H4. rewrite H4 in H5.
+    destruct_all.
     destruct_by_head per_univ.
-    specialize (H2 _ _ _ H0).
+    assert (per_univ_elem j' R' d d') by mauto 3.
+    specialize (H2 _ _ _ H3).
     destruct_conjs.
     intro s.
     specialize (H2 s). destruct_all.
     exists C, C'. repeat split; mauto.
-  (* Nat *)
-  - mauto...
+  - mauto... 
   - progressive_inversion. intros.
-    admit.
+    rewrite H. econstructor; auto.
+  - dependent destruction H0.
+    dependent destruction H1.
+    eapply per_nat_then_per_top; mauto.
+    rewrite <- H. auto. 
   - destruct_all.
     intro s.
     assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
-      eapply H3; mauto 3; saturate_refl.
-      admit. admit.
+      eapply H3; mauto 3; saturate_refl; mauto.
     }
     specialize (H1 _ _ H5). destruct_rel_mod_eval.
     destruct_conjs.
     specialize (H4 s) as [? []].
     specialize (H8 (S s)) as [? []].
     destruct_conjs...
-  - dependent destruction H3.
-    dependent destruction H7.
+  - dependent destruction H3. 
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
-    intros. 
-Admitted.  *)
+    destruct_all.
+    rewrite H10. intros. 
+    assert {{ Dom c0 ≈≈ c'0 ∈ in_rel }}. {
+      eapply per_elem_subtyping with (R:=in_rel0) (B:=a); mauto 3.
+      saturate_refl. auto.
+    }
+    assert {{ Dom c0 ≈≈ c'0 ∈ in_rel1 }}. {
+      eapply per_elem_subtyping with (R:=in_rel0) (B:=a); mauto 3.
+    }
+    destruct_rel_mod_eval. simplify_evals.
+    econstructor; mauto 3.
+    eapply H31; mauto 3.
+    + transitivity a'1. 
+      eapply H4; mauto 3.
+      eapply per_subtyp_refl; eauto.
+    + saturate_refl. auto.
+    + assert {{ Dom ⇓ a'0 c0 ≈≈ ⇓ a' c'0 ∈ per_top }}.
+      eapply H15; eauto.
+      admit.
+  - dependent destruction H3. 
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    destruct_conjs.
+    intros s.
+    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
+      eapply H14; mauto 3; saturate_refl; mauto.
+    }
+    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
+      eapply H14; mauto 3; saturate_refl; mauto.
+    }
+    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
+      eapply per_elem_subtyping with (R:=in_rel) (A:=a); mauto 3.
+      saturate_refl. mauto.
+    }
+    handle_per_univ_elem_irrel.
+    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
+      eapply H19; auto.
+    }
+    destruct_rel_mod_eval.
+    destruct_rel_mod_app.
+    simplify_evals.
+    do 2 eexists; repeat split; econstructor; mauto 3; admit.
+  - intro s. 
+    (on_all_hyp: fun H => specialize (H s)). 
+    destruct_all...
+  - progressive_inversion.
+    rewrite H10. econstructor; auto.
+  - intros s. progressive_inversion.
+    subst.
+    rewrite H10 in H3. dependent destruction H3.
+    (on_all_hyp: fun H => specialize (H s)). 
+    destruct_all... 
+Admitted.
 
+(* This version reverse the subtyping order of a and *)
 Lemma realize_per_univ_elem_gen' : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     {{ Dom a ≈≈ b ∈ per_top_typ }}
@@ -75,7 +132,7 @@ Lemma realize_per_univ_elem_gen' : forall {i a b R},
          {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
          {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b c' ∈ R' }})
     /\ (forall {a' d d'}, 
-          {{ Sub a <: a' at i }} ->
+          {{ Sub a' <: a at i }} ->
           {{ Dom d ≈≈ d' ∈ R }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b d' ∈ per_top }}).
 Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   intros * Hunivelem. simpl in Hunivelem.
@@ -126,8 +183,10 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     econstructor; mauto 3.
     eapply H31; mauto 3.
     + admit.
-    +
-    admit.
+    + admit.
+    + assert {{ Dom ⇓ a'0 c0 ≈≈ ⇓ a' c'0 ∈ per_top }}.
+      eapply H15; auto.
+      admit.
   - dependent destruction H3. 
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     destruct_conjs.
@@ -135,11 +194,17 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
       eapply H12; mauto 3; saturate_refl; mauto.
     }
+    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
+      eapply H12; mauto 3; saturate_refl; mauto.
+    }
     assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
       eapply per_elem_subtyping with (R:=in_rel) (A:=a); mauto 3.
       saturate_refl. mauto.
     }
-    destruct_rel_mod_eval. simplify_evals.
+    destruct_rel_mod_eval.
+    destruct_rel_mod_app.
+    simplify_evals.
+    do 2 eexists; repeat split; econstructor; mauto 3.
   - intro s. 
     (on_all_hyp: fun H => specialize (H s)). 
     destruct_all...
