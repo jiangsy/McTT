@@ -19,7 +19,7 @@ Qed.
 #[export]
 Hint Resolve per_nat_then_per_top : mctt.
 
-Lemma realize_per_univ_elem_gen : forall {i a a' R},
+Lemma wrealize_per_univ_elem_gen : forall {i a a' R},
     {{ DF a ≈≈ a' ∈ per_univ_elem i ↘ R }} ->
     {{ Dom a ≈≈ a' ∈ per_top_typ }}
     /\ (forall {c c'}, {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a c ≈≈ ⇑ a' c' ∈ R }})
@@ -83,7 +83,7 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_all...
 Qed.
 
-Lemma realize_per_univ_elem_gen_ver_ref : forall {i a b R},
+Lemma realize_per_univ_elem_gen_sub : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     {{ Dom a ≈≈ b ∈ per_top_typ }}
     /\ (forall {a' c c' R'}, 
@@ -177,11 +177,11 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_rel_mod_app.
     simplify_evals.
     assert (exists WA WA', {{ Rtyp a0 in s ↘ WA }} /\ {{ Rtyp a' in s ↘ WA' }}). {
-      specialize (realize_per_univ_elem_gen equiv_a_a'); mauto 3. intros.
+      specialize (wrealize_per_univ_elem_gen equiv_a_a'); mauto 3. intros.
       assert (per_univ_elem i in_rel0 a' a') as equiv_a'_a'. {
         etransitivity; [symmetry|]; eassumption.
       }
-      specialize (realize_per_univ_elem_gen equiv_a'_a'); mauto 3. intros.
+      specialize (wrealize_per_univ_elem_gen equiv_a'_a'); mauto 3. intros.
       destruct_all.
       specialize (H22 s).
       specialize (H27 s).
@@ -211,13 +211,13 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_all... 
 Qed.
 
-Print Assumptions realize_per_univ_elem_gen_ver_ref.
+Print Assumptions realize_per_univ_elem_gen_sub.
 
 Corollary per_univ_then_per_top_typ : forall {i a a' R},
     {{ DF a ≈≈ a' ∈ per_univ_elem i ↘ R }} ->
     {{ Dom a ≈≈ a' ∈ per_top_typ }}.
 Proof.
-  intros * ?%realize_per_univ_elem_gen; firstorder.
+  intros * ?%wrealize_per_univ_elem_gen; firstorder.
 Qed.
 
 #[export]
@@ -227,7 +227,7 @@ Corollary per_bot_then_per_elem : forall {i a a' R c c'},
     {{ DF a ≈≈ a' ∈ per_univ_elem i ↘ R }} ->
     {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a c ≈≈ ⇑ a' c' ∈ R }}.
 Proof.
-  intros * ?%realize_per_univ_elem_gen; firstorder.
+  intros * ?%wrealize_per_univ_elem_gen; firstorder.
 Qed.
 
 (** We cannot add [per_bot_then_per_elem] as a hint
@@ -238,7 +238,7 @@ Corollary per_elem_then_per_top : forall {i a a' R b b'},
     {{ DF a ≈≈ a' ∈ per_univ_elem i ↘ R }} ->
     {{ Dom b ≈≈ b' ∈ R }} -> {{ Dom ⇓ a b ≈≈ ⇓ a' b' ∈ per_top }}.
 Proof.
-  intros * ?%realize_per_univ_elem_gen; firstorder.
+  intros * ?%wrealize_per_univ_elem_gen; firstorder.
 Qed.
 
 #[export]
