@@ -139,8 +139,7 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_all... 
 Admitted.
 
-
-Lemma realize_per_univ_elem_gen_ver6 : forall {i a b R},
+Lemma realize_per_univ_elem_gen_ver7 : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     ( {{ Dom a ≈≈ b ∈ per_top_typ }}
          /\ (forall {a'}, {{ Sub a <: a' at i }} ->
@@ -159,11 +158,150 @@ Lemma realize_per_univ_elem_gen_ver6 : forall {i a b R},
     /\ (forall {a' d d' R'}, 
          {{ Sub a' <: a at i }} ->
          {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
+         {{ Dom d ≈≈ d' ∈ R' }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b d' ∈ per_top }}).
+Proof with try (solve [try (try (do 2 eexists; split); econstructor); mauto]).
+    intros * Hunivelem. simpl in Hunivelem.
+  induction Hunivelem using per_univ_elem_ind.
+  - repeat split; intros; 
+      match_by_head per_subtyp ltac:(fun H => directed dependent destruction H)...
+    + subst...
+    + subst. invert_per_univ_elem H5.
+      rewrite H5. econstructor.
+      basic_per_univ_elem_econstructor; eauto. reflexivity.
+    + invert_per_univ_elem H5. 
+      rewrite H6. eexists.
+      basic_per_univ_elem_econstructor; eauto. reflexivity.
+    + subst. invert_per_univ_elem H5. 
+      apply_relation_equivalence.
+      destruct_all. 
+      assert (per_univ_elem j' R' d d') by mauto 3.
+      specialize (H2 _ _ _ H0). destruct_all.
+      intro s.
+      specialize (H1 s). destruct_all...
+
+  - repeat split; intros; 
+      match_by_head per_subtyp ltac:(fun H => directed dependent destruction H)...
+    + invert_per_univ_elem H1; intuition.
+    + invert_per_univ_elem H1; intuition.
+    + invert_per_univ_elem H1; intuition.
+  - repeat split; intros; 
+      match_by_head per_subtyp ltac:(fun H => directed dependent destruction H).
+    + destruct_all.
+      intro s.
+      assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
+        eapply H4; mauto 3; saturate_refl; mauto.
+      }
+      specialize (H1 _ _ H9).
+      destruct_all.
+      destruct_rel_mod_eval.
+      destruct_conjs.
+      specialize (H5 s) as [? []].
+      specialize (H12 (S s)) as [? []].
+      destruct_conjs...
+    + destruct_all.
+      invert_per_univ_elem H6.
+      invert_per_univ_elem H15.
+      handle_per_univ_elem_irrel.
+      intro s.
+
+      assert {{ Dom ⇑! a'0 s ≈≈ ⇑! a'0 s ∈ in_rel0 }}. {
+        eapply H10; mauto 3.
+      }
+
+      assert {{ Dom ⇑! a'0 s ≈≈ ⇑! a'0 s ∈ in_rel1 }}. {
+        eapply per_elem_subtyping; mauto 3.
+      }
+      assert {{ Dom ⇑! a'0 s ≈≈ ⇑! a'0 s ∈ in_rel }} by intuition.
+      destruct_all.
+      destruct_rel_mod_eval.
+      specialize (H1 _ _ H14). destruct_all. destruct H1.
+      simplify_evals.
+      do 2 eexists; repeat split.
+      econstructor; mauto 3.
+      destruct_conjs.
+    (* + admit.
+    + admit.
+    + admit.
+    + admit.
+    + admit. *)
+         (* match_by_head per_subtyp ltac:(fun H => directed dependent destruction H)...
+  18 : {
+    dependent destruction H3. 
+        match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+        destruct_all.
+        rewrite H10. intros.
+        handle_per_univ_elem_irrel. 
+        assert {{ Dom c0 ≈≈ c'0 ∈ in_rel }}. {
+          eapply per_elem_subtyping with (R:=in_rel0) (A:=a'0); mauto 3;
+          saturate_refl; auto.
+          rewrite H20. auto.
+        }
+        destruct_rel_mod_eval. simplify_evals.
+        econstructor; mauto 3.
+        eapply H29; mauto 3.
+        + transitivity a'1. 
+          eapply H4; mauto 3.
+          eapply per_subtyp_refl; eauto.
+        + saturate_refl. auto.
+        + assert {{ Dom ⇓ a'0 c0 ≈≈ ⇓ a' c'0 ∈ per_top }}.
+          eapply H17; eauto.
+          intros s.
+          specialize (H8 s).
+          specialize (H21 s). destruct_all...
+  } *)
+  (* - repeat split; intros; 
+      match_by_head per_subtyp ltac:(fun H => directed dependent destruction H); intuition.
+    + intro s.
+      specialize (H s). destruct_all...
+    + intros s.
+      specialize (H s).
+      specialize (H1 s).
+      destruct_all...
+    + intros s.
+      specialize (H s).
+      specialize (H1 s).
+      destruct_all...
+    + invert_per_univ_elem H2.
+      intuition.
+    + rewrite H0 in H2.
+      dependent destruction H2.
+      intro s.
+      specialize (H s).
+      specialize (H1 s).
+      specialize (H2 s).
+      destruct_all...
+    + invert_per_univ_elem H2.
+      rewrite H3 in H4. 
+      dependent destruction H4.
+      intro s.
+      specialize (H s).
+      specialize (H1 s).
+      specialize (H2 s).
+      specialize (H4 s).
+      destruct_all... *)
+Admitted.
+
+
+(* the same case seems false (?), it lifts a type to a too high universe *)
+Lemma realize_per_univ_elem_gen_ver6 : forall {i a b R},
+    {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
+    {{ Dom a ≈≈ b ∈ per_top_typ }}
+    /\ (forall {a' c c' R'}, 
+         {{ Sub a <: a' at i }} ->
+         {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
+         {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b c' ∈ R' }})
+    /\ (forall {a' c c' R'}, 
+         {{ Sub a' <: a at i }} ->
+         {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
+         {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ a' c' ∈ R' }})
+    /\ (forall {a' d d' R'}, 
+         {{ Sub a' <: a at i }} ->
+         {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
          {{ Dom d ≈≈ d' ∈ R' }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b d' ∈ per_top }})
     /\ (forall {a' d d' R'}, 
          {{ Sub a <: a' at i }} ->
          {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
-         {{ Dom d ≈≈ d' ∈ R }} -> {{ Dom ⇓ a' d ≈≈ ⇓ a' d' ∈ per_top }}).
+         {{ Dom d ≈≈ d' ∈ R' }} -> {{ Dom ⇓ a' d ≈≈ ⇓ a' d' ∈ per_top }}).
 Proof.
 Admitted.
 
