@@ -85,8 +85,7 @@ Qed.
 
 Lemma realize_per_univ_elem_gen_sub : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
-    {{ Dom a ≈≈ b ∈ per_top_typ }}
-    /\ (forall {a' c c' R'}, 
+    (forall {a' c c' R'}, 
          {{ Sub a <: a' at i }} ->
          {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ R' }} ->
          {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b c' ∈ R' }})
@@ -98,40 +97,25 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   intros * Hunivelem. simpl in Hunivelem.
   induction Hunivelem using per_univ_elem_ind; repeat split; intros;
     apply_relation_equivalence; mauto.
-  - subst; repeat econstructor.
   - (* subtyp_lowering ? *)
     subst.
     dependent destruction H3. subst. subst.
     invert_per_univ_elem H4. rewrite H4.
     eexists.
     basic_per_univ_elem_econstructor; eauto. reflexivity.
-  - subst. dependent destruction H3.
+  - subst. dependent destruction H3. subst.
     invert_per_univ_elem H4. rewrite H4 in H5.
     destruct_all.
     destruct_by_head per_univ.
-    assert (per_univ_elem j' R' d d') by mauto 3.
-    specialize (H2 _ _ _ H3).
-    destruct_conjs.
+    apply wrealize_per_univ_elem_gen in H5. destruct_all.
     intro s.
-    specialize (H2 s). destruct_all.
-    exists C, C'. repeat split; mauto.
-  - mauto... 
+    specialize (H3 s). destruct_all...
   - progressive_inversion. intros.
     rewrite H. econstructor; auto.
   - dependent destruction H0.
     dependent destruction H1.
     eapply per_nat_then_per_top; mauto.
     rewrite <- H. auto. 
-  - destruct_all.
-    intro s.
-    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
-      eapply H3; mauto 3; saturate_refl; mauto.
-    }
-    specialize (H1 _ _ H5). destruct_rel_mod_eval.
-    destruct_conjs.
-    specialize (H4 s) as [? []].
-    specialize (H8 (S s)) as [? []].
-    destruct_conjs...
   - dependent destruction H3. 
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     destruct_all.
@@ -145,25 +129,25 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     }
     destruct_rel_mod_eval. simplify_evals.
     econstructor; mauto 3.
-    eapply H31; mauto 3.
+    eapply H29; mauto 3.
     + transitivity a'1. 
       eapply H4; mauto 3.
       eapply per_subtyp_refl; eauto.
     + saturate_refl. auto.
     + assert {{ Dom ⇓ a'0 c0 ≈≈ ⇓ a' c'0 ∈ per_top }}.
-      eapply H15; eauto.
+      eapply H14; eauto.
       intros s.
       specialize (H8 s).
-      specialize (H21 s). destruct_all...
+      specialize (H20 s). destruct_all...
   - dependent destruction H3. 
     match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
     destruct_conjs.
     intros s.
     assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
-      eapply H14; mauto 3; saturate_refl; mauto.
+      eapply H13; mauto 3; saturate_refl; mauto.
     }
     assert {{ Dom ⇑! a0 s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
-      eapply H14; mauto 3; saturate_refl; mauto.
+      eapply H13; mauto 3; saturate_refl; mauto.
     }
     assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
       eapply per_elem_subtyping with (R:=in_rel) (A:=a); mauto 3.
@@ -171,7 +155,7 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     }
     handle_per_univ_elem_irrel.
     assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
-      eapply H19; auto.
+      eapply H18; auto.
     }
     destruct_rel_mod_eval.
     destruct_rel_mod_app.
@@ -183,13 +167,13 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
       }
       specialize (wrealize_per_univ_elem_gen equiv_a'_a'); mauto 3. intros.
       destruct_all.
-      specialize (H22 s).
-      specialize (H27 s).
+      specialize (H21 s).
+      specialize (H26 s).
       destruct_all...
     }
     destruct_all.
     assert (per_top d{{{ ⇓ a2 fa0 }}} d{{{ ⇓ a'5 f'a' }}}). {
-      eapply H38; mauto 3.
+      eapply H36; mauto 3.
       transitivity a'0. eapply per_subtyp_refl; symmetry; mauto 3.
       transitivity a'2; auto.
       eapply H4 with (c:= d{{{ ⇑! a' s }}} ); mauto 3.
@@ -197,11 +181,8 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
       eapply per_subtyp_refl; mauto 3.
       etransitivity; [|symmetry]; mauto 3.
     }
-    specialize (H28 (S s)). destruct_all.
+    specialize (H27 (S s)). destruct_all.
     do 2 eexists; repeat split; econstructor; mauto 3.
-  - intro s. 
-    (on_all_hyp: fun H => specialize (H s)). 
-    destruct_all...
   - progressive_inversion.
     rewrite H10. econstructor; auto.
   - intros s. progressive_inversion.
