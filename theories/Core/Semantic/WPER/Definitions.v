@@ -260,34 +260,6 @@ Inductive per_subtyp : nat -> domain -> domain -> Prop :=
         {{ Sub Π a ρ B <: Π a' ρ' B' at i }})
 where "'Sub' a <: b 'at' i" := (per_subtyp i a b) (in custom judg) : type_scope.
 
-Reserved Notation "'WSub' a :>≈<: b 'at' i" (in custom judg at level 90, a custom domain, b custom domain, i constr).
-
-Inductive wper_subtyp : nat -> domain -> domain -> Prop :=
-| wper_subtyp_neut :
-  `( {{ Dom b ≈≈ b' ∈ per_bot }} ->
-     {{ WSub ⇑ a b :>≈<: ⇑ a' b' at i }} )
-| wper_subtyp_nat :
-  `( {{ WSub ℕ :>≈<: ℕ at i }} )
-| wper_subtyp_univ :
-  `( i < k ->
-     j < k ->
-     {{ WSub 𝕌@i :>≈<: 𝕌@j at k }} )
-| wper_subtyp_pi :
-  `( forall (in_rel : relation domain) elem_rel elem_rel',
-        {{ WSub a' :>≈<: a at i }} ->
-        {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ in_rel }} ->
-        {{ DF a ≈≈ a ∈ per_univ_elem i ↘ in_rel }} ->
-        (forall c c' b b',
-            {{ Dom c ≈≈ c' ∈ in_rel }} ->
-            {{ ⟦ B ⟧ ρ ↦ c ↘ b }} ->
-            {{ ⟦ B' ⟧ ρ' ↦ c' ↘ b' }} ->
-            {{ WSub b :>≈<: b' at i }}) ->
-        {{ DF Π a ρ B ≈≈ Π a ρ B ∈ per_univ_elem i ↘ elem_rel }} ->
-        {{ DF Π a' ρ' B' ≈≈ Π a' ρ' B' ∈ per_univ_elem i ↘ elem_rel' }} ->
-        {{ WSub Π a ρ B :>≈<: Π a' ρ' B' at i }})
-where "'WSub' a :>≈<: b 'at' i" := (wper_subtyp i a b) (in custom judg) : type_scope.
-
-
 #[export]
  Hint Constructors per_subtyp : mctt.
 
