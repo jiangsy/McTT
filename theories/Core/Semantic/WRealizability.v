@@ -83,6 +83,7 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_all...
 Qed.
 
+(* this cannot be true, otherwise ⇑ a' c ≈≈ ⇑ b c' ∈ R *)
 Lemma realize_per_univ_elem_gen_sub_rev : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     (forall {a' c c'}, 
@@ -106,14 +107,27 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     specialize (H4 s). destruct_all...
   - dependent destruction H0.
     eapply per_nat_then_per_top; mauto 3.
-  - admit.
-  - admit.
+  - dependent destruction H3.
+    invert_per_univ_elem H5. invert_per_univ_elem H8.
+    handle_per_univ_elem_irrel.
+    assert {{ Dom ⇑ a'0 c ≈≈ ⇑ a'0 c' ∈ in_rel0 }} by (eapply wrealize_per_univ_elem_gen; mauto 3).
+    assert {{ Dom ⇑ a'0 c ≈≈ ⇑ a'0 c' ∈ in_rel0 }} by (eapply wrealize_per_univ_elem_gen; mauto 3).
+    assert {{ Dom ⇑ a c ≈≈ ⇑ a' c' ∈ in_rel }} by admit.
+    intros.
+    destruct_rel_mod_eval. simplify_evals.
+    econstructor; mauto 3.
+    econstructor; mauto 3.
+    admit.
+  admit.
+  - dependent destruction H3. admit.
   - intros s. progressive_inversion.
     subst.
     dependent destruction H2. dependent destruction H1.
     (on_all_hyp: fun H => specialize (H s)). 
     destruct_all...
 Admitted.
+
+Abort.
 
 Lemma realize_per_univ_elem_gen_sub : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
@@ -292,7 +306,9 @@ Inductive subtyping_nf : nf -> nf -> Prop :=
     {{ ⊢snf Π A B ⊆ Π A' B' }}
 where "⊢snf M ⊆ N" := (subtyping_nf M N) (in custom judg) : type_scope.
 
-(* not sure can we further strengthen this *)
+(* this must be true, otherwise we are doomed,
+   however, a direct proof depends on `realize_per_univ_elem_gen_sub_rev`,
+   which cannot be true. not sure can we further strengthen this *)
 Lemma wrealize_persub_gen : forall {A A' W W' i n},
   {{ Sub A <: A' at i }} ->
   {{ Rtyp A in n ↘ W }} ->
