@@ -148,7 +148,7 @@ term = &#39;forall&#39; , {parameter} , &#39;-&gt;&#39; , term
      (* successor of a natural number *)
      | &#39;succ&#39; , atomic term
      (* natural number eliminator *)
-     | &#39;rec&#39; , term , nat scrutinee type? , &#39;return&#39; , nat motive , zero branch , succ branch , &#39;end&#39;;
+     | &#39;rec&#39; , term , nat scrutinee type? , &#39;return&#39; , nat motive , zero branch , succ branch , &#39;end&#39;
      (* propositional equality type *)
      | application term , &#39;=&#39; , &#39;{&#39; , type , &#39;}&#39; , application term
      (* reflexivity for propositional equality *)
@@ -158,7 +158,7 @@ term = &#39;forall&#39; , {parameter} , &#39;-&gt;&#39; , term
      (* first projection of a pair *)
      | &#39;fst&#39; , atomic term
      (* second projection of a pair *)
-     | &#39;snd&#39; , atomic term
+     | &#39;snd&#39; , atomic term;
 
 application term = {atomic term};
 
