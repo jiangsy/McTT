@@ -107,7 +107,7 @@ Proof.
 
   (** with contra-variant subtyping, the following two cases are no longer similar *)
   exvar (relation domain)
-    ltac:(fun R => assert ({{ DF Π a0 ρ B ≈ Π a ρ' B ∈ per_univ_elem (Nat.max i (Nat.max i0 k)) ↘ R }})).
+    ltac:(fun R => assert ({{ DF Π a0 ρ B ≈≈ Π a ρ' B ∈ per_univ_elem (Nat.max i (Nat.max i0 k)) ↘ R }})).
   {
     intros.
     per_univ_elem_econstructor; [| | solve_refl].
@@ -128,7 +128,7 @@ Proof.
       eapply per_univ_elem_cumu_max_left. mauto.
   }
   exvar (relation domain)
-    ltac:(fun R => assert ({{ DF Π a3 ρ B' ≈ Π a2 ρ' B' ∈ per_univ_elem (Nat.max i (Nat.max i0 k)) ↘ R }})).
+    ltac:(fun R => assert ({{ DF Π a3 ρ B' ≈≈ Π a2 ρ' B' ∈ per_univ_elem (Nat.max i (Nat.max i0 k)) ↘ R }})).
   {
     intros.
     per_univ_elem_econstructor; [| | solve_refl].

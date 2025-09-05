@@ -26,14 +26,16 @@
 ./Core/Completeness/UniverseCases.v
 ./Core/Completeness/VariableCases.v
 
+./Core/WCompleteness/ContextCases.v
 ./Core/WCompleteness/FunctionCases.v
+./Core/WCompleteness/FundamentalTheorem.v
 ./Core/WCompleteness/LogicalRelation.v
-./Core/WCompleteness/LogicalRelation/Tactics.v
 ./Core/WCompleteness/LogicalRelation/Definitions.v
 ./Core/WCompleteness/LogicalRelation/Lemmas.v
-./Core/WCompleteness/ContextCases.v
+./Core/WCompleteness/LogicalRelation/Tactics.v
+./Core/WCompleteness/NatCases.v
 ./Core/WCompleteness/SubstitutionCases.v
-# ./Core/WCompleteness/SubtypingCases.v
+./Core/WCompleteness/SubtypingCases.v
 ./Core/WCompleteness/TermStructureCases.v
 ./Core/WCompleteness/UniverseCases.v
 ./Core/WCompleteness/VariableCases.v

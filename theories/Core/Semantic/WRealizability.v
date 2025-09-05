@@ -191,8 +191,6 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_all... 
 Qed.
 
-Print Assumptions realize_per_univ_elem_gen_sub.
-
 Corollary per_univ_then_per_top_typ : forall {i a a' R},
     {{ DF a ≈≈ a' ∈ per_univ_elem i ↘ R }} ->
     {{ Dom a ≈≈ a' ∈ per_top_typ }}.

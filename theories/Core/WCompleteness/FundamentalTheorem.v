@@ -1,5 +1,5 @@
 From Mctt Require Import Base LibTactics.
-From Mctt.Core.Completeness Require Import
+From Mctt.Core.WCompleteness Require Import
   ContextCases
   FunctionCases
   NatCases
@@ -8,7 +8,7 @@ From Mctt.Core.Completeness Require Import
   UniverseCases
   VariableCases
   SubtypingCases.
-From Mctt.Core.Completeness Require Export LogicalRelation.
+From Mctt.Core.WCompleteness Require Export LogicalRelation.
 From Mctt.Core.Syntactic Require Export SystemOpt.
 Import Domain_Notations.
 
