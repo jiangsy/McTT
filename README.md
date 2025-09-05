@@ -117,7 +117,7 @@ term = 'forall' , {parameter} , '->' , term
      (* reflexivity for propositional equality *)
      | 'refl' , atomic type , atomic term
      (* propositional equality eliminator *)
-     | 'rec' , term , equality scrutinee type , 'return' , equality motive , refl branch , 'end';
+     | 'rec' , term , equality scrutinee type , 'return' , equality motive , refl branch , 'end'
      (* first projection of a pair *)
      | 'fst' , atomic term
      (* second projection of a pair *)
