@@ -106,88 +106,14 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     specialize (H4 s). destruct_all...
   - dependent destruction H0.
     eapply per_nat_then_per_top; mauto 3.
-  - dependent destruction H3.
-    intros.
-    econstructor.
-  admit.
   - admit.
-  (* - dependent destruction H0.
-    dependent destruction H1.
-    eapply per_nat_then_per_top; mauto.
-    rewrite <- H. auto. 
-  - dependent destruction H3. 
-    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
-    destruct_all.
-    rewrite H10. intros. 
-    assert {{ Dom c0 ≈≈ c'0 ∈ in_rel }}. {
-      eapply per_elem_subtyping with (R:=in_rel0) (B:=a); mauto 3.
-      saturate_refl. auto.
-    }
-    assert {{ Dom c0 ≈≈ c'0 ∈ in_rel1 }}. {
-      eapply per_elem_subtyping with (R:=in_rel0) (B:=a); mauto 3.
-    }
-    destruct_rel_mod_eval. simplify_evals.
-    econstructor; mauto 3.
-    eapply H29; mauto 3.
-    + transitivity a'1. 
-      eapply H4; mauto 3.
-      eapply per_subtyp_refl; eauto.
-    + saturate_refl. auto.
-    + assert {{ Dom ⇓ a'0 c0 ≈≈ ⇓ a' c'0 ∈ per_top }}.
-      eapply H14; eauto.
-      intros s.
-      specialize (H8 s).
-      specialize (H20 s). destruct_all...
-  - dependent destruction H3. 
-    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
-    destruct_conjs.
-    intros s.
-    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
-      eapply H13; mauto 3; saturate_refl; mauto.
-    }
-    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
-      eapply H13; mauto 3; saturate_refl; mauto.
-    }
-    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
-      eapply per_elem_subtyping with (R:=in_rel) (A:=a); mauto 3.
-      saturate_refl. mauto.
-    }
-    handle_per_univ_elem_irrel.
-    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
-      eapply H18; auto.
-    }
-    destruct_rel_mod_eval.
-    destruct_rel_mod_app.
-    simplify_evals.
-    assert (exists WA WA', {{ Rtyp a0 in s ↘ WA }} /\ {{ Rtyp a' in s ↘ WA' }}). {
-      specialize (wrealize_per_univ_elem_gen equiv_a_a'); mauto 3. intros.
-      assert (per_univ_elem i in_rel0 a' a') as equiv_a'_a'. {
-        etransitivity; [symmetry|]; eassumption.
-      }
-      specialize (wrealize_per_univ_elem_gen equiv_a'_a'); mauto 3. intros.
-      destruct_all.
-      specialize (H21 s).
-      specialize (H26 s).
-      destruct_all...
-    }
-    destruct_all.
-    assert (per_top d{{{ ⇓ a2 fa0 }}} d{{{ ⇓ a'5 f'a' }}}). {
-      eapply H36; mauto 3.
-      transitivity a'0. eapply per_subtyp_refl; symmetry; mauto 3.
-      transitivity a'2; auto.
-      eapply H4 with (c:= d{{{ ⇑! a' s }}} ); mauto 3.
-      etransitivity; [symmetry|]; mauto 3.
-      eapply per_subtyp_refl; mauto 3.
-      etransitivity; [|symmetry]; mauto 3.
-    }
-    specialize (H27 (S s)). destruct_all.
-    do 2 eexists; repeat split; econstructor; mauto 3. *)
+  - admit.
   - intros s. progressive_inversion.
     subst.
     dependent destruction H2. dependent destruction H1.
     (on_all_hyp: fun H => specialize (H s)). 
-    destruct_all... 
-Qed.
+    destruct_all...
+Admitted.
 
 Lemma realize_per_univ_elem_gen_sub : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
@@ -343,6 +269,60 @@ Proof.
     erewrite per_ctx_respects_length; mauto.
     eexists; eauto.
 Qed.
+
+Reserved Notation "⊢snf A ⊆ A'" (in custom judg at level 80, A custom nf, A' custom nf).
+
+Definition not_univ_pi (A : nf) : Prop :=
+  match A with
+  | nf_typ _ | nf_pi _ _ => False
+  | _ => True
+  end.
+
+Inductive subtyping_nf : nf -> nf -> Prop :=
+| asnf_refl : forall M N,
+    not_univ_pi M ->
+    {{ ⊢nf M ≈≈ N }} ->
+    {{ ⊢snf M ⊆ N }}
+| asnf_univ : forall i j,
+    i <= j ->
+    {{ ⊢snf Type@i ⊆ Type@j }}
+| asnf_pi : forall A B A' B',
+    {{ ⊢snf A' ⊆ A }} ->
+    {{ ⊢snf B ⊆ B' }} ->
+    {{ ⊢snf Π A B ⊆ Π A' B' }}
+where "⊢snf M ⊆ N" := (subtyping_nf M N) (in custom judg) : type_scope.
+
+(* not sure can we further strengthen this *)
+Lemma wrealize_persub_gen : forall {A A' W W' i n},
+  {{ Sub A <: A' at i }} ->
+  {{ Rtyp A in n ↘ W }} ->
+  {{ Rtyp A' in n ↘ W' }} ->
+  {{ ⊢snf W ⊆ W' }}.
+Proof.
+  intros * Hsub Htyp Htyp'.
+  gen n W W'. induction Hsub; intros;   
+    dir_inversion_by_head read_typ; subst.
+  - dependent destruction Htyp.
+    dependent destruction Htyp'.
+    specialize (H s). destruct_all.
+    functional_read_rewrite_clear. econstructor; mauto 3.
+    econstructor.
+  - eapply asnf_refl; mauto 3.  
+    constructor.
+  - eapply asnf_univ; eauto.
+  - eapply asnf_pi; eauto.
+    eapply per_subtyp_to_univ_elem in Hsub as IH.
+    destruct_all. handle_per_univ_elem_irrel.
+    rename in_rel into R.
+    (* we cannot (R d{{{ ⇑! a n }}} d{{{ ⇑! a' n }}}). *)
+    assert (R' d{{{ ⇑! a n }}} d{{{ ⇑! a' n }}}) by (eapply realize_per_univ_elem_gen_sub; mauto 3).
+    rename b into b'. rename b0 into b.
+    rename A0 into WA. rename A into WA'.
+    rename B'0 into WB'. rename B'1 into WB.
+    eapply H1; mauto 3.
+    (* but we do want it *)
+    admit.
+Admitted.
 
 Lemma var_per_elem : forall {a b i R} n,
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->

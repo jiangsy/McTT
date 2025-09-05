@@ -36,63 +36,14 @@ Proof.
   do 2 eexists; repeat split; mauto 3.
 Qed.
 
-Reserved Notation "⊢anf A ⊆ A'" (in custom judg at level 80, A custom nf, A' custom nf).
-
-Definition not_univ_pi (A : nf) : Prop :=
-  match A with
-  | nf_typ _ | nf_pi _ _ => False
-  | _ => True
-  end.
-
-Inductive alg_subtyping_nf : nf -> nf -> Prop :=
-| asnf_refl : forall M N,
-    not_univ_pi M ->
-    {{ ⊢nf M ≈≈ N }} ->
-    {{ ⊢anf M ⊆ N }}
-| asnf_univ : forall i j,
-    i <= j ->
-    {{ ⊢anf Type@i ⊆ Type@j }}
-| asnf_pi : forall A B A' B',
-    {{ ⊢anf A' ⊆ A }} ->
-    {{ ⊢anf B ⊆ B' }} ->
-    {{ ⊢anf Π A B ⊆ Π A' B' }}
-where "⊢anf M ⊆ N" := (alg_subtyping_nf M N) (in custom judg) : type_scope.
-
-Generalizable All Variables.
-
-Lemma read_typ_per_subtyp_nf_subtyp : forall {A A' W W' i n},
-  {{ Sub A <: A' at i }} ->
-  {{ Rtyp A in n ↘ W }} ->
-  {{ Rtyp A' in n ↘ W' }} ->
-  {{ ⊢anf W ⊆ W' }}.
-Proof.
-  intros * Hsub Htyp Htyp'.
-  gen n W W'. induction Hsub; intros;   
-    dir_inversion_by_head read_typ; subst.
-  - dependent destruction Htyp.
-    dependent destruction Htyp'.
-    specialize (H s). destruct_all.
-    functional_read_rewrite_clear. econstructor; mauto 3.
-    econstructor.
-  - eapply asnf_refl; mauto 3.  
-    constructor.
-  - eapply asnf_univ; eauto.
-  - eapply asnf_pi; eauto.
-    eapply per_subtyp_to_univ_elem in Hsub as IH.
-    destruct_all. handle_per_univ_elem_irrel.
-    assert (R' d{{{ ⇑! a n }}} d{{{ ⇑! a' n }}}) by (eapply realize_per_univ_elem_gen_sub; mauto 3).
-    (* I think we have to re-evalate B' in under (ρ' ↦ ⇑! a n) and argue it leads to equiv values *)
-    admit.
-Abort.
-
 Lemma completeness_subtyp : forall {Γ A A'},
     {{ Γ ⊢ A ⊆ A' }} ->
-      exists W W', nbe_ty Γ A W /\ nbe_ty Γ A' W' /\ {{ ⊢anf W ⊆ W' }}.
+      exists W W', nbe_ty Γ A W /\ nbe_ty Γ A' W' /\ {{ ⊢snf W ⊆ W' }}.
 Proof.
   intros * HA.
   eapply completeness_fundamental_subtyp in HA as [env_relΓ].
   destruct_conjs.
-  assert (exists ρ ρ', initial_env Γ ρ /\  initial_env Γ ρ' /\ {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
+  assert (exists ρ ρ', initial_env Γ ρ /\  initial_env Γ ρ' /\ {{ Dom ρ ≈≈ ρ' ∈ env_relΓ }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
   destruct_conjs.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
@@ -105,10 +56,10 @@ Proof.
   functional_read_rewrite_clear. clear_dups.
   do 2 eexists.
   repeat split; only 1-2: econstructor; try eassumption.
-  - admit. (* {{ ⊢anf ~ ?W ⊆ ~ ?W' }} *)
+  - eapply wrealize_persub_gen; mauto 3. 
 Abort.
 
-Lemma completeness_subtyp' : forall {Γ A A'},
+(* Lemma completeness_subtyp' : forall {Γ A A'},
     {{ Γ ⊢ A ⊆ A' }} ->
     forall Γ',
       {{ ⊢ Γ' ⊆ Γ }} ->
@@ -119,7 +70,7 @@ Proof.
   - admit.
   - admit.
   - admit.
-Admitted.
+Admitted. *)
 
 
 (* Lemma completeness_subtyp : forall {Γ A A'},
