@@ -97,8 +97,7 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
   intros * Hunivelem. simpl in Hunivelem.
   induction Hunivelem using per_univ_elem_ind; repeat split; intros;
     apply_relation_equivalence; mauto.
-  - (* subtyp_lowering ? *)
-    subst.
+  - subst.
     dependent destruction H3. subst. subst.
     invert_per_univ_elem H4. rewrite H4.
     eexists.

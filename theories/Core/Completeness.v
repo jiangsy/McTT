@@ -7,6 +7,7 @@ From Mctt.Core.Syntactic Require Import WeakCong.
 From Mctt.Core.Syntactic Require Export SystemOpt Corollaries CtxSub.
 Import Domain_Notations.
 
+
 Theorem completeness : forall {Γ M M' A},
   {{ Γ ⊢ M ≈ M' : A }} ->
   exists W, nbe Γ M A W /\ nbe Γ M' A W.
@@ -83,33 +84,6 @@ Proof.
   - admit.
 Admitted.
 
-(* Lemma completeness_subcontext : forall {Γ M A},
-    {{ Γ ⊢ M : A }} ->
-    forall Γ',
-      {{ ⊢ Γ' ⊆ Γ }} ->
-      exists W W', nbe_ty Γ' M W /\ nbe_ty Γ M W' /\ {{ ⊢ W ≈≈ W' }}.
-Proof.
-  intros. induction H; mauto 4.
-  - admit.
-  - admit.
-  - admit.
-  - apply IHwf_exp in H0. destruct_all.
-    exists (n{{{ succ W }}}), (n{{{ succ W' }}}). split; mauto 4.
-    admit. admit.
-  (* does not work *)
-  - admit.
-  - admit.
-  - admit.
-  - admit.
-Admitted. *)
-
-(* Lemma completeness_subtyp : forall {Γ A A'},
-    {{ Γ ⊢ A ⊆ A' }} ->
-    forall Γ',
-      {{ ⊢ Γ' ⊆ Γ }} ->
-      exists W W', nbe_ty Γ' A W /\ nbe_ty Γ A' W' /\ {{ ⊢anf W ⊆ W' }}.
-Proof. *)
-
 Lemma read_typ_per_subtyp_nf_subtyp : forall {A A' W W' i n},
   {{ Sub A <: A' at i }} ->
   {{ Rtyp A in n ↘ W }} ->
@@ -119,8 +93,11 @@ Proof.
   intros * Hsub Htyp Htyp'.
   gen n W W'. induction Hsub; intros;   
     dir_inversion_by_head read_typ; subst.
-  - (* TODO: does this hold? *) 
-    admit.
+  - dependent destruction Htyp.
+    dependent destruction Htyp'.
+    specialize (H s). destruct_all.
+    functional_read_rewrite_clear. econstructor; mauto 3.
+    econstructor.
   - eapply asnf_refl; mauto 3.  
     constructor.
   - eapply asnf_univ; eauto.

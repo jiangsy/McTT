@@ -30,7 +30,7 @@ Proof with (solve [try (try (eexists; split); econstructor); mauto]).
   - subst; repeat econstructor.
   - subst.
     eexists.
-    per_univ_elem_econstructor.
+    per_univ_elem_econstructor...
   - subst.
     destruct_by_head per_univ.
     specialize (H2 _ _ _ H0).
