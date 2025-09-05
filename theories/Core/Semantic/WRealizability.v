@@ -83,6 +83,112 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_all...
 Qed.
 
+Lemma realize_per_univ_elem_gen_sub_rev : forall {i a b R},
+    {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
+    (forall {a' c c'}, 
+         {{ Sub a <: a' at i }} ->
+         {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b c' ∈ R }})
+    /\ (forall {a' d d'}, 
+         {{ Sub a' <: a at i }} ->
+         {{ Dom d ≈≈ d' ∈ R }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b d' ∈ per_top }}).
+Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
+  intros * Hunivelem. simpl in Hunivelem.
+  induction Hunivelem using per_univ_elem_ind; repeat split; intros;
+    apply_relation_equivalence; mauto.
+  - subst.
+    dependent destruction H3.
+    econstructor.
+    basic_per_univ_elem_econstructor; eauto. reflexivity.
+  - subst. dependent destruction H3.
+    destruct_by_head per_univ.
+    apply wrealize_per_univ_elem_gen in H3 as IH. destruct_all.
+    intro s.
+    specialize (H4 s). destruct_all...
+  - dependent destruction H0.
+    eapply per_nat_then_per_top; mauto 3.
+  - dependent destruction H3.
+    intros.
+    econstructor.
+  admit.
+  - admit.
+  (* - dependent destruction H0.
+    dependent destruction H1.
+    eapply per_nat_then_per_top; mauto.
+    rewrite <- H. auto. 
+  - dependent destruction H3. 
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    destruct_all.
+    rewrite H10. intros. 
+    assert {{ Dom c0 ≈≈ c'0 ∈ in_rel }}. {
+      eapply per_elem_subtyping with (R:=in_rel0) (B:=a); mauto 3.
+      saturate_refl. auto.
+    }
+    assert {{ Dom c0 ≈≈ c'0 ∈ in_rel1 }}. {
+      eapply per_elem_subtyping with (R:=in_rel0) (B:=a); mauto 3.
+    }
+    destruct_rel_mod_eval. simplify_evals.
+    econstructor; mauto 3.
+    eapply H29; mauto 3.
+    + transitivity a'1. 
+      eapply H4; mauto 3.
+      eapply per_subtyp_refl; eauto.
+    + saturate_refl. auto.
+    + assert {{ Dom ⇓ a'0 c0 ≈≈ ⇓ a' c'0 ∈ per_top }}.
+      eapply H14; eauto.
+      intros s.
+      specialize (H8 s).
+      specialize (H20 s). destruct_all...
+  - dependent destruction H3. 
+    match_by_head per_univ_elem ltac:(fun H => directed invert_per_univ_elem H).
+    destruct_conjs.
+    intros s.
+    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
+      eapply H13; mauto 3; saturate_refl; mauto.
+    }
+    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
+      eapply H13; mauto 3; saturate_refl; mauto.
+    }
+    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel1 }}. {
+      eapply per_elem_subtyping with (R:=in_rel) (A:=a); mauto 3.
+      saturate_refl. mauto.
+    }
+    handle_per_univ_elem_irrel.
+    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }}. {
+      eapply H18; auto.
+    }
+    destruct_rel_mod_eval.
+    destruct_rel_mod_app.
+    simplify_evals.
+    assert (exists WA WA', {{ Rtyp a0 in s ↘ WA }} /\ {{ Rtyp a' in s ↘ WA' }}). {
+      specialize (wrealize_per_univ_elem_gen equiv_a_a'); mauto 3. intros.
+      assert (per_univ_elem i in_rel0 a' a') as equiv_a'_a'. {
+        etransitivity; [symmetry|]; eassumption.
+      }
+      specialize (wrealize_per_univ_elem_gen equiv_a'_a'); mauto 3. intros.
+      destruct_all.
+      specialize (H21 s).
+      specialize (H26 s).
+      destruct_all...
+    }
+    destruct_all.
+    assert (per_top d{{{ ⇓ a2 fa0 }}} d{{{ ⇓ a'5 f'a' }}}). {
+      eapply H36; mauto 3.
+      transitivity a'0. eapply per_subtyp_refl; symmetry; mauto 3.
+      transitivity a'2; auto.
+      eapply H4 with (c:= d{{{ ⇑! a' s }}} ); mauto 3.
+      etransitivity; [symmetry|]; mauto 3.
+      eapply per_subtyp_refl; mauto 3.
+      etransitivity; [|symmetry]; mauto 3.
+    }
+    specialize (H27 (S s)). destruct_all.
+    do 2 eexists; repeat split; econstructor; mauto 3. *)
+  - intros s. progressive_inversion.
+    subst.
+    dependent destruction H2. dependent destruction H1.
+    (on_all_hyp: fun H => specialize (H s)). 
+    destruct_all... 
+Qed.
+
 Lemma realize_per_univ_elem_gen_sub : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     (forall {a' c c' R'}, 

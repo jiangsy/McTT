@@ -78,12 +78,10 @@ Proof.
     constructor.
   - eapply asnf_univ; eauto.
   - eapply asnf_pi; eauto.
-    eapply H1; mauto 3.
-    eapply realize_per_univ_elem_gen_sub; mauto 3.
-    eapply per_subtyp_to_univ_elem in Hsub.
-    destruct_all.
-    handle_per_univ_elem_irrel. mauto 3.
-    eapply per_subtyp_to_univ_elem; mauto 3.
+    eapply per_subtyp_to_univ_elem in Hsub as IH.
+    destruct_all. handle_per_univ_elem_irrel.
+    assert (R' d{{{ ⇑! a n }}} d{{{ ⇑! a' n }}}) by (eapply realize_per_univ_elem_gen_sub; mauto 3).
+    (* I think we have to re-evalate B' in under (ρ' ↦ ⇑! a n) and argue it leads to equiv values *)
     admit.
 Abort.
 
@@ -109,6 +107,20 @@ Proof.
   repeat split; only 1-2: econstructor; try eassumption.
   - admit. (* {{ ⊢anf ~ ?W ⊆ ~ ?W' }} *)
 Abort.
+
+Lemma completeness_subtyp' : forall {Γ A A'},
+    {{ Γ ⊢ A ⊆ A' }} ->
+    forall Γ',
+      {{ ⊢ Γ' ⊆ Γ }} ->
+      exists W W', nbe_ty Γ' A W /\ nbe_ty Γ A' W' /\ {{ ⊢anf W ⊆ W' }}.
+Proof.
+  intros * HA. induction HA; intros.
+  - admit.
+  - admit.
+  - admit.
+  - admit.
+Admitted.
+
 
 (* Lemma completeness_subtyp : forall {Γ A A'},
     {{ Γ ⊢ A ⊆ A' }} ->
