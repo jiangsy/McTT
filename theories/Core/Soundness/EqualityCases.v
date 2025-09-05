@@ -825,7 +825,6 @@ Proof.
       apply completeness_fundamental_exp in HwfB as HrelB.
       pose proof HrelA as HrelA'.
       invert_rel_exp_of_typ HrelA.
-      rename x into env_relΓ.
       destruct_all.
       eapply eval_eqrec_relΓAAEq_helper in HrelA' as [env_relΓAAEq [equiv_ΓAAEq HΓAAEq]]; eauto.
       assert ({{ Dom ρ ↦ m1 ↦ m2 ↦ refl m' ≈ ρ ↦ m' ↦ m' ↦ refl m' ∈ env_relΓAAEq }}).
