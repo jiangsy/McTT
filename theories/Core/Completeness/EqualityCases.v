@@ -414,7 +414,7 @@ Proof.
     + do 2 (econstructor; mauto).
   - assert {{ Dom ρσ ↦ m1 ≈ ρ'σ ↦ m1' ∈ env_relΔA }} by mauto 3.
     (on_all_hyp: destruct_rel_by_assumption env_relΔA).
-    invert_per_univ_elems.
+    (on_all_hyp: fun H => directed invert_per_univ_elem_nouip H).
     handle_per_univ_elem_irrel.
     assert {{ Dom ρσ ↦ m1 ↦ m2 ↦ ⇑ a1 n ≈ ρ'σ ↦ m1' ↦ m2' ↦ ⇑ a' n' ∈ env_relΔAAEq }} by mauto 3.
     (on_all_hyp: destruct_rel_by_assumption env_relΔAAEq).
