@@ -250,12 +250,7 @@ Inductive per_subtyp : nat -> domain -> domain -> Prop :=
   `( forall (in_rel : relation domain) elem_rel elem_rel',
         {{ Sub a' <: a at i }} ->
         {{ DF a' ≈≈ a' ∈ per_univ_elem i ↘ in_rel }} ->
-        (forall c c' b,
-            {{ Dom c ≈≈ c' ∈ in_rel }} ->
-            {{ ⟦ B ⟧ ρ ↦ c ↘ b }} ->
-            exists b',
-              {{ ⟦ B' ⟧ ρ' ↦ c' ↘ b' }}) ->
-         (forall c c' b b',
+        (forall c c' b b',
             {{ Dom c ≈≈ c' ∈ in_rel }} ->
             {{ ⟦ B ⟧ ρ ↦ c ↘ b }} ->
             {{ ⟦ B' ⟧ ρ' ↦ c' ↘ b' }} ->
