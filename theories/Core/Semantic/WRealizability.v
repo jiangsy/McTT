@@ -83,52 +83,6 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     destruct_all...
 Qed.
 
-(* this cannot be true, otherwise ⇑ a' c ≈≈ ⇑ b c' ∈ R *)
-Lemma realize_per_univ_elem_gen_sub_rev : forall {i a b R},
-    {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
-    (forall {a' c c'}, 
-         {{ Sub a <: a' at i }} ->
-         {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b c' ∈ R }})
-    /\ (forall {a' d d'}, 
-         {{ Sub a' <: a at i }} ->
-         {{ Dom d ≈≈ d' ∈ R }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b d' ∈ per_top }}).
-Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
-  intros * Hunivelem. simpl in Hunivelem.
-  induction Hunivelem using per_univ_elem_ind; repeat split; intros;
-    apply_relation_equivalence; mauto.
-  - subst.
-    dependent destruction H3.
-    econstructor.
-    basic_per_univ_elem_econstructor; eauto. reflexivity.
-  - subst. dependent destruction H3.
-    destruct_by_head per_univ.
-    apply wrealize_per_univ_elem_gen in H3 as IH. destruct_all.
-    intro s.
-    specialize (H4 s). destruct_all...
-  - dependent destruction H0.
-    eapply per_nat_then_per_top; mauto 3.
-  - dependent destruction H3.
-    invert_per_univ_elem H5. invert_per_univ_elem H8.
-    handle_per_univ_elem_irrel.
-    assert {{ Dom ⇑ a'0 c ≈≈ ⇑ a'0 c' ∈ in_rel0 }} by (eapply wrealize_per_univ_elem_gen; mauto 3).
-    assert {{ Dom ⇑ a'0 c ≈≈ ⇑ a'0 c' ∈ in_rel0 }} by (eapply wrealize_per_univ_elem_gen; mauto 3).
-    assert {{ Dom ⇑ a c ≈≈ ⇑ a' c' ∈ in_rel }} by admit.
-    intros.
-    destruct_rel_mod_eval. simplify_evals.
-    econstructor; mauto 3.
-    econstructor; mauto 3.
-    admit.
-  admit.
-  - dependent destruction H3. admit.
-  - intros s. progressive_inversion.
-    subst.
-    dependent destruction H2. dependent destruction H1.
-    (on_all_hyp: fun H => specialize (H s)). 
-    destruct_all...
-Admitted.
-
-Abort.
-
 Lemma realize_per_univ_elem_gen_sub : forall {i a b R},
     {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
     (forall {a' c c' R'}, 
@@ -236,6 +190,60 @@ Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
     (on_all_hyp: fun H => specialize (H s)). 
     destruct_all... 
 Qed.
+
+(* this cannot be true, otherwise ⇑ a' c ≈≈ ⇑ b c' ∈ R *)
+Lemma realize_per_univ_elem_gen_sub_rev : forall {i a b R},
+    {{ DF a ≈≈ b ∈ per_univ_elem i ↘ R }} ->
+    (forall {a' c c'}, 
+         {{ Sub a <: a' at i }} ->
+         {{ Dom c ≈≈ c' ∈ per_bot }} -> {{ Dom ⇑ a' c ≈≈ ⇑ b c' ∈ R }})
+    /\ (forall {a' d d'}, 
+         {{ Sub a' <: a at i }} ->
+         {{ Dom d ≈≈ d' ∈ R }} -> {{ Dom ⇓ a' d ≈≈ ⇓ b d' ∈ per_top }}).
+Proof with (solve [try (try (do 2 eexists; split); econstructor); mauto]).
+  intros * Hunivelem. simpl in Hunivelem.
+  induction Hunivelem using per_univ_elem_ind; repeat split; intros;
+    apply_relation_equivalence; mauto.
+  - subst.
+    dependent destruction H3.
+    econstructor.
+    basic_per_univ_elem_econstructor; eauto. reflexivity.
+  - subst. dependent destruction H3.
+    destruct_by_head per_univ.
+    apply wrealize_per_univ_elem_gen in H3 as IH. destruct_all.
+    intro s.
+    specialize (H4 s). destruct_all...
+  - dependent destruction H0.
+    eapply per_nat_then_per_top; mauto 3.
+  - (* does not hold *)
+    dependent destruction H3.
+    invert_per_univ_elem H5. invert_per_univ_elem H8.
+    handle_per_univ_elem_irrel.
+    assert {{ Dom ⇑ a'0 c ≈≈ ⇑ a'0 c' ∈ in_rel0 }} by (eapply wrealize_per_univ_elem_gen; mauto 3).
+    assert {{ Dom ⇑ a'0 c ≈≈ ⇑ a'0 c' ∈ in_rel0 }} by (eapply wrealize_per_univ_elem_gen; mauto 3).
+    assert {{ Dom ⇑ a c ≈≈ ⇑ a' c' ∈ in_rel }} by admit.
+    destruct_rel_mod_eval. simplify_evals.  
+    admit.
+  - dependent destruction H3. 
+    intro s.
+    assert {{ Dom ⇑! a s ≈≈ ⇑! a' s ∈ in_rel }} by (eapply wrealize_per_univ_elem_gen; mauto 3).
+    assert {{ Dom ⇑! a0 s ≈≈ ⇑! a' s ∈ in_rel }}. {
+      eapply IHHunivelem; mauto 3.
+    }
+    assert {{ Dom ⇑! a' s ≈≈ ⇑! a0 s ∈ in_rel }}. {
+      symmetry; eauto.
+    }
+    clear H9.
+    destruct_rel_mod_eval. simplify_evals.
+    do 2 eexists; repeat split; econstructor; mauto 3.  
+
+    dependent destruction H3. admit.
+  - intros s. progressive_inversion.
+    subst.
+    dependent destruction H2. dependent destruction H1.
+    (on_all_hyp: fun H => specialize (H s)). 
+    destruct_all...
+Admitted.
 
 Corollary per_univ_then_per_top_typ : forall {i a a' R},
     {{ DF a ≈≈ a' ∈ per_univ_elem i ↘ R }} ->
