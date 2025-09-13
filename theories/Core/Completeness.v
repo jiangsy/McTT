@@ -36,6 +36,24 @@ Proof.
   do 2 eexists; repeat split; mauto 3.
 Qed.
 
+Reserved Notation "Γ ⊢anf A ⊆ A'" (in custom judg at level 80, Γ custom exp, A custom nf, A' custom nf).
+
+Inductive algo_subtyping_nf : ctx -> nf -> nf -> Prop :=
+| asnf_refl : forall Γ M N,
+    not_univ_pi M ->
+    {{ ⊢nf M ≈≈ N }} ->
+    {{ Γ ⊢anf M ⊆ N }}
+| asnf_univ : forall Γ i j,
+    i <= j ->
+    {{ Γ ⊢anf Type@i ⊆ Type@j }}
+| asnf_pi : forall Γ (A B A' B' B'' : nf),
+    {{ Γ ⊢anf A' ⊆ A }} ->
+    nbe_ty {{{ Γ , ^(A' : exp) }}} B B'' ->
+    {{ Γ , ^(A' : exp) ⊢anf B' ⊆ B' }} ->
+    {{ Γ ⊢anf Π A B ⊆ Π A' B' }}
+where "Γ ⊢anf M ⊆ N" := (algo_subtyping_nf Γ M N) (in custom judg) : type_scope.
+
+
 Lemma completeness_subtyp : forall {Γ A A'},
     {{ Γ ⊢ A ⊆ A' }} ->
       exists W W', nbe_ty Γ A W /\ nbe_ty Γ A' W' /\ {{ ⊢snf W ⊆ W' }}.
