@@ -10,11 +10,11 @@ Import Domain_Notations.
 
 Theorem completeness : forall {Γ M M' A},
   {{ Γ ⊢ M ≈ M' : A }} ->
-  exists W W', nbe Γ M A W /\ nbe Γ M' A W' /\ {{ ⊢nf W ≈≈ W' }}.
+  exists W W', nbe Γ M A W /\ nbe Γ M' A W' /\ {{ ⊢nf W ≈ W' }}.
 Proof with mautosolve.
   intros * [env_relΓ]%completeness_fundamental_exp_eq.
   destruct_conjs.
-  assert (exists ρ ρ', initial_env Γ ρ /\ initial_env Γ ρ' /\ {{ Dom ρ ≈≈ ρ' ∈ env_relΓ }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
+  assert (exists ρ ρ', initial_env Γ ρ /\ initial_env Γ ρ' /\ {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
   destruct_conjs.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).
@@ -27,7 +27,7 @@ Qed.
 
 Lemma completeness_ty : forall {Γ i A A'},
     {{ Γ ⊢ A ≈ A' : Type@i }} ->
-    exists W W', nbe_ty Γ A W /\ nbe_ty Γ A' W' /\ {{ ⊢nf W ≈≈ W' }}  .
+    exists W W', nbe_ty Γ A W /\ nbe_ty Γ A' W' /\ {{ ⊢nf W ≈ W' }}  .
 Proof.
   intros. apply completeness in H as [W [W' []]]; mauto 3.
   destruct_all.
@@ -41,7 +41,7 @@ Reserved Notation "Γ ⊢anf A ⊆ A'" (in custom judg at level 80, Γ custom ex
 Inductive algo_subtyping_nf : ctx -> nf -> nf -> Prop :=
 | asnf_refl : forall Γ M N,
     not_univ_pi M ->
-    {{ ⊢nf M ≈≈ N }} ->
+    {{ ⊢nf M ≈ N }} ->
     {{ Γ ⊢anf M ⊆ N }}
 | asnf_univ : forall Γ i j,
     i <= j ->
@@ -62,7 +62,7 @@ Proof.
   intros * HA.
   eapply completeness_fundamental_subtyp in HA as [env_relΓ].
   destruct_conjs.
-  assert (exists ρ ρ', initial_env Γ ρ /\  initial_env Γ ρ' /\ {{ Dom ρ ≈≈ ρ' ∈ env_relΓ }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
+  assert (exists ρ ρ', initial_env Γ ρ /\  initial_env Γ ρ' /\ {{ Dom ρ ≈ ρ' ∈ env_relΓ }}) as [ρ] by (eauto using per_ctx_then_per_env_initial_env).
   destruct_conjs.
   functional_initial_env_rewrite_clear.
   (on_all_hyp: destruct_rel_by_assumption env_relΓ).

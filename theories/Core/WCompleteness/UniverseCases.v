@@ -7,8 +7,8 @@ Import Domain_Notations.
 
 Lemma rel_exp_of_typ_inversion : forall {Γ A A' i},
     {{ Γ ⊨ A ≈ A' : Type@i }} ->
-    exists env_rel (_ : {{ EF Γ ≈≈ Γ ∈ per_ctx_env ↘ env_rel }}),
-    forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈≈ ρ' ∈ env_rel }}),
+    exists env_rel (_ : {{ EF Γ ≈ Γ ∈ per_ctx_env ↘ env_rel }}),
+    forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_rel }}),
       rel_exp A ρ A' ρ' (per_univ i).
 Proof.
   intros * [env_relΓ].
@@ -23,8 +23,8 @@ Proof.
 Qed.
 
 Lemma rel_exp_of_typ : forall {Γ A A' i},
-    (exists env_rel (_ : {{ EF Γ ≈≈ Γ ∈ per_ctx_env ↘ env_rel }}),
-      forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈≈ ρ' ∈ env_rel }}),
+    (exists env_rel (_ : {{ EF Γ ≈ Γ ∈ per_ctx_env ↘ env_rel }}),
+      forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_rel }}),
         rel_exp A ρ A' ρ' (per_univ i)) ->
     {{ Γ ⊨ A ≈ A' : Type@i }}.
 Proof.

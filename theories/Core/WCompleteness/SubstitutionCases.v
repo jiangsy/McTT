@@ -250,7 +250,7 @@ Proof with mautosolve.
   destruct_conjs.
   pose env_relΔ.
   handle_per_ctx_env_irrel.
-  assert {{ EF Δ' ≈≈ Δ' ∈ per_ctx_env ↘ env_relΔ }} by (etransitivity; [symmetry |]; eassumption).
+  assert {{ EF Δ' ≈ Δ' ∈ per_ctx_env ↘ env_relΔ }} by (etransitivity; [symmetry |]; eassumption).
   eexists_rel_sub...
 Qed.
 

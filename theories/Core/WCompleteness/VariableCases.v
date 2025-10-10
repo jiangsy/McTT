@@ -7,10 +7,10 @@ From Mctt.Core.Syntactic Require Import SystemOpt.
 Import Domain_Notations.
 
 Lemma valid_lookup : forall {Γ x A env_rel}
-                        (equiv_Γ_Γ : {{ EF Γ ≈≈ Γ ∈ per_ctx_env ↘ env_rel }}),
+                        (equiv_Γ_Γ : {{ EF Γ ≈ Γ ∈ per_ctx_env ↘ env_rel }}),
     {{ #x : A ∈ Γ }} ->
     exists i,
-    forall p p' (equiv_p_p' : {{ Dom p ≈≈ p' ∈ env_rel }}),
+    forall p p' (equiv_p_p' : {{ Dom p ≈ p' ∈ env_rel }}),
     exists elem_rel,
       rel_typ i A p A p' elem_rel /\ rel_exp {{{ #x }}} p {{{ #x }}} p' elem_rel.
 Proof with solve [split; mauto].

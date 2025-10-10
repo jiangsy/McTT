@@ -45,10 +45,10 @@ Qed.
 Hint Resolve rel_typ_implies_rel_exp : mctt.
 
 Lemma rel_exp_clean_inversion : forall {Γ env_rel A M M'},
-    {{ EF Γ ≈≈ Γ ∈ per_ctx_env ↘ env_rel }} ->
+    {{ EF Γ ≈ Γ ∈ per_ctx_env ↘ env_rel }} ->
     {{ Γ ⊨ M ≈ M' : A }} ->
     exists i,
-    forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈≈ ρ' ∈ env_rel }}),
+    forall ρ ρ' (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ env_rel }}),
     exists (elem_rel : relation domain),
       rel_typ i A ρ A ρ' elem_rel /\ rel_exp M ρ M' ρ' elem_rel.
 Proof.
