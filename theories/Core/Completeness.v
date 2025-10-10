@@ -48,8 +48,9 @@ Inductive algo_subtyping_nf : ctx -> nf -> nf -> Prop :=
     {{ Γ ⊢anf Type@i ⊆ Type@j }}
 | asnf_pi : forall Γ (A B A' B' B'' : nf),
     {{ Γ ⊢anf A' ⊆ A }} ->
+    (* we need to renormalize B in the new context extended with A' *)
     nbe_ty {{{ Γ , ^(A' : exp) }}} B B'' ->
-    {{ Γ , ^(A' : exp) ⊢anf B' ⊆ B' }} ->
+    {{ Γ , ^(A' : exp) ⊢anf B'' ⊆ B' }} ->
     {{ Γ ⊢anf Π A B ⊆ Π A' B' }}
 where "Γ ⊢anf M ⊆ N" := (algo_subtyping_nf Γ M N) (in custom judg) : type_scope.
 
