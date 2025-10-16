@@ -119,9 +119,10 @@ Section Per_univ_elem_core_def.
 
   Hypothesis
     (motive : relation domain -> domain -> domain -> bool -> Prop)
-      (case_U : forall {j j' elem_rel F} (lt_j_i : j < i),
-          j = j' ->
-          (elem_rel <~> per_univ_rec lt_j_i F) ->
+      (case_U : forall {j j' elem_rel F}
+          (lt_jj'_i : (max j j') < i),
+          ((F = true) -> j = j') ->
+          (elem_rel <~> per_univ_rec lt_jj'_i true) ->
           motive elem_rel d{{{ 𝕌@j }}} d{{{ 𝕌@j' }}} F)
       (case_nat : forall {elem_rel F},
           (elem_rel <~> per_nat) ->
@@ -144,27 +145,27 @@ Section Per_univ_elem_core_def.
   .
 
   #[derive(equations=no, eliminator=no)]
-  Equations per_univ_elem_core_strong_ind R a b (H : {{ DF a ≈ b ∈ per_univ_elem_core ↘ R }}) : {{ DF a ≈ b ∈ motive ↘ R }} :=
-  | R, a, b, (per_univ_elem_core_univ _ lt_j_i HE eq)                 => case_U lt_j_i HE eq;
-  | R, a, b, (per_univ_elem_core_nat _ HE)                            => case_nat HE;
-  | R, a, b, (per_univ_elem_core_pi _ out_rel _ equiv_a_a' per HT HE) =>
-      case_Pi out_rel equiv_a_a' (per_univ_elem_core_strong_ind _ _ _ equiv_a_a') per
+  Equations per_univ_elem_core_strong_ind R a b F (H : {{ DF a ≈ b ∈[ F ] per_univ_elem_core ↘ R }}) : {{ DF a ≈ b ∈[ F ] motive ↘ R }} :=
+  | R, a, b, F, (per_univ_elem_core_univ _ lt_jj'_i HE eq)                 => case_U lt_jj'_i HE eq;
+  | R, a, b, F, (per_univ_elem_core_nat _ HE)                              => case_nat HE;
+  | R, a, b, F, (per_univ_elem_core_pi _ out_rel _ equiv_a_a' per HT HE)   =>
+      case_Pi out_rel equiv_a_a' (per_univ_elem_core_strong_ind _ _ _ F equiv_a_a') per
         (fun _ _ equiv_c_c' => match HT _ _ equiv_c_c' with
-                              | mk_rel_mod_eval b b' evb evb' Rel =>
-                                  mk_rel_mod_eval b b' evb evb' (conj _ (per_univ_elem_core_strong_ind _ _ _ Rel))
+                              | mk_rel_mod_eval _ b b' evb evb' Rel =>
+                                  mk_rel_mod_eval _ b b' evb evb' (conj _ (per_univ_elem_core_strong_ind _ _ _ F Rel ))
                               end)
         HE;
-  | R, a, b, (per_univ_elem_core_neut _ equiv_b_b' HE)                => case_ne equiv_b_b' HE.
+  | R, a, b, F, (per_univ_elem_core_neut _ equiv_b_b' HE)                  => case_ne equiv_b_b' HE.
 
 End Per_univ_elem_core_def.
 
 #[export]
 Hint Constructors per_univ_elem_core : mctt.
 
-Equations per_univ_elem (i : nat) : relation domain -> domain -> domain -> Prop by wf i :=
-| i => per_univ_elem_core i (fun j lt_j_i a a' => exists R', {{ DF a ≈ a' ∈ per_univ_elem j ↘ R' }}).
+Equations per_univ_elem (i : nat) : relation domain -> domain -> domain -> bool -> Prop by wf i :=
+| i => per_univ_elem_core i (fun j lt_j_i F a a' => exists R', {{ DF a ≈ a' ∈[ F ] per_univ_elem j ↘ R' }}).
 
-Definition per_univ (i : nat) : relation domain := fun a a' => exists R', {{ DF a ≈ a' ∈ per_univ_elem i ↘ R' }}.
+Definition per_univ (i : nat) : bool -> relation domain := fun F a a' => exists R', {{ DF a ≈ a' ∈[ F ] per_univ_elem i ↘ R' }}.
 #[global]
 Arguments per_univ _ _ _ /.
 #[export]
