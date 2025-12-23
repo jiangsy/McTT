@@ -10,7 +10,7 @@ Import Domain_Notations.
 Notation "'Dom' a ≈ b ∈ R" := ((R a b : Prop) : Prop) (in custom judg at level 90, a custom domain, b custom domain, R constr).
 Notation "'DF' a ≈ b ∈[ F ] R ↘ R'" := ((R R' F a b : Prop) : Prop) (in custom judg at level 90, a custom domain, b custom domain, R constr, R' constr, F constr).
 Notation "'Exp' a ≈ b ∈ R" := (R a b : (Prop : Type)) (in custom judg at level 90, a custom exp, b custom exp, R constr).
-Notation "'EF' a ≈ b ∈[ F ] R ↘ R'" := (R R' F a b : (Prop : Type)) (in custom judg at level 90, a custom exp, b custom exp, R constr, R' constr, F constr).
+Notation "'EF' a ≈ b ∈ R ↘ R'" := (R R' a b : (Prop : Type)) (in custom judg at level 90, a custom exp, b custom exp, R constr, R' constr).
 (** Precedences of the next notations follow the ones in the standard library.
     However, we do not use the ones in the standard library so that we can change
     the relation if necessary in the future. *)
@@ -253,14 +253,14 @@ Inductive per_subtyp : nat -> domain -> domain -> Prop :=
 | per_subtyp_pi :
   `( forall (in_rel : relation domain) elem_rel elem_rel',
         {{ Sub a' <: a at i }} ->
-        {{ DF a' ≈ a' ∈ per_univ_elem i ↘ in_rel }} ->
+        {{ DF a' ≈ a' ∈[ true ] per_univ_elem i ↘ in_rel }} ->
         (forall c c' b b',
             {{ Dom c ≈ c' ∈ in_rel }} ->
             {{ ⟦ B ⟧ ρ ↦ c ↘ b }} ->
             {{ ⟦ B' ⟧ ρ' ↦ c' ↘ b' }} ->
             {{ Sub b <: b' at i }}) ->
-        {{ DF Π a ρ B ≈ Π a ρ B ∈ per_univ_elem i ↘ elem_rel }} ->
-        {{ DF Π a' ρ' B' ≈ Π a' ρ' B' ∈ per_univ_elem i ↘ elem_rel' }} ->
+        {{ DF Π a ρ B ≈ Π a ρ B ∈[ true ] per_univ_elem i ↘ elem_rel }} ->
+        {{ DF Π a' ρ' B' ≈ Π a' ρ' B' ∈[ true ] per_univ_elem i ↘ elem_rel' }} ->
         {{ Sub Π a ρ B <: Π a' ρ' B' at i }})
 where "'Sub' a <: b 'at' i" := (per_subtyp i a b) (in custom judg) : type_scope.
 
@@ -288,7 +288,7 @@ Inductive per_ctx_env : relation env -> ctx -> ctx -> Prop :=
         (equiv_Γ_Γ' : {{ EF Γ ≈ Γ' ∈ per_ctx_env ↘ tail_rel }}),
         PER tail_rel ->
         (forall {ρ ρ'} (equiv_ρ_ρ' : {{ Dom ρ ≈ ρ' ∈ tail_rel }}),
-            rel_typ i A ρ A' ρ' (head_rel equiv_ρ_ρ')) ->
+            rel_typ i A ρ A' ρ' (head_rel equiv_ρ_ρ') true) ->
         (env_rel <~> fun ρ ρ' =>
              exists (equiv_ρ_drop_ρ'_drop : {{ Dom ρ ↯ ≈ ρ' ↯ ∈ tail_rel }}),
                {{ Dom ^(ρ 0) ≈ ^(ρ' 0) ∈ head_rel equiv_ρ_drop_ρ'_drop }}) ->
